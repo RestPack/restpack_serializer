@@ -11,17 +11,17 @@ describe RestPack::Serializable::Attributes do
 		@attributes = CustomSerializer.serializable_attributes
 	end
 
-	it "has four attributes" do
+	it "correctly models specified attributes" do
 		@attributes.length.should == 4
 	end
 
-	it "has three simple attributes" do
+	it "correctly maps normal attributes" do
 		[:a, :b, :c].each do |attr|
 			@attributes[attr].should == attr
 		end
 	end
 
-	it "has key mapped attribute" do
+	it "correctly maps attribute with :key options" do
 		@attributes[:new_key].should == :old_attribute
 	end
 end
