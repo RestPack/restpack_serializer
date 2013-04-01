@@ -1,1 +1,0 @@
-require 'restpack-serializer/version'
