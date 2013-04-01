@@ -20,10 +20,6 @@ describe RestPack::Serializable do
       "/api/v1/people/#{id}.json"
     end
 
-    def options
-      @options
-    end
-
     def admin_info
       { key: "super_secret_sauce" }
     end
