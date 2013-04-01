@@ -14,6 +14,12 @@ module RestPack
 
         @serializable_attributes ||= {}
         @serializable_attributes[options[:key]] = name
+
+        unless method_defined?(name)
+          define_method name do
+            @model.send(name)
+          end
+        end
       end
     end
   end
