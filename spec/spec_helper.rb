@@ -4,3 +4,4 @@ require "active_model/serializer"
 require "active_model/serializer/associations"
 
 require './lib/restpack_serializer'
+require './spec/fixtures/db'
