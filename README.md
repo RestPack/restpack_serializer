@@ -8,7 +8,7 @@ we want something like this:
 
 http://localhost:1111/api/v1/domains.json?includes=applications&page=2&page_size=3
 
-{
+```{
     "applications": [
         {
             "id": 44,
@@ -54,7 +54,7 @@ http://localhost:1111/api/v1/domains.json?includes=applications&page=2&page_size
         "previous_page": 1,
         "next_page": 3
     }
-}
+}```
 
 ### Questions
 
@@ -68,9 +68,9 @@ a. def index
 
 3. What is the responsibility of render_page?
 a. validate params?
-   call DomainSerializer.as_page(Domain.all, params)
+   call DomainSerializer.page(Domain.all, params)
 
-4. What should Serializer.as_page(query, params) do?
+4. What should Serializer.page(query, params) do?
 a. get page of data
 b. get a list of related data to fetch:
     1) For has_many:

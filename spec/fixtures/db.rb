@@ -48,3 +48,5 @@ end
   'Videotape'].each do |title|
   Song.create title: title, album: in_rainbows, artist: radiohead
 end
+
+p "There are now #{Artist.all.count} artists"

@@ -1,9 +1,11 @@
 require_relative "serializable/attributes"
+require_relative "serializable/paging"
 
 module RestPack
   module Serializable    
     def self.included(base)
       base.extend(RestPack::Serializable::Attributes)
+      base.extend(RestPack::Serializable::Paging)
       super
     end
 
