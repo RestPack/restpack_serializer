@@ -8,7 +8,7 @@ we want something like this:
 
 http://localhost:1111/api/v1/domains.json?includes=applications&page=2&page_size=3
 
-{
+```{
     "applications": [
         {
             "id": 44,
@@ -54,7 +54,7 @@ http://localhost:1111/api/v1/domains.json?includes=applications&page=2&page_size
         "previous_page": 1,
         "next_page": 3
     }
-}
+}```
 
 ### Questions
 
