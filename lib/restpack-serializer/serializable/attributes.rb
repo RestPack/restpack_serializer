@@ -1,41 +1,46 @@
 module RestPack
   module Serializable
     module Attributes
-      def serializable_attributes
-        @serializable_attributes
-      end
+      extend ActiveSupport::Concern
 
-      def attributes(*attrs)
-        attrs.each { |attr| attribute attr }
-      end
+      module ClassMethods
+        def serializable_attributes
+          @serializable_attributes
+        end
 
-      def attribute(name, options={})
-        options[:key] ||= name.to_sym
+        def attributes(*attrs)
+          attrs.each { |attr| attribute attr }
+        end
 
-        @serializable_attributes ||= {}
-        @serializable_attributes[options[:key]] = name
+        def attribute(name, options={})
+          options[:key] ||= name.to_sym
 
-        define_attribute_method name
-        define_include_method name
-      end
+          @serializable_attributes ||= {}
+          @serializable_attributes[options[:key]] = name
 
-      def define_attribute_method(name)
-        unless method_defined?(name)
-          define_method name do
-            @model.send(name)
+          define_attribute_method name
+          define_include_method name
+        end
+
+        def define_attribute_method(name)
+          unless method_defined?(name)
+            define_method name do
+              @model.send(name)
+            end
+          end
+        end
+
+        def define_include_method(name)
+          method = "include_#{name}?".to_sym
+
+          unless method_defined?(method)
+            define_method method do
+              @options[method].nil? || @options[method]
+            end
           end
         end
       end
-
-      def define_include_method(name)
-        method = "include_#{name}?".to_sym
-
-        unless method_defined?(method)
-          define_method method do
-            @options[method].nil? || @options[method]
-          end
-        end
-      end
+      
     end
   end
 end

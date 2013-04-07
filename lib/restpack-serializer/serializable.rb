@@ -1,14 +1,13 @@
+require 'active_support/concern'
 require_relative "serializable/attributes"
 require_relative "serializable/paging"
 
 module RestPack
-  module Serializable    
-    def self.included(base)
-      base.extend(ClassMethods)
-      base.extend(RestPack::Serializable::Attributes)
-      base.extend(RestPack::Serializable::Paging)
-      super
-    end
+  module Serializable
+    extend ActiveSupport::Concern
+
+    include RestPack::Serializable::Paging
+    include RestPack::Serializable::Attributes
 
     def as_json(model, options = {})
       @model, @options = model, options

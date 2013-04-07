@@ -48,5 +48,13 @@ describe RestPack::Serializable::Paging do
         page[:songs].length.should == 8
       end
     end
+
+    context "when sideloading" do
+      let(:options) { { includes: [:albums] } }
+
+      it "includes side-loaded models" do
+        page[:albums].should_not == nil
+      end
+    end
   end
 end
