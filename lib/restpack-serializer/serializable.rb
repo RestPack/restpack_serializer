@@ -4,6 +4,7 @@ require_relative "serializable/paging"
 module RestPack
   module Serializable    
     def self.included(base)
+      base.extend(ClassMethods)
       base.extend(RestPack::Serializable::Attributes)
       base.extend(RestPack::Serializable::Paging)
       super
@@ -21,6 +22,20 @@ module RestPack
 
     def include_attribute?(name)
       self.send("include_#{name}?".to_sym)
+    end
+
+    module ClassMethods
+      def model_name
+        self.name.chomp('Serializer')
+      end
+
+      def model_class
+        model_name.constantize
+      end
+
+      def default_scope
+        self.model_class.send(:scoped)
+      end
     end
   end
 end

@@ -1,6 +1,7 @@
 require './spec/spec_helper'
 
 describe RestPack::Serializable do
+  let(:serializer) { PersonSerializer.new }
 
   class Person
     attr_accessor :id, :name, :age
@@ -29,9 +30,8 @@ describe RestPack::Serializable do
     end
   end
 
-  describe "#as_json" do
+  describe ".as_json" do
     let(:person) { Person.new(id: 123, name: 'Gavin', age: 36) }
-    let(:serializer) { PersonSerializer.new }
 
     it "serializes specified attributes" do
       hash = serializer.as_json(person)
@@ -53,6 +53,18 @@ describe RestPack::Serializable do
         hash = serializer.as_json(person, { is_admin?: true })
         hash[:admin_info].should == { key: "super_secret_sauce" }
       end
+    end
+  end
+
+  describe "#model_name" do
+    it "extracted the Model name from the Serializer name" do
+      PersonSerializer.model_name.should == "Person"
+    end
+  end
+
+  describe "#model_class" do
+    it "returns the correct class" do
+      PersonSerializer.model_class.should == Person
     end
   end
 end

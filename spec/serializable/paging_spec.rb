@@ -7,9 +7,8 @@ describe RestPack::Serializable::Paging do
   end
 
   context "when paging" do
-    let(:options) { {} }
-    let(:scope) { Song.scoped }
-    let(:page) { SongSerializer.page(scope, options) }
+    let(:options) { { } }
+    let(:page) { SongSerializer.page(options) }
 
     context "with defaults" do
       it "page defaults to 1" do
