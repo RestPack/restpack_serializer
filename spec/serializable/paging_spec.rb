@@ -7,24 +7,39 @@ describe RestPack::Serializable::Paging do
   end
 
   context "when paging" do
-    context "first page" do
-      before do
-        @scope = Song.scoped
-        @options = { page: 1, page_size: 10 }
-        @page = SongSerializer.page(@scope, @options)
-      end
+    let(:options) { {} }
+    let(:scope) { Song.scoped }
+    let(:page) { SongSerializer.page(scope, options) }
 
-      it "includes the first page of data" do
-        @page[:songs].length.should == @options[:page_size]
+    context "with defaults" do
+      it "page defaults to 1" do
+        page[:songs_meta][:page].should == 1
       end
-
-      it "includes valid meta data" do
-        @page[:songs_meta].should_not == nil
-        @page[:songs_meta][:page].should == 1
-        @page[:songs_meta][:page_size].should == 10
-        @page[:songs_meta][:count].should == 18
-        @page[:songs_meta][:page_count].should == 2
+      it "page_size defaults to 10" do
+        page[:songs_meta][:page_size].should == 10
+      end
+      it "includes valid paging meta data" do
+        page[:songs_meta][:count].should == 18
+        page[:songs_meta][:page_count].should == 2
         #TODO: GJ: test for :previous_page and :next_page
+      end
+    end
+
+    context "first page" do
+      let(:options) { { page: 1 } }
+
+      it "returns first page" do
+        page[:songs_meta][:page].should == 1
+        page[:songs_meta][:page_size].should == 10
+      end
+    end
+
+    context "second page" do
+      let(:options) { { page: 2 } }
+
+      it "returns second page" do
+        page[:songs_meta][:page].should == 2
+        page[:songs].length.should == 8
       end
     end
   end

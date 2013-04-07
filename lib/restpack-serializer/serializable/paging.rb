@@ -2,13 +2,19 @@ module RestPack
   module Serializable
     module Paging
       def page(scope, options = {})
-        #TODO: GJ: merge defaults + refactor
-        options = {
+        options.reverse_merge!(
           page: 1,
-          page_size: 10
-        }
+          page_size: 10,
+          includes: [],
+          filters: {},
+          sort_by: nil,
+          sort_direction: :ascending
+        )
 
-        page = scope.paginate(:page => options[:page], :per_page => options[:page_size])
+        page = scope.paginate(
+          page: options[:page],
+          per_page: options[:page_size]
+        )
 
         result = {}
 
