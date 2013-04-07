@@ -11,6 +11,10 @@ describe RestPack::Serializable do
       @name = attributes[:name]
       @age = attributes[:age]
     end
+
+    def self.table_name
+      "people"
+    end
   end
 
   class PersonSerializer
@@ -65,6 +69,16 @@ describe RestPack::Serializable do
   describe "#model_class" do
     it "returns the correct class" do
       PersonSerializer.model_class.should == Person
+    end
+  end
+
+  describe "#key" do
+    it "returns the correct key" do
+      PersonSerializer.key.should == :people
+    end
+
+    it "returns the correct meta key" do
+      PersonSerializer.meta_key.should == :people_meta
     end
   end
 end

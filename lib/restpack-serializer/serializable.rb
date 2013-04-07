@@ -33,6 +33,14 @@ module RestPack
         model_name.constantize
       end
 
+      def key
+        self.model_class.send(:table_name).to_sym
+      end
+
+      def meta_key
+        "#{self.model_class.send(:table_name)}_meta".to_sym
+      end
+
       def default_scope
         self.model_class.send(:scoped)
       end

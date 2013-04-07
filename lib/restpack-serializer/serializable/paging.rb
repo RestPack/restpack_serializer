@@ -10,9 +10,9 @@ module RestPack
         )
 
         result = {}
+        result[self.key] = page.map { |model| self.new.as_json(model) }
 
-        result[options[:scope].table_name.to_sym] = page
-        result["#{options[:scope].table_name}_meta".to_sym] = {
+        result[self.meta_key] = {
           page: options[:page],
           page_size: options[:page_size],
           count: page.total_entries,

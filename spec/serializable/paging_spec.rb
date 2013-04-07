@@ -24,6 +24,13 @@ describe RestPack::Serializable::Paging do
       end
     end
 
+    it "serializes results" do
+      page[:songs].first.should == {
+        title: 'Bloom',
+        album_id: 8
+      }
+    end
+
     context "first page" do
       let(:options) { { page: 1 } }
 
