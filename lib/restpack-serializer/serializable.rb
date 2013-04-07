@@ -38,7 +38,7 @@ module RestPack
       end
 
       def meta_key
-        "#{self.model_class.send(:table_name)}_meta".to_sym
+        "#{self.key}_meta".to_sym
       end
 
       def default_scope
