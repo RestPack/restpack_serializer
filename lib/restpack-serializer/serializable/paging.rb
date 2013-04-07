@@ -9,20 +9,26 @@ module RestPack
           per_page: options[:page_size]
         )
 
-        result = {}
-        result[self.key] = page.map { |model| self.new.as_json(model) }
+        {
+          self.key => serialize_page(page),
+          self.meta_key => serialize_meta(page, options)
+        }
+      end
 
-        result[self.meta_key] = {
+      private
+
+      def serialize_page(page)
+        page.map { |model| self.new.as_json(model) }
+      end
+
+      def serialize_meta(page, options)
+        {
           page: options[:page],
           page_size: options[:page_size],
           count: page.total_entries,
           page_count: (page.total_entries / options[:page_size]) + 1
         }
-
-        result
       end
-
-      private
 
       def apply_default_options!(options)
         options.reverse_merge!(
