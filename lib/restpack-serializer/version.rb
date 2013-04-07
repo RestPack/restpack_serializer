@@ -1,5 +1,5 @@
 module RestPack
-  class Serializer
-    VERSION = '0.0.1'
+  module Serializer
+    VERSION = '0.0.2'
   end
 end

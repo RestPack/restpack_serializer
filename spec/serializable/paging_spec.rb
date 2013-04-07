@@ -1,8 +1,8 @@
 require './spec/spec_helper'
 
-describe RestPack::Serializable::Paging do
+describe RestPack::Serializer::Paging do
   class SongSerializer
-    include RestPack::Serializable
+    include RestPack::Serializer
     attributes :title, :album_id
   end
 

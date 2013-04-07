@@ -1,6 +1,6 @@
 require './spec/spec_helper'
 
-describe RestPack::Serializable do
+describe RestPack::Serializer do
   let(:serializer) { PersonSerializer.new }
 
   class Person
@@ -18,7 +18,7 @@ describe RestPack::Serializable do
   end
 
   class PersonSerializer
-    include RestPack::Serializable
+    include RestPack::Serializer
     attributes :id, :name, :url, :admin_info
 
     def url

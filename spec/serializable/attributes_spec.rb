@@ -1,8 +1,8 @@
 require './spec/spec_helper'
 
-describe RestPack::Serializable::Attributes do
+describe RestPack::Serializer::Attributes do
 	class CustomSerializer
-		include RestPack::Serializable
+		include RestPack::Serializer
 		attributes :a, :b, :c
 		attribute :old_attribute, :key => :new_key
 	end
