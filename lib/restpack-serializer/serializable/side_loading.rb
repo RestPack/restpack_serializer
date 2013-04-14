@@ -3,18 +3,18 @@ module RestPack::Serializer::SideLoading
 
   module ClassMethods
     def side_loads(models, options = {})
-      return {} if models.empty? || options[:includes].nil?
+      side_loads = {}
+      return side_loads if models.empty? || options[:includes].nil?
 
-      result = {}
       options[:includes].each do |include|
-        result[include] = side_load(models, options, include)
+        side_loads.merge! side_load(include, models, options)
       end
-      result
+      side_loads
     end
 
     private
 
-    def side_load(models, options, include)
+    def side_load(include, models, options)
       side_loads = []
 
       relation = include.to_s.singularize.to_sym
@@ -27,7 +27,9 @@ module RestPack::Serializer::SideLoading
 
       serializer = RestPack::Serializer::Factory.create(association.class_name)
 
-      side_loads.map { |model| serializer.as_json(model) }
+      {
+        include => side_loads.map { |model| serializer.as_json(model) }
+      }
     end
   end
 end
