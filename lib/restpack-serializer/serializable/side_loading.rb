@@ -25,7 +25,7 @@ module RestPack::Serializer::SideLoading
         side_loads = association.klass.find(foreign_keys)
       end
 
-      serializer = "#{association.class_name}Serializer".constantize.new
+      serializer = RestPack::Serializer::Factory.create(association.class_name)
 
       side_loads.map { |model| serializer.as_json(model) }
     end
