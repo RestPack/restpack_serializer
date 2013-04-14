@@ -1,14 +1,17 @@
-# restpack-serializer [![Build Status](https://api.travis-ci.org/RestPack/restpack-serializer.png?branch=master)](https://travis-ci.org/RestPack/restpack-serializer) [![Code Climate](https://codeclimate.com/github/RestPack/restpack-serializer.png)](https://codeclimate.com/github/RestPack/restpack-serializer) [![Dependency Status](https://gemnasium.com/RestPack/restpack-serializer.png)](https://gemnasium.com/RestPack/restpack-serializer)
+# restpack-serializer [![Build Status](https://travis-ci.org/RestPack/restpack-serializer.png?branch=master)](https://travis-ci.org/RestPack/restpack-serializer) [![Code Climate](https://codeclimate.com/github/RestPack/restpack-serializer.png)](https://codeclimate.com/github/RestPack/restpack-serializer) [![Dependency Status](https://gemnasium.com/RestPack/restpack-serializer.png)](https://gemnasium.com/RestPack/restpack-serializer)
 
 ## Model serialization, paging, side-loading and filtering
 
-TODO: GJ: build it.
+This is a work in progress.
 
-we want something like this:
+We want something like this:
 
+```
 http://localhost:1111/api/v1/domains.json?includes=applications&page=2&page_size=3
+```
 
-```{
+```
+{
     "applications": [
         {
             "id": 44,
@@ -54,7 +57,8 @@ http://localhost:1111/api/v1/domains.json?includes=applications&page=2&page_size
         "previous_page": 1,
         "next_page": 3
     }
-}```
+}
+```
 
 ### Questions
 
