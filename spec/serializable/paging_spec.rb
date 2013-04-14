@@ -22,6 +22,7 @@ describe RestPack::Serializer::Paging do
 
     it "serializes results" do
       page[:songs].first.should == {
+        id: 1,
         title: 'Bloom',
         album_id: 8
       }

@@ -2,7 +2,7 @@ require './spec/spec_helper'
 
 describe RestPack::Serializer do
   let(:serializer) { PersonSerializer.new }
-
+  let(:person) { Person.new(id: 123, name: 'Gavin', age: 36) }
   class Person
     attr_accessor :id, :name, :age
 
@@ -14,6 +14,16 @@ describe RestPack::Serializer do
 
     def self.table_name
       "people"
+    end
+  end
+
+  context "bare bones serializer" do
+    class EmptySerializer
+      include RestPack::Serializer
+    end
+
+    it "serializes to an empty hash" do
+      EmptySerializer.new.as_json(person).should == { }
     end
   end
 
@@ -35,8 +45,6 @@ describe RestPack::Serializer do
   end
 
   describe ".as_json" do
-    let(:person) { Person.new(id: 123, name: 'Gavin', age: 36) }
-
     it "serializes specified attributes" do
       hash = serializer.as_json(person)
       hash.should == { id: 123, name: 'Gavin', url: '/api/v1/people/123.json' }

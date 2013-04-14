@@ -15,8 +15,10 @@ module RestPack
       @model, @options = model, options
 
       data = {}
-      self.class.serializable_attributes.each do |key, name|
-        data[key] = self.send(name) if include_attribute?(name)
+      if self.class.serializable_attributes.present?
+        self.class.serializable_attributes.each do |key, name|
+          data[key] = self.send(name) if include_attribute?(name)
+        end
       end
       data
     end
