@@ -1,10 +1,6 @@
 require './spec/spec_helper'
 
 describe RestPack::Serializer::Paging do
-  class SongSerializer
-    include RestPack::Serializer
-    attributes :title, :album_id
-  end
 
   context "when paging" do
     let(:options) { { } }
