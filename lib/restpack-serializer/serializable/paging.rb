@@ -10,32 +10,15 @@ module RestPack::Serializer::Paging
         per_page: options[:page_size]
       )
 
-      side_loads = side_load(page, options)
-
       result = {
         self.key => serialize_page(page),
         self.meta_key => serialize_meta(page, options)
       }
 
-      merge_side_loads(result, options)
-
-      result
+      result.merge side_loads(page, options)
     end
 
     private
-
-    def side_load(page, options)
-      []
-    end
-
-    def merge_side_loads(result, options)
-
-      options[:includes].each do |include|
-        p "TODO: GJ: side-load: #{include}"
-        result[include] = []
-      end
-      
-    end
 
     def serialize_page(page)
       page.map { |model| self.new.as_json(model) }
