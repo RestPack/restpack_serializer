@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Gavin Joyce"]
   gem.email         = ["gavinjoyce@gmail.com"]
   gem.description   = %q{Model serialization, paging, side-loading and filtering}
-  gem.summary       = %q{...}
+  gem.summary       = %q{Model serialization, paging, side-loading and filtering}
   gem.homepage      = "https://github.com/RestPack"
 
   gem.files         = `git ls-files`.split($/)
@@ -18,7 +18,11 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   
   gem.add_dependency 'activerecord', '>= 3.0'
+  gem.add_dependency 'activesupport', '>= 3.0'
   gem.add_dependency 'will_paginate', '~> 3.0'
+
+  gem.add_development_dependency 'rake', '~> 10.0.3'
   gem.add_development_dependency 'rspec', '~> 2.12'
-  gem.add_development_dependency "rails", ">= 3.0"
+  gem.add_development_dependency 'factory_girl', '~> 4.2.0'
+  gem.add_development_dependency 'sqlite3', '~> 1.3.7'
 end
