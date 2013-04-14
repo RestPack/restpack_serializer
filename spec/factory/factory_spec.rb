@@ -2,6 +2,7 @@ require './spec/spec_helper'
 
 describe RestPack::Serializer::Factory do
   let(:factory) { RestPack::Serializer::Factory }
+
   it "creates a serializer by string" do
     factory.create("Song").should be_an_instance_of(SongSerializer)
   end
