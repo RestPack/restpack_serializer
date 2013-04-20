@@ -4,10 +4,9 @@ describe RestPack::Serializer::SideLoading do
   let(:side_loads) { SongSerializer.side_loads(models, options) }
 
   context "with empty models" do
-
     let(:models) { [] }
 
-    context "when no side-loads" do
+    context "no side-loads" do
       let(:options) { {} }
       
       it "returns an empty hash" do

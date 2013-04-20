@@ -15,19 +15,20 @@ module RestPack::Serializer::SideLoading
     private
 
     def side_load(include, models, options)
-      side_loads = []
+      side_load = []
       association = association_from_include(include)
+      serializer = RestPack::Serializer::Factory.create(association.class_name)
 
       if association.macro == :belongs_to #TODO: GJ: add support for other relations
         foreign_keys = models.map { |model| model.send(association.foreign_key) }.uniq
-        side_loads = association.klass.find(foreign_keys)
+        side_load = association.klass.find(foreign_keys)
+
+        return {
+          include => side_load.map { |model| serializer.as_json(model) }
+        }
       end
 
-      serializer = RestPack::Serializer::Factory.create(association.class_name)
-
-      {
-        include => side_loads.map { |model| serializer.as_json(model) }
-      }
+      return {}
     end
 
     def association_from_include(include)
