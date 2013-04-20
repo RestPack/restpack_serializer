@@ -19,7 +19,8 @@ describe RestPack::Serializer::Paging do
       it "includes valid paging meta data" do
         page[:songs_meta][:count].should == 18
         page[:songs_meta][:page_count].should == 2
-        #TODO: GJ: test for :previous_page and :next_page
+        page[:songs_meta][:previous_page].should == nil
+        page[:songs_meta][:next_page].should == 2
       end
     end
 
@@ -38,6 +39,8 @@ describe RestPack::Serializer::Paging do
       it "returns first page" do
         page[:songs_meta][:page].should == 1
         page[:songs_meta][:page_size].should == 10
+        page[:songs_meta][:previous_page].should == nil
+        page[:songs_meta][:next_page].should == 2
       end
     end
 
@@ -47,6 +50,8 @@ describe RestPack::Serializer::Paging do
       it "returns second page" do
         page[:songs_meta][:page].should == 2
         page[:songs].length.should == 8
+        page[:songs_meta][:previous_page].should == 1
+        page[:songs_meta][:next_page].should == nil
       end
     end
 

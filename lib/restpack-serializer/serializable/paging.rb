@@ -25,12 +25,16 @@ module RestPack::Serializer::Paging
     end
 
     def serialize_meta(page, options)
-      {
+      meta = {
         page: options[:page],
         page_size: options[:page_size],
-        count: page.total_entries,
-        page_count: (page.total_entries / options[:page_size]) + 1
+        count: page.total_entries
       }
+
+      meta[:page_count] = (page.total_entries / options[:page_size]) + 1
+      meta[:previous_page] = meta[:page] > 1 ? meta[:page] - 1 : nil
+      meta[:next_page] = meta[:page] < meta[:page_count] ? meta[:page] + 1 : nil
+      meta
     end
 
     def apply_default_options!(options)
