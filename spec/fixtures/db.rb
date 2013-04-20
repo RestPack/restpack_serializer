@@ -10,12 +10,16 @@ load "spec/fixtures/schema.rb"
 
 class Artist < ActiveRecord::Base
   attr_accessible :name, :website
+
+  has_many :albums
+  has_many :songs
 end
 
 class Album < ActiveRecord::Base
   attr_accessible :title, :year, :artist
 
   belongs_to :artist
+  has_many :songs
 end
 
 class Song < ActiveRecord::Base
