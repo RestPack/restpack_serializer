@@ -26,6 +26,8 @@ module RestPack::Serializer::SideLoading
         return {
           include => side_load.map { |model| serializer.as_json(model) }
         }
+      elsif association.macro == :has_many
+        raise "We do not yet support side-loading :has_many relationships"
       end
 
       return {}
@@ -33,7 +35,14 @@ module RestPack::Serializer::SideLoading
 
     def association_from_include(include)
       relation = include.to_s.singularize.to_sym
-      self.model_class.reflect_on_association(relation)
+      association = self.model_class.reflect_on_association(relation)
+
+      if association.nil?
+        message = ":#{include} is not a valid include for #{self.model_class}"
+        raise RestPack::Serializer::InvalidInclude.new, message
+      end
+
+      association
     end
   end
 end

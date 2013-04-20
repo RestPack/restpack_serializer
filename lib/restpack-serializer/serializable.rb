@@ -11,6 +11,8 @@ module RestPack
     include RestPack::Serializer::Attributes
     include RestPack::Serializer::SideLoading
 
+    class InvalidInclude < Exception; end
+
     def as_json(model, options = {})
       @model, @options = model, options
 
