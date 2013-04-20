@@ -46,14 +46,16 @@ describe RestPack::Serializer do
 
   describe ".as_json" do
     it "serializes specified attributes" do
-      hash = serializer.as_json(person)
-      hash.should == { id: 123, name: 'Gavin', url: '/api/v1/people/123.json' }
+      serializer.as_json(person).should == {
+        id: 123, name: 'Gavin', url: '/api/v1/people/123.json'
+      }
     end
 
     context "with options" do
       it "excludes specified attributes" do
-        hash = serializer.as_json(person, { include_url?: false })
-        hash.should == { id: 123, name: 'Gavin' }
+        serializer.as_json(person, { include_url?: false }).should == {
+          id: 123, name: 'Gavin'
+        }
       end
 
       it "excludes custom attributes if specified" do
