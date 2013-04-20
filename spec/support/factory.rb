@@ -1,4 +1,4 @@
-require 'factory_girl'
+  require 'factory_girl'
 
 FactoryGirl.define do
   factory :artist do
@@ -23,11 +23,11 @@ FactoryGirl.define do
 
     factory :album_with_songs do
       ignore do
-        song_count 8
+        song_count 10
       end
 
       after(:create) do |album, evaluator|
-        create_list(:song, evaluator.song_count, album: album)
+        create_list(:song, evaluator.song_count, album: album, artist: album.artist)
       end
     end
   end
