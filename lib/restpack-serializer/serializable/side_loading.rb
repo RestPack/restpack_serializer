@@ -19,7 +19,7 @@ module RestPack::Serializer::SideLoading
       association = association_from_include(include)
       serializer = RestPack::Serializer::Factory.create(association.class_name)
 
-      if association.macro == :belongs_to #TODO: GJ: add support for other relations
+      if association.macro == :belongs_to
         foreign_keys = models.map { |model| model.send(association.foreign_key) }.uniq
         side_load = association.klass.find(foreign_keys)
 
@@ -27,22 +27,22 @@ module RestPack::Serializer::SideLoading
           include => side_load.map { |model| serializer.as_json(model) }
         }
       elsif association.macro == :has_many
-        raise "We do not yet support side-loading :has_many relationships"
+        foreign_keys = models.map(&:id)
+        return serializer.class.page({}) #TODO: GJ: filter based on FKs
       end
 
       return {}
     end
 
     def association_from_include(include)
-      relation = include.to_s.singularize.to_sym
-      association = self.model_class.reflect_on_association(relation)
-
-      if association.nil?
-        message = ":#{include} is not a valid include for #{self.model_class}"
-        raise RestPack::Serializer::InvalidInclude.new, message
+      possible_relations = [include.to_s.singularize, include.to_s.pluralize]
+      possible_relations.each do |relation|
+        association = self.model_class.reflect_on_association(relation.to_sym)
+        return association unless association.nil?
       end
 
-      association
+      raise RestPack::Serializer::InvalidInclude.new,
+        ":#{include} is not a valid include for #{self.model_class}"
     end
   end
 end
