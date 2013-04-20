@@ -6,7 +6,30 @@ ActiveRecord::Base.establish_connection(
   :database => 'test.db'
 )
 
-load "spec/fixtures/schema.rb"
+ActiveRecord::Schema.define(:version => 1) do
+  create_table "artists", :force => true do |t|
+    t.string   "name"
+    t.string   "website"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "albums", :force => true do |t|
+    t.string   "title"
+    t.integer  "year"
+    t.integer  "artist_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "songs", :force => true do |t|
+    t.string   "title"
+    t.integer  "album_id"
+    t.integer  "artist_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+end
 
 class Artist < ActiveRecord::Base
   attr_accessible :name, :website
@@ -28,29 +51,3 @@ class Song < ActiveRecord::Base
   belongs_to :artist
   belongs_to :album
 end
-
-radiohead       = Artist.create(name: 'Radiohead', website: 'www.radiohead.com')
-john_frusciante = Artist.create(name: 'John Frusciante', website: 'johnfrusciante.com')
-nick_cave       = Artist.create(name: 'Nick Cave', website: 'www.nickcave.com')
-
-Album.create title: 'Pablo Honey', year: 1993, artist: radiohead
-Album.create title: 'The Bends', year: 1995, artist: radiohead
-Album.create title: 'OK Computer', year: 1997, artist: radiohead
-Album.create title: 'Kid A', year: 2000, artist: radiohead
-Album.create title: 'Amnesiac', year: 2001, artist: radiohead
-Album.create title: 'Hail to the Thief', year: 2003, artist: radiohead
-in_rainbows = Album.create title: 'In Rainbows', year: 2007, artist: radiohead
-tkol = Album.create title: 'The King of Limbs', year: 2011, artist: radiohead
-
-['Bloom', 'Morning Mr Magpie', 'Little by Little', 'Feral', 'Lotus Flower',
-'Codex', 'Give Up the Ghost', 'Seperator'].each do |title|
-  Song.create title: title, album: tkol, artist: radiohead
-end
-
-['15 Step', 'Bodysnatchers', 'Nude', 'Weird Fishes/Arpeggi', 'All I Need', 
-  'Faust Arp', 'Reckoner', 'House of Cards', 'Jigsaw Falling into Place', 
-  'Videotape'].each do |title|
-  Song.create title: title, album: in_rainbows, artist: radiohead
-end
-
-p "There are now #{Artist.all.count} artists"

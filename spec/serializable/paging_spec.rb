@@ -3,8 +3,11 @@ require './spec/spec_helper'
 describe RestPack::Serializer::Paging do
 
   context "when paging" do
-    let(:options) { { } }
+    before(:each) do
+      FactoryGirl.create(:album_with_songs, song_count: 18)
+    end
     let(:page) { SongSerializer.page(options) }
+    let(:options) { { } }
 
     context "with defaults" do
       it "page defaults to 1" do
@@ -21,10 +24,11 @@ describe RestPack::Serializer::Paging do
     end
 
     it "serializes results" do
+      first = Song.first
       page[:songs].first.should == {
-        id: 1,
-        title: 'Bloom',
-        album_id: 8
+        id: first.id,
+        title: first.title,
+        album_id: first.album_id
       }
     end
 

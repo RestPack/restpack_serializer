@@ -1,6 +1,9 @@
 require './spec/spec_helper'
 
 describe RestPack::Serializer::SideLoading do
+  before(:each) do
+    FactoryGirl.create(:album_with_songs, song_count: 18)
+  end
   let(:side_loads) { SongSerializer.side_loads(models, options) }
 
   context "with empty models" do
