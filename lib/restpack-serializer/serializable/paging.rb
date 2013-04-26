@@ -4,6 +4,7 @@ module RestPack::Serializer::Paging
   module ClassMethods
     def page(options = {})
       apply_default_options! options
+      apply_filters! options
 
       page = options[:scope].paginate(
         page: options[:page],
@@ -47,6 +48,16 @@ module RestPack::Serializer::Paging
         sort_direction: :ascending
       )
       options[:scope] ||= default_scope
+    end
+
+    def apply_filters!(options)
+      if options[:filters].any?
+        options[:scope] = options[:scope].where(options[:filters])
+      end
+    end
+
+    def default_scope
+      self.model_class.send(:scoped)
     end
   end
 end

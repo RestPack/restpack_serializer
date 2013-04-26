@@ -46,9 +46,6 @@ module RestPack
         "#{self.key}_meta".to_sym
       end
 
-      def default_scope
-        self.model_class.send(:scoped)
-      end
     end
   end
 end

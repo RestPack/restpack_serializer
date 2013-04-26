@@ -39,8 +39,10 @@ module RestPack::Serializer::SideLoading
     end
 
     def side_load_has_many(association, models, serializer)
-      foreign_keys = models.map(&:id)
-      return serializer.class.page({}) #TODO: GJ: filter based on FKs
+      return {} if models.empty?
+      return serializer.class.page({
+        filters: { association.foreign_key.to_sym => models.map(&:id) }
+      })
     end
 
     def association_from_include(include)

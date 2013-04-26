@@ -5,20 +5,32 @@ describe RestPack::Serializer::SideLoading do
     describe ".has_many" do
 
       before(:each) do
-        FactoryGirl.create(:artist_with_albums, album_count: 2)
-        FactoryGirl.create(:artist_with_albums, album_count: 1)
+        @artist1 = FactoryGirl.create(:artist_with_albums, album_count: 2)
+        @artist2 = FactoryGirl.create(:artist_with_albums, album_count: 1)
       end
       let(:side_loads) { ArtistSerializer.side_loads(models, options) }
 
       context "with a single model" do
-        let(:models) { [Artist.first] }
+        let(:models) { [@artist1] }
 
         context "when including :albums" do
           let(:options) { { includes: [:albums] } }
 
           it "returns side-loaded albums" do
-            pending "TODO: add support for filtering while paging"
-            side_loads[:albums].count.should == 1
+            side_loads[:albums].count.should == @artist1.albums.count
+          end
+        end
+      end
+
+      context "with two models" do
+        let(:models) { [@artist1, @artist2] }
+
+        context "when including :albums" do
+          let(:options) { { includes: [:albums] } }
+
+          it "returns side-loaded albums" do
+            expected_count = @artist1.albums.count + @artist2.albums.count
+            side_loads[:albums].count.should == expected_count
           end
         end
       end

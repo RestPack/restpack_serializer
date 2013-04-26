@@ -4,7 +4,8 @@ describe RestPack::Serializer::Paging do
 
   context "when paging" do
     before(:each) do
-      FactoryGirl.create(:album_with_songs, song_count: 18)
+      @album1 = FactoryGirl.create(:album_with_songs, song_count: 11)
+      @album2 = FactoryGirl.create(:album_with_songs, song_count: 7)
     end
     let(:page) { SongSerializer.page(options) }
     let(:options) { { } }
@@ -61,6 +62,42 @@ describe RestPack::Serializer::Paging do
       it "includes side-loaded models" do
         page[:albums].should_not == nil
       end
+    end
+
+    context "when filtering" do
+      context "with no filters" do
+        let(:options) do
+          { filters: { } }
+        end
+
+        it "returns a page of all data" do
+          page[:songs_meta][:count].should == 18
+        end
+      end
+
+      context "with :album_id filter" do
+        let(:options) do
+          { filters: { album_id: @album1.id } }
+        end
+
+        it "returns a page with songs from album1" do
+          page[:songs_meta][:count].should == @album1.songs.length
+        end
+      end
+
+      context "with :album_id and :title filters" do
+        let(:options) do
+          { filters: {
+            album_id: @album1.id,
+            title: @album1.songs.first.title
+          } }
+        end
+
+        it "returns a single song" do
+          page[:songs_meta][:count].should == 1
+        end
+      end
+
     end
   end
 end
