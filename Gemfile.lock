@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    restpack-serializer (0.0.2)
+    restpack-serializer (0.0.3)
       activerecord (>= 3.0)
       activesupport (>= 3.0)
       will_paginate (~> 3.0)
@@ -22,6 +22,7 @@ GEM
       multi_json (~> 1.0)
     arel (3.0.2)
     builder (3.0.4)
+    bump (0.4.1)
     coderay (1.0.9)
     database_cleaner (0.9.1)
     diff-lcs (1.2.3)
@@ -75,6 +76,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bump
   database_cleaner (~> 0.9.1)
   factory_girl (~> 4.2.0)
   growl (~> 1.0.3)
