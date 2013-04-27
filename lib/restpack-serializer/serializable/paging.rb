@@ -3,6 +3,7 @@ module RestPack::Serializer::Paging
 
   module ClassMethods
     def page(options = {})
+      normalise_options! options
       apply_default_options! options
       apply_filters! options
 
@@ -37,6 +38,12 @@ module RestPack::Serializer::Paging
       meta[:previous_page] = meta[:page] > 1 ? meta[:page] - 1 : nil
       meta[:next_page] = meta[:page] < meta[:page_count] ? meta[:page] + 1 : nil
       meta
+    end
+
+    def normalise_options!(options)
+      if options[:includes].is_a? String
+        options[:includes] = options[:includes].split(',')
+      end
     end
 
     def apply_default_options!(options)
