@@ -70,6 +70,10 @@ describe RestPack::Serializer::Paging do
       it "includes side-loaded models" do
         page[:albums].should_not == nil
       end
+
+      it "includes the side-loads in the main meta data" do
+        page[:songs_meta][:includes].should == [:albums]
+      end
     end
 
     context "when filtering" do

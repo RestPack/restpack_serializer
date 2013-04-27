@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    restpack-serializer (0.0.8)
+    restpack-serializer (0.0.10)
       activerecord (>= 3.0)
       activesupport (>= 3.0)
       will_paginate (~> 3.0)

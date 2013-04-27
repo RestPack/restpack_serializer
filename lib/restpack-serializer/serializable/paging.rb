@@ -29,7 +29,8 @@ module RestPack::Serializer::Paging
       meta = {
         page: options[:page],
         page_size: options[:page_size],
-        count: page.total_entries
+        count: page.total_entries,
+        includes: options[:includes]
       }
 
       meta[:page_count] = ((page.total_entries - 1) / options[:page_size]) + 1
