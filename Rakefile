@@ -1,3 +1,4 @@
+require 'bump/tasks'
 require_relative 'lib/restpack-serializer/version'
 
 task :default => :test
@@ -21,12 +22,28 @@ task :gem do
   end
 end
 
-namespace :gem do 
+namespace :gem do
   task :build do
     sh "gem build restpack-serializer.gemspec"
   end
-  
+
   task :push do
     sh "gem push restpack-serializer-#{RestPack::Serializer::VERSION}.gem"
+  end
+
+  task :tag do
+    require 'bump'
+    version = Bump::Bump.current
+    puts "tagging and pushing v#{version}"
+    `git push && git tag v#{version} && git push --tags`
+  end
+
+  task :bump do
+    Rake::Task["bump:patch"].invoke
+  end
+
+  task :bump_and_tag do
+      Rake::Task["gem:bump"].invoke
+      Rake::Task["gem:tag"].invoke
   end
 end

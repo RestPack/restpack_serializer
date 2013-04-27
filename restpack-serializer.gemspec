@@ -28,4 +28,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'factory_girl', '~> 4.2.0'
   gem.add_development_dependency 'sqlite3', '~> 1.3.7'
   gem.add_development_dependency 'database_cleaner', '~> 0.9.1'
+  gem.add_development_dependency 'bump'
 end
