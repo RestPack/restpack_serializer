@@ -32,7 +32,7 @@ module RestPack::Serializer::Paging
         count: page.total_entries
       }
 
-      meta[:page_count] = (page.total_entries / options[:page_size]) + 1
+      meta[:page_count] = ((page.total_entries - 1) / options[:page_size]) + 1
       meta[:previous_page] = meta[:page] > 1 ? meta[:page] - 1 : nil
       meta[:next_page] = meta[:page] < meta[:page_count] ? meta[:page] + 1 : nil
       meta

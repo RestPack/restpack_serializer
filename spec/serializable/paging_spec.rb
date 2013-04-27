@@ -25,6 +25,14 @@ describe RestPack::Serializer::Paging do
       end
     end
 
+    context "with custom page size" do
+      let(:options) { { page_size: 3 } }
+      it "returns custom page sizes" do
+        page[:songs_meta][:page_size].should == 3
+        page[:songs_meta][:page_count].should == 6
+      end
+    end
+
     it "serializes results" do
       first = Song.first
       page[:songs].first.should == {
