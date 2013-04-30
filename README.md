@@ -4,7 +4,7 @@
 
 **This is a work in progress**.
 
-We want something a URL like this:
+We want a URL like this:
 
 ```
 http://localhost:1111/api/v1/domains.json?includes=applications&page=2&page_size=3
