@@ -2,6 +2,7 @@ require 'active_support/concern'
 require_relative "serializable/attributes"
 require_relative "serializable/paging"
 require_relative "serializable/side_loading"
+require_relative "serializable/filters"
 
 module RestPack
   module Serializer
@@ -10,6 +11,7 @@ module RestPack
     include RestPack::Serializer::Paging
     include RestPack::Serializer::Attributes
     include RestPack::Serializer::SideLoading
+    include RestPack::Serializer::Filters
 
     class InvalidInclude < Exception; end
 
