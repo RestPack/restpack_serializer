@@ -2,13 +2,17 @@
 
 ## Model serialization, paging, side-loading and filtering
 
-This is a work in progress.
+**This is a work in progress**.
 
-We want something like this:
+**EDIT**: http://jsonapi.org/ has just been released. We should either support this new format, or switch back to ActiveModel::Serializers.
+
+We want a URL like this:
 
 ```
 http://localhost:1111/api/v1/domains.json?includes=applications&page=2&page_size=3
 ```
+
+To render JSON like this:
 
 ```
 {
@@ -59,28 +63,6 @@ http://localhost:1111/api/v1/domains.json?includes=applications&page=2&page_size
     }
 }
 ```
-
-### Questions
-
-1. Where do we specify model serialization
-a. RestPack::Serializable. DONE
-
-2. What do we want the controller to look like?
-a. def index
-    render_page Domain.all, params # /domains.json?includes=applications&page=2&page_size=3
-   end
-
-3. What is the responsibility of render_page?
-a. validate params?
-   call DomainSerializer.page(Domain.all, params)
-
-4. What should Serializer.page(query, params) do?
-a. get page of data
-b. get a list of related data to fetch:
-    1) For has_many:
-        - get a page
-    2) For belongs_to: <-- More Important
-        - get list of relations by distinct ids
 
 
 
