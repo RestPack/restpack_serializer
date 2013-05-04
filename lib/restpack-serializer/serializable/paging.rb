@@ -44,6 +44,10 @@ module RestPack::Serializer::Paging
       if options[:includes].is_a? String
         options[:includes] = options[:includes].split(',')
       end
+
+      [:page, :page_size].each do |attribute|
+        options[attribute] = options[attribute].to_i if options[attribute]
+      end
     end
 
     def apply_default_options!(options)
