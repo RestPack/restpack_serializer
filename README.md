@@ -2,7 +2,7 @@
 
 ## Model serialization, paging, side-loading and filtering
 
-**This is a work in progress**.
+**This is a work in progress**. Please see http://goo.gl/rGoIQ for an overview of RestPack.
 
 **EDIT**: http://jsonapi.org/ has just been released. We should either support this new format, or switch back to ActiveModel::Serializers.
 
