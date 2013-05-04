@@ -3,7 +3,7 @@ module RestPack::Serializer::Filters
 
   module ClassMethods
     def filterable_by
-      @filterable_by
+      @filterable_by || []
     end
 
     def can_filter_by(*filters)

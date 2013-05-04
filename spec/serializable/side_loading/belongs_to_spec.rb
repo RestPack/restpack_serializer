@@ -14,7 +14,7 @@ describe RestPack::Serializer::SideLoading do
         let(:models) { [] }
 
         context "no side-loads" do
-          let(:options) { {} }
+          let(:options) { RestPack::Serializer::Options.new(Song) }
 
           it "returns an empty hash" do
             side_loads.should == {}
@@ -22,7 +22,7 @@ describe RestPack::Serializer::SideLoading do
         end
 
         context "when including :albums" do
-          let(:options) { { includes: [:albums] } }
+          let(:options) { RestPack::Serializer::Options.new(Song, { "includes" => "albums" }) }
 
           it "returns an empty hash" do
             side_loads.should == {}
@@ -34,7 +34,7 @@ describe RestPack::Serializer::SideLoading do
         let(:models) { [Song.first] }
 
         context "when including :albums" do
-          let(:options) { { includes: [:albums] } }
+          let(:options) { RestPack::Serializer::Options.new(Song, { "includes" => "albums" }) }
 
           it "returns side-loaded albums" do
             side_loads.should == {
@@ -52,7 +52,7 @@ describe RestPack::Serializer::SideLoading do
         let(:models) { [song1, song2] }
 
         context "when including :albums" do
-          let(:options) { { includes: [:albums] } }
+          let(:options) { RestPack::Serializer::Options.new(Song, { "includes" => "albums" }) }
 
           it "returns side-loaded albums" do
             side_loads.should == {
