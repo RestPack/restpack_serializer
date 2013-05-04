@@ -4,6 +4,8 @@
 
 **This is a work in progress**.
 
+**EDIT**: http://jsonapi.org/ has just been released. We should either support this new format, or switch back to ActiveModel::Serializers.
+
 We want a URL like this:
 
 ```
