@@ -2,11 +2,11 @@ module RestPack::Serializer::SideLoading
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def side_loads(models, options = {})
+    def side_loads(models, options)
       side_loads = {}
-      return side_loads if models.empty? || options[:includes].nil?
+      return side_loads if models.empty? || options.includes.nil?
 
-      options[:includes].each do |include|
+      options.includes.each do |include|
         side_loads.merge! side_load(include, models, options)
       end
       side_loads
@@ -41,7 +41,7 @@ module RestPack::Serializer::SideLoading
     def side_load_has_many(association, models, serializer)
       return {} if models.empty?
       return serializer.class.page({
-        filters: { association.foreign_key.to_sym => models.map(&:id) }
+        association.foreign_key.to_sym => models.map(&:id).join(',')
       })
     end
 

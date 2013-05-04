@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require_relative "options"
 require_relative "serializable/attributes"
 require_relative "serializable/paging"
 require_relative "serializable/side_loading"
