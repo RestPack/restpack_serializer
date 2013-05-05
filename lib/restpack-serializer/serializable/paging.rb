@@ -3,8 +3,10 @@ module RestPack::Serializer::Paging
 
   module ClassMethods
     def page(params = {})
-      options = RestPack::Serializer::Options.new(self.model_class, params)
+      page_with_options RestPack::Serializer::Options.new(self.model_class, params)
+    end
 
+    def page_with_options(options)
       page = options.scope_with_filters.paginate(
         page: options.page,
         per_page: options.page_size
