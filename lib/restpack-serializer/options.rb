@@ -3,7 +3,7 @@ module RestPack::Serializer
     attr_accessor :page, :page_size, :includes, :filters, :model_class, :scope
 
     def initialize(model_class, params = {})
-      params.symbolize_keys!
+      params.symbolize_keys! if params.respond_to?(:symbolize_keys!)
 
       @page = 1
       @page_size = 10
