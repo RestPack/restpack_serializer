@@ -12,6 +12,12 @@ module RestPack::Serializer::SideLoading
       side_loads
     end
 
+    def filterable_by
+      filters = [self.model_class.primary_key.to_sym]
+      filters += self.model_class.reflect_on_all_associations(:belongs_to).map(&:foreign_key).map(&:to_sym)
+      filters.uniq
+    end
+
     private
 
     def side_load(include, models, options)
