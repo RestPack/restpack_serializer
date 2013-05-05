@@ -15,4 +15,22 @@ describe RestPack::Serializer::SideLoading do
       end.to raise_error(exception, message)
     end
   end
+
+  describe "#filterable_by" do
+    context "a model with no :belongs_to relations" do
+      it "is filterable by :id only" do
+        ArtistSerializer.filterable_by.should == [:id]
+      end
+    end
+    context "a model with a single :belongs_torelations" do
+      it "is filterable by primary key and foreign keys" do
+        AlbumSerializer.filterable_by.should =~ [:id, :artist_id]
+      end
+    end
+    context "a model with multiple :belongs_to relations" do
+      it "is filterable by primary key and foreign keys" do
+        SongSerializer.filterable_by.should =~ [:id, :artist_id, :album_id]
+      end
+    end
+  end
 end
