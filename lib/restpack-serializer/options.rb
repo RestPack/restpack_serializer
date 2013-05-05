@@ -36,7 +36,9 @@ module RestPack::Serializer
       serializer = RestPack::Serializer::Factory.create(model_class)
       filters = {}
       serializer.class.filterable_by.each do |filter|
-        filters[filter] = params[filter] if params[filter]
+        [filter, "#{filter}s".to_sym].each do |key|
+          filters[filter] = params[key].split(',') if params[key]
+        end
       end
       filters
     end

@@ -26,7 +26,7 @@ describe RestPack::Serializer::Paging do
     end
 
     context "with custom page size" do
-      let(:params) { { page_size: 3 } }
+      let(:params) { { page_size: '3' } }
       it "returns custom page sizes" do
         page[:songs_meta][:page_size].should == 3
         page[:songs_meta][:page_count].should == 6
@@ -43,7 +43,7 @@ describe RestPack::Serializer::Paging do
     end
 
     context "first page" do
-      let(:params) { { page: 1 } }
+      let(:params) { { page: '1' } }
 
       it "returns first page" do
         page[:songs_meta][:page].should == 1
@@ -54,7 +54,7 @@ describe RestPack::Serializer::Paging do
     end
 
     context "second page" do
-      let(:params) { { page: 2 } }
+      let(:params) { { page: '2' } }
 
       it "returns second page" do
         page[:songs_meta][:page].should == 2
@@ -97,24 +97,11 @@ describe RestPack::Serializer::Paging do
 
       context "with :album_id filter" do
         let(:params) do
-          { album_id: @album1.id }
+          { album_id: @album1.id.to_s }
         end
 
         it "returns a page with songs from album1" do
           page[:songs_meta][:count].should == @album1.songs.length
-        end
-      end
-
-      context "with :album_id and :title filters" do
-        let(:params) do
-          {
-            album_id: @album1.id,
-            title: @album1.songs.first.title
-          }
-        end
-
-        it "returns a single song" do
-          page[:songs_meta][:count].should == 1
         end
       end
 
@@ -136,7 +123,7 @@ describe RestPack::Serializer::Paging do
     end
 
     context "with custom page size" do
-      let(:params) { { page_size: 3 } }
+      let(:params) { { page_size: '3' } }
       it "returns custom page sizes" do
         page[:songs_meta][:page_size].should == 3
         page[:songs_meta][:page_count].should == 6
