@@ -1,12 +1,12 @@
 require './spec/spec_helper'
 
 describe RestPack::Serializer::Paging do
+  before(:each) do
+    @album1 = FactoryGirl.create(:album_with_songs, song_count: 11)
+    @album2 = FactoryGirl.create(:album_with_songs, song_count: 7)
+  end
 
-  context "when paging" do
-    before(:each) do
-      @album1 = FactoryGirl.create(:album_with_songs, song_count: 11)
-      @album2 = FactoryGirl.create(:album_with_songs, song_count: 7)
-    end
+  context "#page" do
     let(:page) { SongSerializer.page(params) }
     let(:params) { { } }
 
@@ -118,6 +118,29 @@ describe RestPack::Serializer::Paging do
         end
       end
 
+    end
+  end
+
+  context "#page_with_options" do
+    let(:page) { SongSerializer.page_with_options(options) }
+    let(:params) { {} }
+    let(:options) { RestPack::Serializer::Options.new(Song, params) }
+
+    context "with defaults" do
+      it "includes valid paging meta data" do
+        page[:songs_meta][:count].should == 18
+        page[:songs_meta][:page_count].should == 2
+        page[:songs_meta][:previous_page].should == nil
+        page[:songs_meta][:next_page].should == 2
+      end
+    end
+
+    context "with custom page size" do
+      let(:params) { { page_size: 3 } }
+      it "returns custom page sizes" do
+        page[:songs_meta][:page_size].should == 3
+        page[:songs_meta][:page_count].should == 6
+      end
     end
   end
 end
