@@ -29,9 +29,7 @@ restpack-serializer allows us to define a corresponding serializer:
 ```ruby
 class AlbumSerializer
   include RestPack::Serializer
-
   attributes :id, :title, :year, :artist_id, :href
-  can_include :songs, :artists
 
   def href
     "/albums/#{id}.json"
@@ -62,12 +60,9 @@ This serailizer produces JSON in the format (this will soon change to match the 
 The ```AlbumSerializer``` provides a ```page``` method which can been used to provide a paged GET collection endpoint.
 
 ```ruby
-class AlbumSerializer
-  include RestPack::Serializer
-  attributes :id, :title, :year, :artist_id, :href
-
-  def href
-    "/albums/#{id}.json"
+class AlbumsController < ApplicationController
+  def index
+    render json: AlbumSerializer.page(params)
   end
 end
 ```
