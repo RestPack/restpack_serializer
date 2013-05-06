@@ -55,16 +55,14 @@ This serailizer produces JSON in the format (this will soon change to match the 
 
 ### Exposing an API
 
-**Note**: this is subject to change
+**Note**: this is subject to change as we implement [JSON API](http://jsonapi.org/)
 
 The ```AlbumSerializer``` provides a ```page``` method which can been used to provide a paged GET collection endpoint.
 
 ```ruby
 class AlbumSerializer
   include RestPack::Serializer
-
   attributes :id, :title, :year, :artist_id, :href
-  can_include :songs, :artists
 
   def href
     "/albums/#{id}.json"
@@ -78,11 +76,34 @@ This endpoint will live at a URL similar to ```/albums.json```.
 
 ### Paging
 
-restpack-serializers
+**Note**: this is subject to change as we implement [JSON API](http://jsonapi.org/)
+
+Collections are paged by default. ```page``` and ```page_size``` parameters are available:
+
+* http://restpack-serializer-sample.herokuapp.com/songs.json?page=2
+* http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3
 
 ### Side-loading
 
-...
+Side-loading allows related resources to be optionally included in a single API response. Valid side-loads can be defined in Serializers by using ```can_include``` as follows:
+
+```ruby
+class AlbumSerializer
+  include RestPack::Serializer
+  attributes :id, :title, :year, :artist_id, :href
+  can_include :songs, :artists
+
+  def href
+    "/albums/#{id}.json"
+  end
+end
+
+In this example, we are allowing related ```songs``` and ```artists``` to be included in API responses. Side-loads can be specifed by using the ```includes``` parameter:
+
+* http://restpack-serializer-sample.herokuapp.com/albums.json (no side-loads)
+* http://restpack-serializer-sample.herokuapp.com/albums.json?includes=artists (side-load artists)
+* http://restpack-serializer-sample.herokuapp.com/albums.json?includes=songs (side-load songs)
+http://restpack-serializer-sample.herokuapp.com/albums.json?includes=artists,songs (side-load both songs and artists)
 
 ### Filtering
 
