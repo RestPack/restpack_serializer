@@ -53,23 +53,32 @@ This serailizer produces JSON in the format (this will soon change to match the 
 }
 ```
 
-### Providing an API
+### Exposing an API
 
 **Note**: this is subject to change
 
-The ```ArtistSerializer``` provides a ```page``` method which can been used to provide a paged collection GET endpoint.
+The ```AlbumSerializer``` provides a ```page``` method which can been used to provide a paged GET collection endpoint.
 
 ```ruby
-class ArtistsController < ApplicationController
-  def index
-    render json: ArtistSerializer.page(params)
+class AlbumSerializer
+  include RestPack::Serializer
+
+  attributes :id, :title, :year, :artist_id, :href
+  can_include :songs, :artists
+
+  def href
+    "/albums/#{id}.json"
   end
 end
 ```
 
+This endpoint will live at a URL similar to ```/albums.json```.
+
+**Demo:** http://restpack-serializer-sample.herokuapp.com/albums.json
+
 ### Paging
 
-...
+restpack-serializers
 
 ### Side-loading
 
