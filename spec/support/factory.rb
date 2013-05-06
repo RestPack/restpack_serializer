@@ -37,4 +37,9 @@ FactoryGirl.define do
     artist
     album
   end
+
+  factory :payment do
+    amount 999
+    artist
+  end
 end
