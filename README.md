@@ -67,7 +67,7 @@ class AlbumsController < ApplicationController
 end
 ```
 
-This endpoint will live at a URL similar to ```/albums.json```.
+This endpoint will live at a URL such as ```/albums.json```.
 
 **Demo:** http://restpack-serializer-sample.herokuapp.com/albums.json
 
@@ -79,6 +79,45 @@ Collections are paged by default. ```page``` and ```page_size``` parameters are 
 
 * http://restpack-serializer-sample.herokuapp.com/songs.json?page=2
 * http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3
+
+Paging details are included in a ```meta``` attribute:
+
+```javascript
+{
+    "songs": [
+        {
+            "id": 4,
+            "title": "How to Dissapear Completely",
+            "album_id": 1,
+            "artist_id": 1,
+            "href": "/songs/4.json"
+        },
+        {
+            "id": 5,
+            "title": "Treedfingers",
+            "album_id": 1,
+            "artist_id": 1,
+            "href": "/songs/5.json"
+        },
+        {
+            "id": 6,
+            "title": "Optimistic",
+            "album_id": 1,
+            "artist_id": 1,
+            "href": "/songs/6.json"
+        }
+    ],
+    "songs_meta": {
+        "page": 2,
+        "page_size": 3,
+        "count": 42,
+        "includes": [],
+        "page_count": 14,
+        "previous_page": 1,
+        "next_page": 3
+    }
+}
+```
 
 ## Side-loading
 
