@@ -7,7 +7,7 @@
 * [An overview of RestPack](http://goo.gl/rGoIQ)
 * [Live restpack-serializer demo](http://restpack-serializer-sample.herokuapp.com/)
 
-**EDIT**: http://jsonapi.org/ has just been released. I'm working on implementing its specification.
+**EDIT**: [JSON API](http://jsonapi.org/) has just been released. I'm working on implementing its specification.
 
 ### Serialization
 
@@ -37,7 +37,7 @@ class AlbumSerializer
 end
 ```
 
-This serailizer produces JSON in the format:
+This serailizer produces JSON in the format (this will soon change to match the [JSON API](http://jsonapi.org/) spec):
 
 ```javascript
 {
@@ -52,6 +52,32 @@ This serailizer produces JSON in the format:
     ]
 }
 ```
+
+### Providing an API
+
+**Note**: this is subject to change
+
+The ```ArtistSerializer``` provides a ```page``` method which can been used to provide a paged collection GET endpoint.
+
+```ruby
+class ArtistsController < ApplicationController
+  def index
+    render json: ArtistSerializer.page(params)
+  end
+end
+```
+
+### Paging
+
+...
+
+### Side-loading
+
+...
+
+### Filtering
+
+...
 
 
 
