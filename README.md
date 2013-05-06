@@ -97,6 +97,7 @@ class AlbumSerializer
     "/albums/#{id}.json"
   end
 end
+```
 
 In this example, we are allowing related ```songs``` and ```artists``` to be included in API responses. Side-loads can be specifed by using the ```includes``` parameter:
 
