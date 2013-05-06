@@ -29,6 +29,13 @@ ActiveRecord::Schema.define(:version => 1) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "payments", :force => true do |t|
+    t.integer "amount"
+    t.integer  "artist_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 end
 
 class Artist < ActiveRecord::Base
@@ -36,6 +43,7 @@ class Artist < ActiveRecord::Base
 
   has_many :albums
   has_many :songs
+  has_many :payments
 end
 
 class Album < ActiveRecord::Base
@@ -50,4 +58,10 @@ class Song < ActiveRecord::Base
 
   belongs_to :artist
   belongs_to :album
+end
+
+class Payment < ActiveRecord::Base
+  attr_accessible :amount, :artist
+
+  belongs_to :artist
 end

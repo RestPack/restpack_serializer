@@ -18,6 +18,15 @@ module RestPack::Serializer::SideLoading
       filters.uniq
     end
 
+    def can_includes
+      @can_includes || []
+    end
+
+    def can_include(*includes)
+      @can_includes ||= []
+      @can_includes += includes
+    end
+
     private
 
     def side_load(include, models, options)
@@ -52,12 +61,18 @@ module RestPack::Serializer::SideLoading
     end
 
     def association_from_include(include)
-      possible_relations = [include.to_s.singularize, include.to_s.pluralize]
+      raise_invalid_include(include) unless self.can_includes.include?(include)
+
+      possible_relations = [include.to_s.singularize.to_sym, include]
       possible_relations.each do |relation|
-        association = self.model_class.reflect_on_association(relation.to_sym)
+        association = self.model_class.reflect_on_association(relation)
         return association unless association.nil?
       end
 
+      raise_invalid_include(include)
+    end
+
+    def raise_invalid_include(include)
       raise RestPack::Serializer::InvalidInclude.new,
         ":#{include} is not a valid include for #{self.model_class}"
     end
