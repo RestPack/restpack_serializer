@@ -1,6 +1,8 @@
 # restpack-serializer [![Build Status](https://travis-ci.org/RestPack/restpack-serializer.png?branch=master)](https://travis-ci.org/RestPack/restpack-serializer) [![Code Climate](https://codeclimate.com/github/RestPack/restpack-serializer.png)](https://codeclimate.com/github/RestPack/restpack-serializer) [![Dependency Status](https://gemnasium.com/RestPack/restpack-serializer.png)](https://gemnasium.com/RestPack/restpack-serializer) [![Gem Version](https://badge.fury.io/rb/restpack-serializer.png)](http://badge.fury.io/rb/restpack-serializer)
 
-## Model serialization, paging, side-loading and filtering
+**Model serialization, paging, side-loading and filtering**
+
+---
 
 **This is a work in progress**
 
@@ -9,9 +11,9 @@
 
 **EDIT**: [JSON API](http://jsonapi.org/) has just been released. I'm working on implementing its specification.
 
-### Serialization
+## Serialization
 
-Let's say we have an ```Album``` model as follows:
+Let's say we have an ```Album``` model:
 
 ```ruby
 class Album < ActiveRecord::Base
@@ -53,7 +55,7 @@ This serailizer produces JSON in the format (this will soon change to match the 
 }
 ```
 
-### Exposing an API
+## Exposing an API
 
 **Note**: this is subject to change as we implement [JSON API](http://jsonapi.org/)
 
@@ -74,7 +76,7 @@ This endpoint will live at a URL similar to ```/albums.json```.
 
 **Demo:** http://restpack-serializer-sample.herokuapp.com/albums.json
 
-### Paging
+## Paging
 
 **Note**: this is subject to change as we implement [JSON API](http://jsonapi.org/)
 
@@ -83,7 +85,7 @@ Collections are paged by default. ```page``` and ```page_size``` parameters are 
 * http://restpack-serializer-sample.herokuapp.com/songs.json?page=2
 * http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3
 
-### Side-loading
+## Side-loading
 
 Side-loading allows related resources to be optionally included in a single API response. Valid side-loads can be defined in Serializers by using ```can_include``` as follows:
 
@@ -121,7 +123,7 @@ An album ```:has_many``` songs, so the side-loads are paged. We'll be soon addin
 
 * http://restpack-serializer-sample.herokuapp.com/albums.json?includes=artists,songs
 
-### Filtering
+## Filtering
 
 Simple filtering based on primary and foreign keys is possible:
 
@@ -138,7 +140,3 @@ Simple filtering based on primary and foreign keys is possible:
 Side-loading is available when filtering:
 
  * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_ids=2,3&includes=artists,songs
-
-
-
-
