@@ -2,71 +2,40 @@
 
 ## Model serialization, paging, side-loading and filtering
 
-**This is a work in progress**. Please see http://goo.gl/rGoIQ for an overview of RestPack.
+**This is a work in progress**
 
-**EDIT**: http://jsonapi.org/ has just been released. We should either support this new format, or switch back to ActiveModel::Serializers.
+* [An overview of RestPack](http://goo.gl/rGoIQ)
+* [Live restpack-serializer demo](http://restpack-serializer-sample.herokuapp.com/)
 
-We want a URL like this:
+**EDIT**: http://jsonapi.org/ has just been released. I'm working on implementing its specification.
 
-```
-http://localhost:1111/api/v1/domains.json?includes=applications&page=2&page_size=3
-```
+### Serialization
 
-To render JSON like this:
+Let's say we have an ```Album``` model as follows:
 
-```
-{
-    "applications": [
-        {
-            "id": 44,
-            "name": "Ruby Jobs",
-            "url": "/api/v1/applications/44.json",
-            "channel_id": 32
-        },
-        {
-            "id": 45,
-            "name": "Python Jobs",
-            "url": "/api/v1/applications/45.json",
-            "channel_id": 32
-        }
-    ],
-    "domains": [
-        {
-            "id": 86,
-            "host": "www.rubyjobs.io",
-            "channel_id": 32,
-            "application_id": 44,
-            "url": "/api/v1/domains/86.json"
-        },
-        {
-            "id": 87,
-            "host": "auth.rubyjobs.io",
-            "channel_id": 32,
-            "application_id": 44,
-            "url": "/api/v1/domains/87.json"
-        },
-        {
-            "id": 88,
-            "host": "www.pythonjobs.io",
-            "channel_id": 32,
-            "application_id": 45,
-            "url": "/api/v1/domains/88.json"
-        }
-    ],
-    "domains_meta": {
-        "page": 2,
-        "count": 9,
-        "page_size": 3,
-        "page_count": 3,
-        "previous_page": 1,
-        "next_page": 3
-    }
-}
+```ruby
+class Album < ActiveRecord::Base
+  attr_accessible :title, :year, :artist
+
+  belongs_to :artist
+  has_many :songs
+end
 ```
 
+restpack-serializer allows us to define a corresponding serializer:
 
+```ruby
+class AlbumSerializer
+  include RestPack::Serializer
 
+  attributes :id, :title, :year, :artist_id, :href
+  can_include :songs, :artists
 
+  def href
+    "/albums/#{id}.json"
+  end
+end
+```
 
 
 
