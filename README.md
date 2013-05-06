@@ -101,10 +101,21 @@ end
 
 In this example, we are allowing related ```songs``` and ```artists``` to be included in API responses. Side-loads can be specifed by using the ```includes``` parameter:
 
-* http://restpack-serializer-sample.herokuapp.com/albums.json (no side-loads)
-* http://restpack-serializer-sample.herokuapp.com/albums.json?includes=artists (side-load artists)
-* http://restpack-serializer-sample.herokuapp.com/albums.json?includes=songs (side-load songs)
-http://restpack-serializer-sample.herokuapp.com/albums.json?includes=artists,songs (side-load both songs and artists)
+#### No side-loads
+
+* http://restpack-serializer-sample.herokuapp.com/albums.json
+
+#### Side-load related Artists
+
+* http://restpack-serializer-sample.herokuapp.com/albums.json?includes=artists
+
+#### Side-load related Songs
+
+* http://restpack-serializer-sample.herokuapp.com/albums.json?includes=songs
+
+#### Side-load related Artists and Songs
+
+* http://restpack-serializer-sample.herokuapp.com/albums.json?includes=artists,songs
 
 ### Filtering
 
