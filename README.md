@@ -113,6 +113,10 @@ In this example, we are allowing related ```songs``` and ```artists``` to be inc
 
 * http://restpack-serializer-sample.herokuapp.com/albums.json?includes=songs
 
+An album ```:has_many``` songs, so the side-loads are paged. We'll be soon adding URLs to the response meta data which will point to the next page of side-loaded data. These URLs will be something like:
+
+* http://restpack-serializer-sample.herokuapp.com/songs.json?album_ids=1,2,3,4&page=2
+
 #### Side-load related Artists and Songs
 
 * http://restpack-serializer-sample.herokuapp.com/albums.json?includes=artists,songs
