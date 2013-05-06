@@ -123,7 +123,21 @@ An album ```:has_many``` songs, so the side-loads are paged. We'll be soon addin
 
 ### Filtering
 
-...
+Simple filtering based on primary and foreign keys is possible:
+
+#### By primary key:
+
+ * http://restpack-serializer-sample.herokuapp.com/albums.json?id=1
+ * http://restpack-serializer-sample.herokuapp.com/albums.json?ids=1,2,4
+
+#### By foreign key:
+
+ * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_id=1
+ * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_ids=2,3
+
+Side-loading is available when filtering:
+
+ * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_ids=2,3&includes=artists,songs
 
 
 
