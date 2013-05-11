@@ -31,6 +31,36 @@ module RestPack::Serializer::SideLoading
       @can_includes += includes
     end
 
+    def links
+      links = {}
+
+      associations.each do |association|
+        if association.macro == :belongs_to
+          href = "/#{association.plural_name}/{#{self.key}.#{association.name}}.json"
+        elsif association.macro == :has_many
+          singular_key = self.key.to_s.singularize
+          primary_key = association.active_record.primary_key
+          href = "/#{association.plural_name}.json?#{singular_key}_id={#{primary_key}}"
+        end
+
+        links["#{self.key}.#{association.plural_name}"] = {
+          :href => href,
+          :type => association.plural_name.to_sym
+        }
+      end
+
+      links
+    end
+
+    def associations
+      associations = []
+      can_includes.each do |include|
+        association = association_from_include(include)
+        associations << association if supported_association?(association)
+      end
+      associations
+    end
+
     private
 
     def side_load(include, models, options)
@@ -62,6 +92,7 @@ module RestPack::Serializer::SideLoading
       return {} if models.empty?
       options = RestPack::Serializer::Options.new(serializer.class.model_class)
       options.filters = { association.foreign_key.to_sym => models.map(&:id) }
+      options.include_links = false
       return serializer.class.page_with_options(options)
     end
 

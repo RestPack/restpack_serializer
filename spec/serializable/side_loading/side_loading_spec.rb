@@ -49,6 +49,19 @@ describe RestPack::Serializer::SideLoading do
     end
   end
 
+  describe "#links" do
+    AlbumSerializer.links.should == {
+      "albums.artists" => {
+        :href => "/artists/{albums.artist}.json",
+        :type => :artists
+      },
+      "albums.songs" => {
+        :href => "/songs.json?album_id={id}",
+        :type => :songs
+      }
+    }
+  end
+
   describe "#filterable_by" do
     context "a model with no :belongs_to relations" do
       it "is filterable by :id only" do

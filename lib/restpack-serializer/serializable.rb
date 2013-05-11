@@ -23,6 +23,21 @@ module RestPack
           data[key] = self.send(name) if include_attribute?(name)
         end
       end
+
+      add_links(model, data)
+
+      data
+    end
+
+    private
+
+    def add_links(model, data)
+      self.class.associations.each do |association|
+        if association.macro == :belongs_to
+          data[:links] ||= {}
+          data[:links][association.name.to_sym] = model.send(association.foreign_key)
+        end
+      end
       data
     end
 
