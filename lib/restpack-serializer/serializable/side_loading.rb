@@ -49,7 +49,8 @@ module RestPack::Serializer::SideLoading
       side_load = association.klass.find(foreign_keys)
 
       return {
-        association.plural_name.to_sym => side_load.map { |model| serializer.as_json(model) }
+        association.plural_name.to_sym => side_load.map { |model| serializer.as_json(model) },
+        :meta => { }
       }
     end
 

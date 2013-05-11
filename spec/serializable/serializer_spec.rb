@@ -86,9 +86,5 @@ describe RestPack::Serializer do
     it "returns the correct key" do
       PersonSerializer.key.should == :people
     end
-
-    it "returns the correct meta key" do
-      PersonSerializer.meta_key.should == :people_meta
-    end
   end
 end

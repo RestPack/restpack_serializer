@@ -12,24 +12,24 @@ describe RestPack::Serializer::Paging do
 
     context "with defaults" do
       it "page defaults to 1" do
-        page[:songs_meta][:page].should == 1
+        page[:meta][:songs][:page].should == 1
       end
       it "page_size defaults to 10" do
-        page[:songs_meta][:page_size].should == 10
+        page[:meta][:songs][:page_size].should == 10
       end
       it "includes valid paging meta data" do
-        page[:songs_meta][:count].should == 18
-        page[:songs_meta][:page_count].should == 2
-        page[:songs_meta][:previous_page].should == nil
-        page[:songs_meta][:next_page].should == 2
+        page[:meta][:songs][:count].should == 18
+        page[:meta][:songs][:page_count].should == 2
+        page[:meta][:songs][:previous_page].should == nil
+        page[:meta][:songs][:next_page].should == 2
       end
     end
 
     context "with custom page size" do
       let(:params) { { page_size: '3' } }
       it "returns custom page sizes" do
-        page[:songs_meta][:page_size].should == 3
-        page[:songs_meta][:page_count].should == 6
+        page[:meta][:songs][:page_size].should == 3
+        page[:meta][:songs][:page_count].should == 6
       end
     end
 
@@ -46,10 +46,10 @@ describe RestPack::Serializer::Paging do
       let(:params) { { page: '1' } }
 
       it "returns first page" do
-        page[:songs_meta][:page].should == 1
-        page[:songs_meta][:page_size].should == 10
-        page[:songs_meta][:previous_page].should == nil
-        page[:songs_meta][:next_page].should == 2
+        page[:meta][:songs][:page].should == 1
+        page[:meta][:songs][:page_size].should == 10
+        page[:meta][:songs][:previous_page].should == nil
+        page[:meta][:songs][:next_page].should == 2
       end
     end
 
@@ -57,10 +57,10 @@ describe RestPack::Serializer::Paging do
       let(:params) { { page: '2' } }
 
       it "returns second page" do
-        page[:songs_meta][:page].should == 2
         page[:songs].length.should == 8
-        page[:songs_meta][:previous_page].should == 1
-        page[:songs_meta][:next_page].should == nil
+        page[:meta][:songs][:page].should == 2
+        page[:meta][:songs][:previous_page].should == 1
+        page[:meta][:songs][:next_page].should == nil
       end
     end
 
@@ -72,7 +72,7 @@ describe RestPack::Serializer::Paging do
       end
 
       it "includes the side-loads in the main meta data" do
-        page[:songs_meta][:includes].should == [:albums]
+        page[:meta][:songs][:includes].should == [:albums]
       end
 
       context "with includes as comma delimited string" do
@@ -86,22 +86,18 @@ describe RestPack::Serializer::Paging do
 
     context "when filtering" do
       context "with no filters" do
-        let(:params) do
-          { }
-        end
+        let(:params) { {} }
 
         it "returns a page of all data" do
-          page[:songs_meta][:count].should == 18
+          page[:meta][:songs][:count].should == 18
         end
       end
 
       context "with :album_id filter" do
-        let(:params) do
-          { album_id: @album1.id.to_s }
-        end
+        let(:params) { { album_id: @album1.id.to_s } }
 
         it "returns a page with songs from album1" do
-          page[:songs_meta][:count].should == @album1.songs.length
+          page[:meta][:songs][:count].should == @album1.songs.length
         end
       end
 
@@ -115,19 +111,32 @@ describe RestPack::Serializer::Paging do
 
     context "with defaults" do
       it "includes valid paging meta data" do
-        page[:songs_meta][:count].should == 18
-        page[:songs_meta][:page_count].should == 2
-        page[:songs_meta][:previous_page].should == nil
-        page[:songs_meta][:next_page].should == 2
+        page[:meta][:songs][:count].should == 18
+        page[:meta][:songs][:page_count].should == 2
+        page[:meta][:songs][:previous_page].should == nil
+        page[:meta][:songs][:next_page].should == 2
       end
     end
 
     context "with custom page size" do
       let(:params) { { page_size: '3' } }
       it "returns custom page sizes" do
-        page[:songs_meta][:page_size].should == 3
-        page[:songs_meta][:page_count].should == 6
+        page[:meta][:songs][:page_size].should == 3
+        page[:meta][:songs][:page_count].should == 6
       end
+    end
+  end
+
+  context "paging with paged side-load" do
+    let(:page) { AlbumSerializer.page_with_options(options) }
+    let(:options) { RestPack::Serializer::Options.new(Album, { includes: 'songs' }) }
+
+    it "includes side-loaded paging data in meta data" do
+      p "PAGE: #{page[:meta].inspect}"
+      page[:meta][:albums].should_not == nil
+      page[:meta][:albums][:page].should == 1
+      page[:meta][:songs].should_not == nil
+      page[:meta][:songs][:page].should == 1
     end
   end
 end
