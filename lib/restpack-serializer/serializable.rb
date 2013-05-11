@@ -43,10 +43,6 @@ module RestPack
         self.model_class.send(:table_name).to_sym
       end
 
-      def meta_key
-        "#{self.key}_meta".to_sym
-      end
-
     end
   end
 end
