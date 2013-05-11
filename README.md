@@ -145,6 +145,74 @@ In this example, we are allowing related ```songs``` and ```artists``` to be inc
 
 * http://restpack-serializer-sample.herokuapp.com/albums.json?includes=artists
 
+which yields:
+
+```javascript
+{
+    "albums": [
+        {
+            "id": 1,
+            "title": "Kid A",
+            "year": 2000,
+            "artist_id": 1,
+            "href": "/albums/1.json"
+        },
+        {
+            "id": 2,
+            "title": "Amnesiac",
+            "year": 2001,
+            "artist_id": 1,
+            "href": "/albums/2.json"
+        },
+        {
+            "id": 3,
+            "title": "Murder Ballads",
+            "year": 1996,
+            "artist_id": 2,
+            "href": "/albums/3.json"
+        },
+        {
+            "id": 4,
+            "title": "Curtains",
+            "year": 2005,
+            "artist_id": 3,
+            "href": "/albums/4.json"
+        }
+    ],
+    "albums_meta": {
+        "page": 1,
+        "page_size": 10,
+        "count": 4,
+        "includes": [
+            "artists"
+        ],
+        "page_count": 1,
+        "previous_page": null,
+        "next_page": null
+    },
+    "artists": [
+        {
+            "id": 1,
+            "name": "Radiohead",
+            "website": "http://radiohead.com/",
+            "href": "/artists/1.json"
+        },
+        {
+            "id": 2,
+            "name": "Nick Cave & The Bad Seeds",
+            "website": "http://www.nickcave.com/",
+            "href": "/artists/2.json"
+        },
+        {
+            "id": 3,
+            "name": "John Frusciante",
+            "website": "http://johnfrusciante.com/",
+            "href": "/artists/3.json"
+        }
+    ]
+}
+```
+
 #### Side-load related Songs
 
 * http://restpack-serializer-sample.herokuapp.com/albums.json?includes=songs
