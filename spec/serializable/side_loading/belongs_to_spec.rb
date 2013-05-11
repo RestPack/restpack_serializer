@@ -16,16 +16,16 @@ describe RestPack::Serializer::SideLoading do
         context "no side-loads" do
           let(:options) { RestPack::Serializer::Options.new(Song) }
 
-          it "returns an empty hash" do
-            side_loads.should == {}
+          it "returns a hash with no data" do
+            side_loads.should == { :meta => {} }
           end
         end
 
         context "when including :albums" do
           let(:options) { RestPack::Serializer::Options.new(Song, { "includes" => "albums" }) }
 
-          it "returns an empty hash" do
-            side_loads.should == {}
+          it "returns a hash with no data" do
+            side_loads.should == { :meta => {} }
           end
         end
       end
