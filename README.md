@@ -107,14 +107,16 @@ Paging details are included in a ```meta``` attribute:
             "href": "/songs/6.json"
         }
     ],
-    "songs_meta": {
-        "page": 2,
-        "page_size": 3,
-        "count": 42,
-        "includes": [],
-        "page_count": 14,
-        "previous_page": 1,
-        "next_page": 3
+    "meta": {
+        "songs": {
+            "page": 2,
+            "page_size": 3,
+            "count": 42,
+            "includes": [],
+            "page_count": 14,
+            "previous_page": 1,
+            "next_page": 3
+        }
     }
 }
 ```
@@ -179,16 +181,18 @@ which yields:
             "href": "/albums/4.json"
         }
     ],
-    "albums_meta": {
-        "page": 1,
-        "page_size": 10,
-        "count": 4,
-        "includes": [
-            "artists"
-        ],
-        "page_count": 1,
-        "previous_page": null,
-        "next_page": null
+    "meta": {
+        "albums": {
+            "page": 1,
+            "page_size": 10,
+            "count": 4,
+            "includes": [
+                "artists"
+            ],
+            "page_count": 1,
+            "previous_page": null,
+            "next_page": null
+        }
     },
     "artists": [
         {
