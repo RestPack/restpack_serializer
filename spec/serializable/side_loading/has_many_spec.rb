@@ -18,6 +18,8 @@ describe RestPack::Serializer::SideLoading do
 
           it "returns side-loaded albums" do
             side_loads[:albums].count.should == @artist1.albums.count
+            side_loads[:meta][:albums][:page].should == 1
+            side_loads[:meta][:albums][:count].should == @artist1.albums.count
           end
         end
       end
@@ -31,6 +33,7 @@ describe RestPack::Serializer::SideLoading do
           it "returns side-loaded albums" do
             expected_count = @artist1.albums.count + @artist2.albums.count
             side_loads[:albums].count.should == expected_count
+            side_loads[:meta][:albums][:count].should == expected_count
           end
         end
       end

@@ -14,10 +14,14 @@ module RestPack::Serializer::Paging
 
       result = {
         self.key => serialize_page(page),
-        self.meta_key => serialize_meta(page, options)
+        :meta => {
+          self.key => serialize_meta(page, options)
+        }
       }
 
-      result.merge side_loads(page, options)
+      side_load_data = side_loads(page, options)
+      result[:meta].merge!(side_load_data[:meta] || {})
+      result.merge side_load_data.except(:meta)
     end
 
     private
