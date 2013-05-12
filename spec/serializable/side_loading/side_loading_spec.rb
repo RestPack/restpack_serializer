@@ -56,7 +56,7 @@ describe RestPack::Serializer::SideLoading do
         :type => :artists
       },
       "albums.songs" => {
-        :href => "/songs.json?album_id={id}",
+        :href => "/songs.json?album_id={albums.id}",
         :type => :songs
       }
     }
