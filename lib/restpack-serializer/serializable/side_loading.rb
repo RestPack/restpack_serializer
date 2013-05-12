@@ -39,8 +39,7 @@ module RestPack::Serializer::SideLoading
           href = "/#{association.plural_name}/{#{self.key}.#{association.name}}.json"
         elsif association.macro == :has_many
           singular_key = self.key.to_s.singularize
-          primary_key = association.active_record.primary_key
-          href = "/#{association.plural_name}.json?#{singular_key}_id={#{key}.#{primary_key}}"
+          href = "/#{association.plural_name}.json?#{singular_key}_id={#{key}.id}"
         end
 
         links["#{self.key}.#{association.plural_name}"] = {

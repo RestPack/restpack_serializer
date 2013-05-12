@@ -47,14 +47,14 @@ describe RestPack::Serializer do
   describe ".as_json" do
     it "serializes specified attributes" do
       serializer.as_json(person).should == {
-        id: 123, name: 'Gavin', url: '/api/v1/people/123.json'
+        id: '123', name: 'Gavin', url: '/api/v1/people/123.json'
       }
     end
 
     context "with options" do
       it "excludes specified attributes" do
         serializer.as_json(person, { include_url?: false }).should == {
-          id: 123, name: 'Gavin'
+          id: '123', name: 'Gavin'
         }
       end
 
@@ -75,8 +75,8 @@ describe RestPack::Serializer do
         @album1 = FactoryGirl.create(:album_with_songs, song_count: 11)
         json = serializer.as_json(@album1.songs.first)
         json[:links].should == {
-          artist: @album1.artist_id,
-          album: @album1.id
+          artist: @album1.artist_id.to_s,
+          album: @album1.id.to_s
         }
       end
     end

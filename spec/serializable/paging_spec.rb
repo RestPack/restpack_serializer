@@ -26,7 +26,7 @@ describe RestPack::Serializer::Paging do
       it "includes links" do
         page[:links].should == {
           'songs.albums' => { :href => "/albums/{songs.album}.json", :type => :albums },
-          'songs.artists' => {:href => "/artists/{songs.artist}.json", :type => :artists }
+          'songs.artists' => { :href => "/artists/{songs.artist}.json", :type => :artists }
         }
       end
     end
@@ -42,12 +42,12 @@ describe RestPack::Serializer::Paging do
     it "serializes results" do
       first = Song.first
       page[:songs].first.should == {
-        id: first.id,
+        id: first.id.to_s,
         title: first.title,
         album_id: first.album_id,
         links: {
-          album: first.album_id,
-          artist: first.artist_id
+          album: first.album_id.to_s,
+          artist: first.artist_id.to_s
         }
       }
     end

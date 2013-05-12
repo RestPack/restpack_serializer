@@ -23,7 +23,9 @@ module RestPack::Serializer::Attributes
     def define_attribute_method(name)
       unless method_defined?(name)
         define_method name do
-          @model.send(name)
+          value = @model.send(name)
+          value = value.to_s if name == :id
+          value
         end
       end
     end
