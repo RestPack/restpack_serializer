@@ -37,13 +37,13 @@ class AlbumSerializer
 end
 ```
 
-This serailizer produces JSON in the format (this will soon change to match the [JSON API](http://jsonapi.org/) spec):
+This serailizer produces JSON in the format:
 
 ```javascript
 {
     "albums": [
         {
-            "id": 1,
+            "id": "1",
             "title": "Kid A",
             "year": 2000,
             "artist_id": 1,
@@ -54,8 +54,6 @@ This serailizer produces JSON in the format (this will soon change to match the 
 ```
 
 ## Exposing an API
-
-**Note**: this is subject to change as we implement [JSON API](http://jsonapi.org/)
 
 The ```AlbumSerializer``` provides a ```page``` method which can been used to provide a paged GET collection endpoint.
 
@@ -73,8 +71,6 @@ This endpoint will live at a URL such as ```/albums.json```.
 
 ## Paging
 
-**Note**: this is subject to change as we implement [JSON API](http://jsonapi.org/)
-
 Collections are paged by default. ```page``` and ```page_size``` parameters are available:
 
 * http://restpack-serializer-sample.herokuapp.com/songs.json?page=2
@@ -82,29 +78,37 @@ Collections are paged by default. ```page``` and ```page_size``` parameters are 
 
 Paging details are included in a ```meta``` attribute:
 
+http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yields:
+
 ```javascript
 {
     "songs": [
         {
-            "id": 4,
+            "id": "4",
             "title": "How to Dissapear Completely",
-            "album_id": 1,
-            "artist_id": 1,
-            "href": "/songs/4.json"
+            "href": "/songs/4.json",
+            "links": {
+                "artist": "1",
+                "album": "1"
+            }
         },
         {
-            "id": 5,
+            "id": "5",
             "title": "Treedfingers",
-            "album_id": 1,
-            "artist_id": 1,
-            "href": "/songs/5.json"
+            "href": "/songs/5.json",
+            "links": {
+                "artist": "1",
+                "album": "1"
+            }
         },
         {
-            "id": 6,
+            "id": "6",
             "title": "Optimistic",
-            "album_id": 1,
-            "artist_id": 1,
-            "href": "/songs/6.json"
+            "href": "/songs/6.json",
+            "links": {
+                "artist": "1",
+                "album": "1"
+            }
         }
     ],
     "meta": {
@@ -116,6 +120,16 @@ Paging details are included in a ```meta``` attribute:
             "page_count": 14,
             "previous_page": 1,
             "next_page": 3
+        }
+    },
+    "links": {
+        "songs.artists": {
+            "href": "/artists/{songs.artist}.json",
+            "type": "artists"
+        },
+        "songs.albums": {
+            "href": "/albums/{songs.album}.json",
+            "type": "albums"
         }
     }
 }
@@ -153,32 +167,40 @@ which yields:
 {
     "albums": [
         {
-            "id": 1,
+            "id": "1",
             "title": "Kid A",
             "year": 2000,
-            "artist_id": 1,
-            "href": "/albums/1.json"
+            "href": "/albums/1.json",
+            "links": {
+                "artist": "1"
+            }
         },
         {
-            "id": 2,
+            "id": "2",
             "title": "Amnesiac",
             "year": 2001,
-            "artist_id": 1,
-            "href": "/albums/2.json"
+            "href": "/albums/2.json",
+            "links": {
+                "artist": "1"
+            }
         },
         {
-            "id": 3,
+            "id": "3",
             "title": "Murder Ballads",
             "year": 1996,
-            "artist_id": 2,
-            "href": "/albums/3.json"
+            "href": "/albums/3.json",
+            "links": {
+                "artist": "2"
+            }
         },
         {
-            "id": 4,
+            "id": "4",
             "title": "Curtains",
             "year": 2005,
-            "artist_id": 3,
-            "href": "/albums/4.json"
+            "href": "/albums/4.json",
+            "links": {
+                "artist": "3"
+            }
         }
     ],
     "meta": {
@@ -194,28 +216,45 @@ which yields:
             "next_page": null
         }
     },
+    "links": {
+        "albums.songs": {
+            "href": "/songs.json?album_id={albums.id}",
+            "type": "songs"
+        },
+        "albums.artists": {
+            "href": "/artists/{albums.artist}.json",
+            "type": "artists"
+        },
+        "artists.albums": {
+            "href": "/albums.json?artist_id={artists.id}",
+            "type": "albums"
+        },
+        "artists.songs": {
+            "href": "/songs.json?artist_id={artists.id}",
+            "type": "songs"
+        }
+    },
     "artists": [
         {
-            "id": 1,
+            "id": "1",
             "name": "Radiohead",
             "website": "http://radiohead.com/",
             "href": "/artists/1.json"
         },
         {
-            "id": 2,
+            "id": "2",
             "name": "Nick Cave & The Bad Seeds",
             "website": "http://www.nickcave.com/",
             "href": "/artists/2.json"
         },
         {
-            "id": 3,
+            "id": "3",
             "name": "John Frusciante",
             "website": "http://johnfrusciante.com/",
             "href": "/artists/3.json"
         }
     ]
-}
-```
+}```
 
 #### Side-load related Songs
 
