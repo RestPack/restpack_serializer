@@ -68,6 +68,18 @@ describe RestPack::Serializer do
         hash[:admin_info].should == { key: "super_secret_sauce" }
       end
     end
+
+    context "links" do
+      let(:serializer) { SongSerializer.new }
+      it "includes 'links' data" do
+        @album1 = FactoryGirl.create(:album_with_songs, song_count: 11)
+        json = serializer.as_json(@album1.songs.first)
+        json[:links].should == {
+          artist: @album1.artist_id,
+          album: @album1.id
+        }
+      end
+    end
   end
 
   describe "#model_name" do

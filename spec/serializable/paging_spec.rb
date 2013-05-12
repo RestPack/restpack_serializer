@@ -23,6 +23,12 @@ describe RestPack::Serializer::Paging do
         page[:meta][:songs][:previous_page].should == nil
         page[:meta][:songs][:next_page].should == 2
       end
+      it "includes links" do
+        page[:links].should == {
+          'songs.albums' => { :href => "/albums/{songs.album}.json", :type => :albums },
+          'songs.artists' => {:href => "/artists/{songs.artist}.json", :type => :artists }
+        }
+      end
     end
 
     context "with custom page size" do
@@ -38,7 +44,11 @@ describe RestPack::Serializer::Paging do
       page[:songs].first.should == {
         id: first.id,
         title: first.title,
-        album_id: first.album_id
+        album_id: first.album_id,
+        links: {
+          album: first.album_id,
+          artist: first.artist_id
+        }
       }
     end
 
@@ -80,6 +90,15 @@ describe RestPack::Serializer::Paging do
         it "includes side-loaded models" do
           page[:albums].should_not == nil
           page[:artists].should_not == nil
+        end
+
+        it "includes links" do
+          page[:links]['songs.albums'].should_not == nil
+          page[:links]['songs.artists'].should_not == nil
+          page[:links]['albums.songs'].should_not == nil
+          page[:links]['albums.artists'].should_not == nil
+          page[:links]['artists.songs'].should_not == nil
+          page[:links]['artists.albums'].should_not == nil
         end
       end
     end
@@ -144,7 +163,6 @@ describe RestPack::Serializer::Paging do
     let(:options) { RestPack::Serializer::Options.new(Artist, { includes: 'albums,songs' }) }
 
     it "includes side-loaded paging data in meta data" do
-      p "PAGE: #{page[:meta].inspect}"
       page[:meta][:albums].should_not == nil
       page[:meta][:albums][:page].should == 1
       page[:meta][:songs].should_not == nil

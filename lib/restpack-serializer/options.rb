@@ -1,6 +1,6 @@
 module RestPack::Serializer
   class Options
-    attr_accessor :page, :page_size, :includes, :filters, :model_class, :scope
+    attr_accessor :page, :page_size, :includes, :filters, :model_class, :scope, :include_links
 
     def initialize(model_class, params = {})
       params.symbolize_keys! if params.respond_to?(:symbolize_keys!)
@@ -11,6 +11,7 @@ module RestPack::Serializer
       @filters = filters_from_params(params, model_class)
       @model_class = model_class
       @scope = model_class.send(:scoped)
+      @include_links = true
 
       @page = params[:page].to_i if params[:page]
       @page_size = params[:page_size].to_i if params[:page_size]

@@ -19,6 +19,13 @@ module RestPack::Serializer::Paging
         }
       }
 
+      if options.include_links
+        result[:links] = self.links
+        Array(RestPack::Serializer::Factory.create(*options.includes)).each do |serializer|
+          result[:links].merge! serializer.class.links
+        end
+      end
+
       side_load_data = side_loads(page, options)
       result[:meta].merge!(side_load_data[:meta] || {})
       result.merge side_load_data.except(:meta)
