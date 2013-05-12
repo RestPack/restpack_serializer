@@ -135,6 +135,11 @@ http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yi
 }
 ```
 
+URL Templates to related data are included in the `links` element. These can be used to construct URLs such as:
+
+* /artists/1.json
+* /albums/1.json
+
 ## Side-loading
 
 Side-loading allows related resources to be optionally included in a single API response. Valid side-loads can be defined in Serializers by using ```can_include``` as follows:
