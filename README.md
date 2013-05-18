@@ -74,7 +74,7 @@ These endpoint will live at URLs such as `/albums.json` and `/albums/142857.json
 * http://restpack-serializer-sample.herokuapp.com/albums.json
 * http://restpack-serializer-sample.herokuapp.com/albums/4.json
 
-Both `page` and `resource` method takes an optional scope which allows us to enforce constraints:
+Both `page` and `resource` methods can have an optional scope allowing us to enforce arbitrary constraints:
 
 ```ruby
 AlbumSerializer.page(params, Albums.where("year < 1950"))
