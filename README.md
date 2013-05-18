@@ -72,12 +72,7 @@ This endpoint will live at a URL such as `/albums.json`.
 The `page` method takes an optional scope which allows us to enforce constraints:
 
 ```ruby
-class AlbumsController < ApplicationController
-  def index
-    scope = Albums.where("year < 1950")
-    render json: AlbumSerializer.page(params, scope)
-  end
-end
+AlbumSerializer.page(params, Albums.where("year < 1950"))
 ```
 
 ## Paging
