@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'restpack-serializer/version'
+require 'restpack_serializer/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "restpack-serializer"
+  gem.name          = "restpack_serializer"
   gem.version       = RestPack::Serializer::VERSION
   gem.authors       = ["Gavin Joyce"]
   gem.email         = ["gavinjoyce@gmail.com"]

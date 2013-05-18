@@ -1,5 +1,5 @@
 require 'bump/tasks'
-require_relative 'lib/restpack-serializer/version'
+require_relative 'lib/restpack_serializer/version'
 
 task :default => :test
 task :test => :spec
@@ -29,12 +29,12 @@ end
 
 namespace :gem do
   task :build do
-    sh "gem build restpack-serializer.gemspec"
+    sh "gem build restpack_serializer.gemspec"
   end
 
   task :push do
     require 'bump'
-    sh "gem push restpack-serializer-#{Bump::Bump.current}.gem"
+    sh "gem push restpack_serializer-#{Bump::Bump.current}.gem"
   end
 
   task :tag do

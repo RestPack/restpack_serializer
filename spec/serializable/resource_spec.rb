@@ -34,7 +34,7 @@ describe RestPack::Serializer::Resource do
     end
 
     #TODO: add specs for jsonapi error format when it has been standardised
-    # https://github.com/RestPack/restpack-serializer/issues/27
+    # https://github.com/RestPack/restpack_serializer/issues/27
     # https://github.com/json-api/json-api/issues/7
   end
 end

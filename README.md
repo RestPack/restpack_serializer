@@ -1,8 +1,8 @@
-# restpack-serializer [![Build Status](https://travis-ci.org/RestPack/restpack-serializer.png?branch=master)](https://travis-ci.org/RestPack/restpack-serializer) [![Code Climate](https://codeclimate.com/github/RestPack/restpack-serializer.png)](https://codeclimate.com/github/RestPack/restpack-serializer) [![Dependency Status](https://gemnasium.com/RestPack/restpack-serializer.png)](https://gemnasium.com/RestPack/restpack-serializer) [![Gem Version](https://badge.fury.io/rb/restpack-serializer.png)](http://badge.fury.io/rb/restpack-serializer)
+# restpack_serializer [![Build Status](https://travis-ci.org/RestPack/restpack_serializer.png?branch=master)](https://travis-ci.org/RestPack/restpackserializer) [![Code Climate](https://codeclimate.com/github/RestPack/restpack_serializer.png)](https://codeclimate.com/github/RestPack/restpack_serializer) [![Dependency Status](https://gemnasium.com/RestPack/restpack_serializer.png)](https://gemnasium.com/RestPack/restpack_serializer) [![Gem Version](https://badge.fury.io/rb/restpack_serializer.png)](http://badge.fury.io/rb/restpack_serializer)
 
 **Model serialization, paging, side-loading and filtering**
 
-restpack-serializer allows you to quickly provide a set of RESTful endpoints for your application. It is an implementation of the emerging [JSON API](http://jsonapi.org/) standard.
+restpack_serializer allows you to quickly provide a set of RESTful endpoints for your application. It is an implementation of the emerging [JSON API](http://jsonapi.org/) standard.
 
 > [Live Demo of RestPack Serializer](http://restpack-serializer-sample.herokuapp.com/)
 
@@ -24,7 +24,7 @@ class Album < ActiveRecord::Base
 end
 ```
 
-restpack-serializer allows us to define a corresponding serializer:
+restpack_serializer allows us to define a corresponding serializer:
 
 ```ruby
 class AlbumSerializer
@@ -58,7 +58,7 @@ class AlbumsController < ApplicationController
   def index
     render json: AlbumSerializer.page(params)
   end
-  
+
   def show
     render json: AlbumSerializer.resource(params)
   end
