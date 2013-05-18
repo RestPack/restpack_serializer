@@ -78,6 +78,7 @@ class AlbumsController < ApplicationController
     render json: AlbumSerializer.page(params, scope)
   end
 end
+```
 
 ## Paging
 
