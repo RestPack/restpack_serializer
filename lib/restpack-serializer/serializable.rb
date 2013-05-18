@@ -2,6 +2,7 @@ require 'active_support/concern'
 require_relative "options"
 require_relative "serializable/attributes"
 require_relative "serializable/paging"
+require_relative "serializable/resource"
 require_relative "serializable/side_loading"
 
 module RestPack
@@ -9,6 +10,7 @@ module RestPack
     extend ActiveSupport::Concern
 
     include RestPack::Serializer::Paging
+    include RestPack::Serializer::Resource
     include RestPack::Serializer::Attributes
     include RestPack::Serializer::SideLoading
 
