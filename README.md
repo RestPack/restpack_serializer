@@ -55,21 +55,26 @@ This serailizer produces JSON in the format:
 
 ## Exposing an API
 
-The `AlbumSerializer` provides a `page` method which can been used to provide a paged GET collection endpoint.
+The `AlbumSerializer` provides `page` and `resource` method which provide paged collection and singular resource GET endpoints.
 
 ```ruby
 class AlbumsController < ApplicationController
   def index
     render json: AlbumSerializer.page(params)
   end
+  
+  def show
+    render json: AlbumSerializer.resource(params)
+  end
 end
 ```
 
-This endpoint will live at a URL such as `/albums.json`.
+These endpoint will live at URLs such as `/albums.json` and `/albums/142857.json`:
 
-**Demo:** http://restpack-serializer-sample.herokuapp.com/albums.json
+* http://restpack-serializer-sample.herokuapp.com/albums.json
+* http://restpack-serializer-sample.herokuapp.com/albums/4.json
 
-The `page` method takes an optional scope which allows us to enforce constraints:
+Both `page` and `resource` methods can have an optional scope allowing us to enforce arbitrary constraints:
 
 ```ruby
 AlbumSerializer.page(params, Albums.where("year < 1950"))
