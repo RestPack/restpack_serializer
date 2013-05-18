@@ -4,10 +4,11 @@
 
 restpack-serializer allows you to quickly provide a set of RESTful endpoints for your application. It is an implementation of the emerging [JSON API](http://jsonapi.org/) standard.
 
+> [Live Demo of RestPack Serializer](http://restpack-serializer-sample.herokuapp.com/)
+
 ---
 
 * [An overview of RestPack](http://goo.gl/rGoIQ)
-* [Live restpack-serializer demo](http://restpack-serializer-sample.herokuapp.com/)
 * [JSON API](http://jsonapi.org/)
 
 ## Serialization
