@@ -37,19 +37,15 @@ class AlbumSerializer
 end
 ```
 
-This serailizer produces JSON in the format:
+`AlbumSerializer.as_json(album)` produces:
 
 ```javascript
 {
-    "albums": [
-        {
-            "id": "1",
-            "title": "Kid A",
-            "year": 2000,
-            "artist_id": 1,
-            "href": "/albums/1.json"
-        }
-    ]
+  "id": "1",
+  "title": "Kid A",
+  "year": 2000,
+  "artist_id": 1,
+  "href": "/albums/1.json"
 }
 ```
 
