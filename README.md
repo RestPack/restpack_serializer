@@ -2,14 +2,13 @@
 
 **Model serialization, paging, side-loading and filtering**
 
----
+restpack-serializer allows you to quickly provide a set of RESTful endpoints for your application. It is an implementation of the emerging [JSON API](http://jsonapi.org/) standard.
 
-**This is a work in progress**
+---
 
 * [An overview of RestPack](http://goo.gl/rGoIQ)
 * [Live restpack-serializer demo](http://restpack-serializer-sample.herokuapp.com/)
-
-**EDIT**: [JSON API](http://jsonapi.org/) has just been released. I'm working on implementing its specification.
+* [JSON API](http://jsonapi.org/)
 
 ## Serialization
 
