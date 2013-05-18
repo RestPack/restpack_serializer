@@ -13,7 +13,7 @@
 
 ## Serialization
 
-Let's say we have an ```Album``` model:
+Let's say we have an `Album` model:
 
 ```ruby
 class Album < ActiveRecord::Base
@@ -55,7 +55,7 @@ This serailizer produces JSON in the format:
 
 ## Exposing an API
 
-The ```AlbumSerializer``` provides a ```page``` method which can been used to provide a paged GET collection endpoint.
+The `AlbumSerializer` provides a `page` method which can been used to provide a paged GET collection endpoint.
 
 ```ruby
 class AlbumsController < ApplicationController
@@ -65,18 +65,28 @@ class AlbumsController < ApplicationController
 end
 ```
 
-This endpoint will live at a URL such as ```/albums.json```.
+This endpoint will live at a URL such as `/albums.json`.
 
 **Demo:** http://restpack-serializer-sample.herokuapp.com/albums.json
 
+The `page` method takes an optional scope which allows us to enforce constraints:
+
+```ruby
+class AlbumsController < ApplicationController
+  def index
+    scope = Albums.where("year < 1950")
+    render json: AlbumSerializer.page(params, scope)
+  end
+end
+
 ## Paging
 
-Collections are paged by default. ```page``` and ```page_size``` parameters are available:
+Collections are paged by default. `page` and `page_size` parameters are available:
 
 * http://restpack-serializer-sample.herokuapp.com/songs.json?page=2
 * http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3
 
-Paging details are included in a ```meta``` attribute:
+Paging details are included in a `meta` attribute:
 
 http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yields:
 
@@ -156,7 +166,7 @@ class AlbumSerializer
 end
 ```
 
-In this example, we are allowing related ```songs``` and ```artists``` to be included in API responses. Side-loads can be specifed by using the ```includes``` parameter:
+In this example, we are allowing related `songs` and `artists` to be included in API responses. Side-loads can be specifed by using the `includes` parameter:
 
 #### No side-loads
 
@@ -266,7 +276,7 @@ which yields:
 
 * http://restpack-serializer-sample.herokuapp.com/albums.json?includes=songs
 
-An album ```:has_many``` songs, so the side-loads are paged. We'll be soon adding URLs to the response meta data which will point to the next page of side-loaded data. These URLs will be something like:
+An album `:has_many` songs, so the side-loads are paged. We'll be soon adding URLs to the response meta data which will point to the next page of side-loaded data. These URLs will be something like:
 
 * http://restpack-serializer-sample.herokuapp.com/songs.json?album_ids=1,2,3,4&page=2
 
