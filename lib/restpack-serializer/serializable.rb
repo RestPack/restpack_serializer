@@ -48,6 +48,10 @@ module RestPack
     end
 
     module ClassMethods
+      def as_json(model, options = {})
+        new.as_json(model, options)
+      end
+
       def model_name
         self.name.chomp('Serializer')
       end

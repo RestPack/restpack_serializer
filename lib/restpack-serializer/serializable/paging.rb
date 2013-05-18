@@ -34,7 +34,7 @@ module RestPack::Serializer::Paging
     private
 
     def serialize_page(page)
-      page.map { |model| self.new.as_json(model) }
+      page.map { |model| self.as_json(model) }
     end
 
     def serialize_meta(page, options)

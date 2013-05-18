@@ -14,6 +14,12 @@ begin
 rescue LoadError
 end
 
+namespace :test do
+  task :irb do
+    exec "irb -r ./spec/spec_helper.rb"
+  end
+end
+
 task :gem do
   Rake::Task["gem:bump"].invoke
   Rake::Task["gem:tag"].invoke

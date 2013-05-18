@@ -38,7 +38,7 @@ describe RestPack::Serializer::SideLoading do
 
           it "returns side-loaded albums" do
             side_loads.should == {
-              albums: [AlbumSerializer.new.as_json(Song.first.album)],
+              albums: [AlbumSerializer.as_json(Song.first.album)],
               meta: { }
             }
           end
@@ -58,8 +58,8 @@ describe RestPack::Serializer::SideLoading do
           it "returns side-loaded albums" do
             side_loads.should == {
               albums: [
-                AlbumSerializer.new.as_json(song1.album),
-                AlbumSerializer.new.as_json(song2.album)
+                AlbumSerializer.as_json(song1.album),
+                AlbumSerializer.as_json(song2.album)
               ],
               :meta => { }
             }

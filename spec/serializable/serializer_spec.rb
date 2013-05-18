@@ -23,7 +23,7 @@ describe RestPack::Serializer do
     end
 
     it "serializes to an empty hash" do
-      EmptySerializer.new.as_json(person).should == { }
+      EmptySerializer.as_json(person).should == { }
     end
   end
 
