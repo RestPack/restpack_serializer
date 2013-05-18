@@ -2,8 +2,8 @@ module RestPack::Serializer::Paging
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def page(params = {})
-      page_with_options RestPack::Serializer::Options.new(self.model_class, params)
+    def page(params = {}, scope = nil)
+      page_with_options RestPack::Serializer::Options.new(self.model_class, params, scope)
     end
 
     def page_with_options(options)

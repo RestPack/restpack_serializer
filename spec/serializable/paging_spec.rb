@@ -119,7 +119,19 @@ describe RestPack::Serializer::Paging do
           page[:meta][:songs][:count].should == @album1.songs.length
         end
       end
+    end
 
+    context "with custom scope" do
+      before do
+        FactoryGirl.create(:album, year: 1930)
+        FactoryGirl.create(:album, year: 1948)
+      end
+      let(:page) { AlbumSerializer.page(params, scope) }
+      let(:scope) { Album.classic }
+
+      it "returns a page of scoped data" do
+        page[:meta][:albums][:count].should == 2
+      end
     end
   end
 
