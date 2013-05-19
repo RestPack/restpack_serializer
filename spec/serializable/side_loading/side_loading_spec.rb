@@ -51,7 +51,7 @@ describe RestPack::Serializer::SideLoading do
 
   describe "#links" do
     AlbumSerializer.links.should == {
-      "albums.artists" => {
+      "albums.artist" => {
         :href => "/artists/{albums.artist}.json",
         :type => :artists
       },
