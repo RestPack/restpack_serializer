@@ -131,11 +131,11 @@ http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yi
         }
     },
     "links": {
-        "songs.artists": {
+        "songs.artist": {
             "href": "/artists/{songs.artist}.json",
             "type": "artists"
         },
-        "songs.albums": {
+        "songs.album": {
             "href": "/albums/{songs.album}.json",
             "type": "albums"
         }
@@ -234,7 +234,7 @@ which yields:
             "href": "/songs.json?album_id={albums.id}",
             "type": "songs"
         },
-        "albums.artists": {
+        "albums.artist": {
             "href": "/artists/{albums.artist}.json",
             "type": "artists"
         },

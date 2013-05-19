@@ -25,8 +25,8 @@ describe RestPack::Serializer::Paging do
       end
       it "includes links" do
         page[:links].should == {
-          'songs.albums' => { :href => "/albums/{songs.album}.json", :type => :albums },
-          'songs.artists' => { :href => "/artists/{songs.artist}.json", :type => :artists }
+          'songs.album' => { :href => "/albums/{songs.album}.json", :type => :albums },
+          'songs.artist' => { :href => "/artists/{songs.artist}.json", :type => :artists }
         }
       end
     end
@@ -93,10 +93,10 @@ describe RestPack::Serializer::Paging do
         end
 
         it "includes links" do
-          page[:links]['songs.albums'].should_not == nil
-          page[:links]['songs.artists'].should_not == nil
+          page[:links]['songs.album'].should_not == nil
+          page[:links]['songs.artist'].should_not == nil
           page[:links]['albums.songs'].should_not == nil
-          page[:links]['albums.artists'].should_not == nil
+          page[:links]['albums.artist'].should_not == nil
           page[:links]['artists.songs'].should_not == nil
           page[:links]['artists.albums'].should_not == nil
         end

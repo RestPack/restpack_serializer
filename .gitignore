@@ -1,3 +1,4 @@
 *.gem
 *.db
 tmp
+/coverage
