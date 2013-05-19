@@ -1,4 +1,5 @@
-# restpack_serializer [![Build Status](https://travis-ci.org/RestPack/restpack_serializer.png?branch=master)](https://travis-ci.org/RestPack/restpack_serializer) [![Code Climate](https://codeclimate.com/github/RestPack/restpack_serializer.png)](https://codeclimate.com/github/RestPack/restpack_serializer) [![Dependency Status](https://gemnasium.com/RestPack/restpack_serializer.png)](https://gemnasium.com/RestPack/restpack_serializer) [![Gem Version](https://badge.fury.io/rb/restpack_serializer.png)](http://badge.fury.io/rb/restpack_serializer)
+# restpack_serializer
+[![Build Status](https://travis-ci.org/RestPack/restpack_serializer.png?branch=master)](https://travis-ci.org/RestPack/restpack_serializer) [![Code Climate](https://codeclimate.com/github/RestPack/restpack_serializer.png)](https://codeclimate.com/github/RestPack/restpack_serializer) [![Dependency Status](https://gemnasium.com/RestPack/restpack_serializer.png)](https://gemnasium.com/RestPack/restpack_serializer) [![Gem Version](https://badge.fury.io/rb/restpack_serializer.png)](http://badge.fury.io/rb/restpack_serializer) [![Coverage Status](https://coveralls.io/repos/RestPack/restpack_serializer/badge.png?branch=coveralls)](https://coveralls.io/r/RestPack/restpack_serializer?branch=coveralls)
 
 **Model serialization, paging, side-loading and filtering**
 
