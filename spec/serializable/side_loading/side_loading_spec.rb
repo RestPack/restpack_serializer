@@ -60,6 +60,13 @@ describe RestPack::Serializer::SideLoading do
         :type => :songs
       }
     }
+
+    it "applies custom RestPack::Serializer.href_prefix" do
+      original = RestPack::Serializer.href_prefix
+      RestPack::Serializer.href_prefix = "/api/v1"
+      AlbumSerializer.links["albums.artist"][:href].should == "/api/v1/artists/{albums.artist}.json"
+      RestPack::Serializer.href_prefix = original
+    end
   end
 
   describe "#filterable_by" do
