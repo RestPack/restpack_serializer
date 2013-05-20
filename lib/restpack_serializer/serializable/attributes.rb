@@ -1,6 +1,12 @@
 module RestPack::Serializer::Attributes
   extend ActiveSupport::Concern
 
+  module InstanceMethods
+    def default_href
+      "#{RestPack::Serializer.href_prefix}/#{@model.class.table_name}/#{@model.id}.json"
+    end
+  end
+
   module ClassMethods
     def serializable_attributes
       @serializable_attributes
@@ -23,7 +29,8 @@ module RestPack::Serializer::Attributes
     def define_attribute_method(name)
       unless method_defined?(name)
         define_method name do
-          value = @model.send(name)
+          value = self.default_href if name == :href
+          value ||= @model.send(name)
           value = value.to_s if name == :id
           value
         end

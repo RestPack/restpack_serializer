@@ -29,10 +29,10 @@ describe RestPack::Serializer do
 
   class PersonSerializer
     include RestPack::Serializer
-    attributes :id, :name, :url, :admin_info
+    attributes :id, :name, :description, :href, :admin_info
 
-    def url
-      "/api/v1/people/#{id}.json"
+    def description
+      "This is person ##{id}"
     end
 
     def admin_info
@@ -47,14 +47,14 @@ describe RestPack::Serializer do
   describe ".as_json" do
     it "serializes specified attributes" do
       serializer.as_json(person).should == {
-        id: '123', name: 'Gavin', url: '/api/v1/people/123.json'
+        id: '123', name: 'Gavin', description: 'This is person #123', href: '/people/123.json'
       }
     end
 
     context "with options" do
       it "excludes specified attributes" do
-        serializer.as_json(person, { include_url?: false }).should == {
-          id: '123', name: 'Gavin'
+        serializer.as_json(person, { include_description?: false }).should == {
+          id: '123', name: 'Gavin', href: '/people/123.json'
         }
       end
 
