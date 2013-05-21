@@ -48,7 +48,7 @@ end
 
 ## Exposing an API
 
-The `AlbumSerializer` provides `page` and `resource` method which provide paged collection and singular resource GET endpoints.
+The `AlbumSerializer` provides `page` and `resource` methods which provide paged collection and singular resource GET endpoints.
 
 ```ruby
 class AlbumsController < ApplicationController
