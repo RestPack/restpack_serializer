@@ -12,6 +12,8 @@ describe RestPack::Serializer::Options do
     it { subject.page_size.should == 10 }
     it { subject.filters.should == {} }
     it { subject.scope.should == Song.scoped }
+    it { subject.default_page_size?.should == true }
+    it { subject.filters_as_url_params.should == '' }
   end
 
   describe 'with paging params' do
@@ -33,22 +35,27 @@ describe RestPack::Serializer::Options do
     describe 'with a primary key with a single value' do
       let(:params) { { 'id' => '142857' } }
       it { subject.filters.should == { id: ['142857'] } }
+      it { subject.filters_as_url_params.should == 'id=142857' }
     end
     describe 'with a primary key with multiple values' do
       let(:params) { { 'ids' => '42,142857' } }
       it { subject.filters.should == { id: ['42', '142857'] } }
+      it { subject.filters_as_url_params.should == 'id=42,142857' }
     end
     describe 'with a foreign key with a single value' do
       let(:params) { { 'album_id' => '789' } }
       it { subject.filters.should == { album_id: ['789'] } }
+      it { subject.filters_as_url_params.should == 'album_id=789' }
     end
     describe 'with a foreign key with multiple values' do
       let(:params) { { 'album_id' => '789,678,567' } }
       it { subject.filters.should == { album_id: ['789', '678', '567'] } }
+      it { subject.filters_as_url_params.should == 'album_id=789,678,567' }
     end
     describe 'with multiple foreign keys' do
       let(:params) { { 'album_id' => '111,222', 'artist_id' => '888,999' } }
       it { subject.filters.should == { album_id: ['111', '222'], artist_id: ['888', '999'] } }
+      it { subject.filters_as_url_params.should == 'album_id=111,222&artist_id=888,999' }
     end
   end
 

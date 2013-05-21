@@ -21,7 +21,9 @@ describe RestPack::Serializer::Paging do
         page[:meta][:songs][:count].should == 18
         page[:meta][:songs][:page_count].should == 2
         page[:meta][:songs][:previous_page].should == nil
+        page[:meta][:songs][:previous_href].should == nil
         page[:meta][:songs][:next_page].should == 2
+        page[:meta][:songs][:next_href].should == '/songs.json?page=2'
       end
       it "includes links" do
         page[:links].should == {
@@ -36,6 +38,10 @@ describe RestPack::Serializer::Paging do
       it "returns custom page sizes" do
         page[:meta][:songs][:page_size].should == 3
         page[:meta][:songs][:page_count].should == 6
+      end
+      it "includes the custom page size in the page hrefs" do
+        page[:meta][:songs][:next_page].should == 2
+        page[:meta][:songs][:next_href].should == '/songs.json?page=2&page_size=3'
       end
     end
 
@@ -71,6 +77,7 @@ describe RestPack::Serializer::Paging do
         page[:meta][:songs][:page].should == 2
         page[:meta][:songs][:previous_page].should == 1
         page[:meta][:songs][:next_page].should == nil
+        page[:meta][:songs][:previous_href].should == '/songs.json'
       end
     end
 
@@ -85,11 +92,19 @@ describe RestPack::Serializer::Paging do
         page[:meta][:songs][:includes].should == [:albums]
       end
 
+      it "includes the side-loads in page hrefs" do
+        page[:meta][:songs][:next_href].should == '/songs.json?page=2&includes=albums'
+      end
+
       context "with includes as comma delimited string" do
         let(:params) { { includes: "albums,artists" } }
         it "includes side-loaded models" do
           page[:albums].should_not == nil
           page[:artists].should_not == nil
+        end
+
+        it "includes the side-loads in page hrefs" do
+          page[:meta][:songs][:next_href].should == '/songs.json?page=2&includes=albums,artists'
         end
 
         it "includes links" do
@@ -117,6 +132,10 @@ describe RestPack::Serializer::Paging do
 
         it "returns a page with songs from album1" do
           page[:meta][:songs][:count].should == @album1.songs.length
+        end
+
+        it "includes the filter in page hrefs" do
+          page[:meta][:songs][:next_href].should == "/songs.json?page=2&album_id=#{@album1.id}"
         end
       end
     end
