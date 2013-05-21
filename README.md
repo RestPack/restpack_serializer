@@ -98,7 +98,7 @@ http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yi
         },
         {
             "id": "5",
-            "title": "Treedfingers",
+            "title": "Treefingers",
             "href": "/songs/5.json",
             "links": {
                 "artist": "1",
