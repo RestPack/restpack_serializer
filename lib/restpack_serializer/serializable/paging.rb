@@ -48,7 +48,25 @@ module RestPack::Serializer::Paging
       meta[:page_count] = ((page.total_entries - 1) / options.page_size) + 1
       meta[:previous_page] = meta[:page] > 1 ? meta[:page] - 1 : nil
       meta[:next_page] = meta[:page] < meta[:page_count] ? meta[:page] + 1 : nil
+
+      meta[:previous_href] = page_href(meta[:previous_page], options)
+      meta[:next_href] = page_href(meta[:next_page], options)
       meta
+    end
+
+    def page_href(page, options)
+      return nil unless page
+
+      url = "#{RestPack::Serializer.href_prefix}/#{self.key}.json"
+
+      params = []
+      params << "page=#{page}" unless page == 1
+      params << "page_size=#{options.page_size}" unless options.default_page_size?
+      params << "includes=#{options.includes.join(',')}" if options.includes.any?
+      params << options.filters_as_url_params if options.filters.any?
+
+      url += '?' + params.join('&') if params.any?
+      url
     end
   end
 end

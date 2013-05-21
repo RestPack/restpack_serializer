@@ -1,10 +1,8 @@
 module RestPack::Serializer::Attributes
   extend ActiveSupport::Concern
 
-  module InstanceMethods
-    def default_href
-      "#{RestPack::Serializer.href_prefix}/#{@model.class.table_name}/#{@model.id}.json"
-    end
+  def default_href
+    "#{RestPack::Serializer.href_prefix}/#{@model.class.table_name}/#{@model.id}.json"
   end
 
   module ClassMethods
