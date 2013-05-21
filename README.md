@@ -31,10 +31,6 @@ restpack_serializer allows us to define a corresponding serializer:
 class AlbumSerializer
   include RestPack::Serializer
   attributes :id, :title, :year, :artist_id, :href
-
-  def href
-    "/albums/#{id}.json"
-  end
 end
 ```
 
@@ -71,7 +67,7 @@ These endpoint will live at URLs such as `/albums.json` and `/albums/142857.json
 * http://restpack-serializer-sample.herokuapp.com/albums.json
 * http://restpack-serializer-sample.herokuapp.com/albums/4.json
 
-Both `page` and `resource` methods can have an optional scope allowing us to enforce arbitrary constraints:
+Both `page` and `resource` methods take an optional scope argument allowing us to enforce arbitrary constraints:
 
 ```ruby
 AlbumSerializer.page(params, Albums.where("year < 1950"))
@@ -127,7 +123,9 @@ http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yi
             "includes": [],
             "page_count": 14,
             "previous_page": 1,
-            "next_page": 3
+            "next_page": 3,
+            "previous_href": "/api/v1/songs.json?page_size=3",
+            "next_href": "/api/v1/songs.json?page=3&page_size=3"
         }
     },
     "links": {
@@ -156,11 +154,8 @@ Side-loading allows related resources to be optionally included in a single API 
 class AlbumSerializer
   include RestPack::Serializer
   attributes :id, :title, :year, :artist_id, :href
+  
   can_include :songs, :artists
-
-  def href
-    "/albums/#{id}.json"
-  end
 end
 ```
 
@@ -226,7 +221,9 @@ which yields:
             ],
             "page_count": 1,
             "previous_page": null,
-            "next_page": null
+            "next_page": null,
+            "previous_href": null,
+            "next_href": null
         }
     },
     "links": {
