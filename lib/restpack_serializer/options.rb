@@ -2,13 +2,11 @@ module RestPack::Serializer
   class Options
     attr_accessor :page, :page_size, :includes, :filters, :model_class, :scope, :include_links
 
-    DEFAULT_PAGE_SIZE = 10
-
     def initialize(model_class, params = {}, scope = nil)
       params.symbolize_keys! if params.respond_to?(:symbolize_keys!)
 
       @page = 1
-      @page_size = DEFAULT_PAGE_SIZE
+      @page_size = RestPack::Serializer.config.page_size
       @includes = []
       @filters = filters_from_params(params, model_class)
       @model_class = model_class
@@ -34,7 +32,7 @@ module RestPack::Serializer
     end
 
     def default_page_size?
-      @page_size == DEFAULT_PAGE_SIZE
+      @page_size == RestPack::Serializer.config.page_size
     end
 
     def filters_as_url_params
