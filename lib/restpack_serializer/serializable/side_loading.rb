@@ -45,7 +45,7 @@ module RestPack::Serializer::SideLoading
         end
 
         links[link_key] = {
-          :href => RestPack::Serializer.href_prefix + href,
+          :href => RestPack::Serializer.config.href_prefix + href,
           :type => association.plural_name.to_sym
         }
       end
