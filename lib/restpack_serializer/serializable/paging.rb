@@ -57,7 +57,7 @@ module RestPack::Serializer::Paging
     def page_href(page, options)
       return nil unless page
 
-      url = "#{RestPack::Serializer.href_prefix}/#{self.key}.json"
+      url = "#{RestPack::Serializer.config.href_prefix}/#{self.key}.json"
 
       params = []
       params << "page=#{page}" unless page == 1
