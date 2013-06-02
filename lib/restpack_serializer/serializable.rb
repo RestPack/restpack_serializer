@@ -37,7 +37,10 @@ module RestPack
       self.class.associations.each do |association|
         if association.macro == :belongs_to
           data[:links] ||= {}
-          data[:links][association.name.to_sym] = model.send(association.foreign_key).to_s
+          foreign_key_value = model.send(association.foreign_key)
+          if foreign_key_value
+            data[:links][association.name.to_sym] = foreign_key_value.to_s
+          end
         end
       end
       data

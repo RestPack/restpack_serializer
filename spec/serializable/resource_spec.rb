@@ -37,4 +37,13 @@ describe RestPack::Serializer::Resource do
     # https://github.com/RestPack/restpack_serializer/issues/27
     # https://github.com/json-api/json-api/issues/7
   end
+
+  describe "song with no artist" do
+    let(:song) { FactoryGirl.create(:song, :artist => nil) }
+    let(:resource) { SongSerializer.resource(id: song.id.to_s) }
+
+    it "should not have an artist link" do
+      resource[:songs][0][:links].keys.should_not include(:artist)
+    end
+  end
 end
