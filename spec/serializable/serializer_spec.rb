@@ -42,19 +42,27 @@ describe RestPack::Serializer do
     def include_admin_info?
       @options[:is_admin?]
     end
+
+    def custom_attributes
+      {
+        :custom_key => "custom value for model id #{@model.id}"
+      }
+    end
   end
 
   describe ".as_json" do
     it "serializes specified attributes" do
       serializer.as_json(person).should == {
-        id: '123', name: 'Gavin', description: 'This is person #123', href: '/people/123.json'
+        id: '123', name: 'Gavin', description: 'This is person #123',
+        href: '/people/123.json', custom_key: 'custom value for model id 123'
       }
     end
 
     context "with options" do
       it "excludes specified attributes" do
         serializer.as_json(person, { include_description?: false }).should == {
-          id: '123', name: 'Gavin', href: '/people/123.json'
+          id: '123', name: 'Gavin', href: '/people/123.json',
+          custom_key: 'custom value for model id 123'
         }
       end
 
