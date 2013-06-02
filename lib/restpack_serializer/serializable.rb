@@ -26,12 +26,22 @@ module RestPack
         end
       end
 
+      add_custom_attributes(data)
       add_links(model, data)
 
       data
     end
 
+    def custom_attributes
+      {}
+    end
+
     private
+
+    def add_custom_attributes(data)
+      custom = custom_attributes
+      data.merge!(custom) if custom
+    end
 
     def add_links(model, data)
       self.class.associations.each do |association|
