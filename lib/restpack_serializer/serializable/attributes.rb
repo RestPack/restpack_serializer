@@ -40,7 +40,7 @@ module RestPack::Serializer::Attributes
 
       unless method_defined?(method)
         define_method method do
-          @options[method].nil? || @options[method]
+          @context[method].nil? || @context[method]
         end
       end
     end

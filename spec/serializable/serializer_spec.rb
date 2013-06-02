@@ -40,7 +40,7 @@ describe RestPack::Serializer do
     end
 
     def include_admin_info?
-      @options[:is_admin?]
+      @context[:is_admin?]
     end
 
     def custom_attributes

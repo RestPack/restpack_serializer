@@ -16,8 +16,8 @@ module RestPack
 
     class InvalidInclude < Exception; end
 
-    def as_json(model, options = {})
-      @model, @options = model, options
+    def as_json(model, context = {})
+      @model, @context = model, context
 
       data = {}
       if self.class.serializable_attributes.present?
@@ -61,8 +61,8 @@ module RestPack
     end
 
     module ClassMethods
-      def as_json(model, options = {})
-        new.as_json(model, options)
+      def as_json(model, context = {})
+        new.as_json(model, context)
       end
 
       def model_name
