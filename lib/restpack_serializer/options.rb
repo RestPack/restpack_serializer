@@ -1,15 +1,16 @@
 module RestPack::Serializer
   class Options
-    attr_accessor :page, :page_size, :includes, :filters, :model_class, :scope, :include_links
+    attr_accessor :page, :page_size, :includes, :filters, :serializer, :model_class, :scope, :include_links
 
-    def initialize(model_class, params = {}, scope = nil)
+    def initialize(serializer, params = {}, scope = nil)
       params.symbolize_keys! if params.respond_to?(:symbolize_keys!)
 
       @page = 1
       @page_size = RestPack::Serializer.config.page_size
       @includes = []
-      @filters = filters_from_params(params, model_class)
-      @model_class = model_class
+      @filters = filters_from_params(params, serializer)
+      @serializer = serializer
+      @model_class = serializer.model_class
       @scope = scope || model_class.send(:scoped)
       @include_links = true
 
@@ -41,10 +42,9 @@ module RestPack::Serializer
 
     private
 
-    def filters_from_params(params, model_class)
-      serializer = RestPack::Serializer::Factory.create(model_class)
+    def filters_from_params(params, serializer)
       filters = {}
-      serializer.class.filterable_by.each do |filter|
+      serializer.filterable_by.each do |filter|
         [filter, "#{filter}s".to_sym].each do |key|
           filters[filter] = params[key].split(',') if params[key]
         end

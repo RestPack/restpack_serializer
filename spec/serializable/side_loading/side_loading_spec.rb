@@ -12,7 +12,7 @@ describe RestPack::Serializer::SideLoading do
         message = ":wrong is not a valid include for Song"
 
         expect do
-          SongSerializer.side_loads([Song.first], RestPack::Serializer::Options.new(Song, { "includes" => "wrong" }))
+          SongSerializer.side_loads([Song.first], RestPack::Serializer::Options.new(SongSerializer, { "includes" => "wrong" }))
         end.to raise_error(exception, message)
       end
     end
@@ -24,7 +24,7 @@ describe RestPack::Serializer::SideLoading do
         message = ":payments is not a valid include for Artist"
 
         expect do
-          ArtistSerializer.side_loads([payment.artist], RestPack::Serializer::Options.new(Artist, { "includes" => "payments" }))
+          ArtistSerializer.side_loads([payment.artist], RestPack::Serializer::Options.new(ArtistSerializer, { "includes" => "payments" }))
         end.to raise_error(exception, message)
       end
     end

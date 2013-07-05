@@ -3,7 +3,7 @@ module RestPack::Serializer::Paging
 
   module ClassMethods
     def page(params = {}, scope = nil)
-      page_with_options RestPack::Serializer::Options.new(self.model_class, params, scope)
+      page_with_options RestPack::Serializer::Options.new(self, params, scope)
     end
 
     def page_with_options(options)

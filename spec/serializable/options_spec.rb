@@ -1,7 +1,7 @@
 require './spec/spec_helper'
 
 describe RestPack::Serializer::Options do
-  let(:subject) { RestPack::Serializer::Options.new(Song, params, scope) }
+  let(:subject) { RestPack::Serializer::Options.new(SongSerializer, params, scope) }
   let(:params) { {} }
   let(:scope) { nil }
 

@@ -3,7 +3,7 @@ module RestPack::Serializer::Resource
 
   module ClassMethods
     def resource(params = {}, scope = nil)
-      page_with_options RestPack::Serializer::Options.new(self.model_class, params, scope)
+      page_with_options RestPack::Serializer::Options.new(self, params, scope)
     end
   end
 end
