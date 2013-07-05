@@ -90,9 +90,26 @@ describe RestPack::Serializer do
     end
   end
 
-  describe "#model_name" do
-    it "extracted the Model name from the Serializer name" do
-      PersonSerializer.model_name.should == "Person"
+  describe "#model_class_name" do
+    it "extractes the Model name from the Serializer name" do
+      PersonSerializer.model_class_name.should == "Person"
+    end
+
+    context "with namespaced model class name" do
+      module SomeNamespace
+        class Model
+        end
+      end
+
+      class NamespacedSerializer
+        include RestPack::Serializer
+        set_model_class SomeNamespace::Model
+      end
+
+      it "return the correct class" do
+        NamespacedSerializer.model_class_name.should == "SomeNamespace::Model"
+        NamespacedSerializer.model_class.should == SomeNamespace::Model
+      end
     end
   end
 

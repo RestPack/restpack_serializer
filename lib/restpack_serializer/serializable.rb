@@ -65,12 +65,16 @@ module RestPack
         new.as_json(model, context)
       end
 
-      def model_name
-        self.name.chomp('Serializer')
+      def set_model_class(klass)
+        @model_class_name = klass.to_s
+      end
+
+      def model_class_name
+        @model_class_name || self.name.chomp('Serializer')
       end
 
       def model_class
-        model_name.constantize
+        model_class_name.constantize
       end
 
       def key
