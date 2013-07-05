@@ -61,24 +61,17 @@ module RestPack
     end
 
     module ClassMethods
+      attr_accessor :model_class, :key
       def as_json(model, context = {})
         new.as_json(model, context)
       end
 
-      def set_model_class(klass)
-        @model_class_name = klass.to_s
-      end
-
-      def model_class_name
-        @model_class_name || self.name.chomp('Serializer')
-      end
-
       def model_class
-        model_class_name.constantize
+        @model_class || self.name.chomp('Serializer').constantize
       end
 
       def key
-        self.model_class.send(:table_name).to_sym
+        (@key || self.model_class.send(:table_name)).to_sym
       end
 
     end

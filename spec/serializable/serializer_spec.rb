@@ -90,12 +90,12 @@ describe RestPack::Serializer do
     end
   end
 
-  describe "#model_class_name" do
-    it "extractes the Model name from the Serializer name" do
-      PersonSerializer.model_class_name.should == "Person"
+  describe "#model_class" do
+    it "extracts the Model name from the Serializer name" do
+      PersonSerializer.model_class.should == Person
     end
 
-    context "with namespaced model class name" do
+    context "with namespaced model class" do
       module SomeNamespace
         class Model
         end
@@ -103,25 +103,29 @@ describe RestPack::Serializer do
 
       class NamespacedSerializer
         include RestPack::Serializer
-        set_model_class SomeNamespace::Model
+        self.model_class = SomeNamespace::Model
       end
 
-      it "return the correct class" do
-        NamespacedSerializer.model_class_name.should == "SomeNamespace::Model"
+      it "returns the correct class" do
         NamespacedSerializer.model_class.should == SomeNamespace::Model
       end
-    end
-  end
-
-  describe "#model_class" do
-    it "returns the correct class" do
-      PersonSerializer.model_class.should == Person
     end
   end
 
   describe "#key" do
     it "returns the correct key" do
       PersonSerializer.key.should == :people
+    end
+
+    context "with custom key" do
+      class SerializerWithCustomKey
+        include RestPack::Serializer
+        self.key = :custom_key
+      end
+
+      it "returns the correct key" do
+        SerializerWithCustomKey.key.should == :custom_key
+      end
     end
   end
 end

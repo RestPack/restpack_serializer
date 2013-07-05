@@ -154,7 +154,7 @@ Side-loading allows related resources to be optionally included in a single API 
 class AlbumSerializer
   include RestPack::Serializer
   attributes :id, :title, :year, :artist_id, :href
-  
+
   can_include :songs, :artists
 end
 ```
