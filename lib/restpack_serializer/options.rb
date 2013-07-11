@@ -11,7 +11,7 @@ module RestPack::Serializer
       @filters = filters_from_params(params, serializer)
       @serializer = serializer
       @model_class = serializer.model_class
-      @scope = scope || model_class.send(:scoped)
+      @scope = scope || model_class.send(:all)
       @include_links = true
 
       @page = params[:page].to_i if params[:page]

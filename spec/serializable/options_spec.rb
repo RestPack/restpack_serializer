@@ -11,7 +11,7 @@ describe RestPack::Serializer::Options do
     it { subject.page.should == 1 }
     it { subject.page_size.should == 10 }
     it { subject.filters.should == {} }
-    it { subject.scope.should == Song.scoped }
+    it { subject.scope.should == Song.all }
     it { subject.default_page_size?.should == true }
     it { subject.filters_as_url_params.should == '' }
   end
@@ -61,7 +61,7 @@ describe RestPack::Serializer::Options do
 
   context 'scopes' do
     describe 'with default scope' do
-      it { subject.scope.should == Song.scoped }
+      it { subject.scope.should == Song.all }
     end
 
     describe 'with custom scope' do
