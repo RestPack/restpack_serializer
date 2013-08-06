@@ -21,6 +21,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'activesupport', '~> 4.0'
   gem.add_dependency 'protected_attributes', '~> 1.0.3'
   gem.add_dependency 'will_paginate', '~> 3.0'
+  gem.add_dependency 'restpack_gem', '~> 0.0.9'
 
   gem.add_development_dependency 'rake', '~> 10.0.3'
   gem.add_development_dependency 'rspec', '~> 2.12'
@@ -29,5 +30,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'factory_girl', '~> 4.2.0'
   gem.add_development_dependency 'sqlite3', '~> 1.3.7'
   gem.add_development_dependency 'database_cleaner', '~> 1.0.1'
+  gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'bump'
 end
