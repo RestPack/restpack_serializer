@@ -7,10 +7,12 @@ class RestPack::Serializer::Factory
   private
 
   def self.classify(identifier)
-    begin
-      "#{identifier}Serializer".classify.constantize.new
-    rescue
-      "#{identifier.to_s.singularize.to_sym}Serializer".classify.constantize.new
+    normalised_identifier = identifier.to_s.downcase
+    [normalised_identifier, normalised_identifier.singularize].each do |format|
+      klass = RestPack::Serializer.class_map[format]
+      return klass.new if klass
     end
+
+    raise "Invalid RestPack::Serializer : #{identifier}"
   end
 end

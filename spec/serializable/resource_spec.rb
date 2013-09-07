@@ -6,7 +6,7 @@ describe RestPack::Serializer::Resource do
     @song = @album.songs.first
   end
 
-  let(:resource) { SongSerializer.resource(params) }
+  let(:resource) { MyApp::SongSerializer.resource(params) }
   let(:params) { { id: @song.id.to_s } }
 
   it "returns a resource by id" do
@@ -40,7 +40,7 @@ describe RestPack::Serializer::Resource do
 
   describe "song with no artist" do
     let(:song) { FactoryGirl.create(:song, :artist => nil) }
-    let(:resource) { SongSerializer.resource(id: song.id.to_s) }
+    let(:resource) { MyApp::SongSerializer.resource(id: song.id.to_s) }
 
     it "should not have an artist link" do
       resource[:songs][0][:links].keys.should_not include(:artist)

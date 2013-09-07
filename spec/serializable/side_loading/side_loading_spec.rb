@@ -9,10 +9,10 @@ describe RestPack::Serializer::SideLoading do
     context "an include to an inexistent model" do
       it "raises an exception" do
         exception = RestPack::Serializer::InvalidInclude
-        message = ":wrong is not a valid include for Song"
+        message = ":wrong is not a valid include for MyApp::Song"
 
         expect do
-          SongSerializer.side_loads([Song.first], RestPack::Serializer::Options.new(SongSerializer, { "includes" => "wrong" }))
+          MyApp::SongSerializer.side_loads([MyApp::Song.first], RestPack::Serializer::Options.new(MyApp::SongSerializer, { "includes" => "wrong" }))
         end.to raise_error(exception, message)
       end
     end
@@ -21,10 +21,10 @@ describe RestPack::Serializer::SideLoading do
       it "raises an exception" do
         payment = FactoryGirl.create(:payment)
         exception = RestPack::Serializer::InvalidInclude
-        message = ":payments is not a valid include for Artist"
+        message = ":payments is not a valid include for MyApp::Artist"
 
         expect do
-          ArtistSerializer.side_loads([payment.artist], RestPack::Serializer::Options.new(ArtistSerializer, { "includes" => "payments" }))
+          MyApp::ArtistSerializer.side_loads([payment.artist], RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { "includes" => "payments" }))
         end.to raise_error(exception, message)
       end
     end
@@ -50,7 +50,7 @@ describe RestPack::Serializer::SideLoading do
   end
 
   describe "#links" do
-    AlbumSerializer.links.should == {
+    MyApp::AlbumSerializer.links.should == {
       "albums.artist" => {
         :href => "/artists/{albums.artist}.json",
         :type => :artists
@@ -64,7 +64,7 @@ describe RestPack::Serializer::SideLoading do
     it "applies custom RestPack::Serializer.config.href_prefix" do
       original = RestPack::Serializer.config.href_prefix
       RestPack::Serializer.config.href_prefix = "/api/v1"
-      AlbumSerializer.links["albums.artist"][:href].should == "/api/v1/artists/{albums.artist}.json"
+      MyApp::AlbumSerializer.links["albums.artist"][:href].should == "/api/v1/artists/{albums.artist}.json"
       RestPack::Serializer.config.href_prefix = original
     end
   end
@@ -72,17 +72,17 @@ describe RestPack::Serializer::SideLoading do
   describe "#filterable_by" do
     context "a model with no :belongs_to relations" do
       it "is filterable by :id only" do
-        ArtistSerializer.filterable_by.should == [:id]
+        MyApp::ArtistSerializer.filterable_by.should == [:id]
       end
     end
     context "a model with a single :belongs_torelations" do
       it "is filterable by primary key and foreign keys" do
-        AlbumSerializer.filterable_by.should =~ [:id, :artist_id]
+        MyApp::AlbumSerializer.filterable_by.should =~ [:id, :artist_id]
       end
     end
     context "a model with multiple :belongs_to relations" do
       it "is filterable by primary key and foreign keys" do
-        SongSerializer.filterable_by.should =~ [:id, :artist_id, :album_id]
+        MyApp::SongSerializer.filterable_by.should =~ [:id, :artist_id, :album_id]
       end
     end
   end

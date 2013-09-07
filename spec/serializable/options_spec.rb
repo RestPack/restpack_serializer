@@ -1,17 +1,17 @@
 require './spec/spec_helper'
 
 describe RestPack::Serializer::Options do
-  let(:subject) { RestPack::Serializer::Options.new(SongSerializer, params, scope) }
+  let(:subject) { RestPack::Serializer::Options.new(MyApp::SongSerializer, params, scope) }
   let(:params) { {} }
   let(:scope) { nil }
 
   describe 'default values' do
-    it { subject.model_class.should == Song }
+    it { subject.model_class.should == MyApp::Song }
     it { subject.includes.should == [] }
     it { subject.page.should == 1 }
     it { subject.page_size.should == 10 }
     it { subject.filters.should == {} }
-    it { subject.scope.should == Song.all }
+    it { subject.scope.should == MyApp::Song.all }
     it { subject.default_page_size?.should == true }
     it { subject.filters_as_url_params.should == '' }
   end
@@ -61,11 +61,11 @@ describe RestPack::Serializer::Options do
 
   context 'scopes' do
     describe 'with default scope' do
-      it { subject.scope.should == Song.all }
+      it { subject.scope.should == MyApp::Song.all }
     end
 
     describe 'with custom scope' do
-      let(:scope) { Song.where("id >= 100") }
+      let(:scope) { MyApp::Song.where("id >= 100") }
       it { subject.scope.should == scope }
     end
   end

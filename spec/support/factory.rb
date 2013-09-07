@@ -1,7 +1,7 @@
   require 'factory_girl'
 
 FactoryGirl.define do
-  factory :artist do
+  factory :artist, :class => MyApp::Artist do
     sequence(:name) {|n| "Artist ##{n}" }
     sequence(:website) {|n| "http://website#{n}.com/" }
 
@@ -16,7 +16,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :album do
+  factory :album, :class => MyApp::Album do
     sequence(:title) {|n| "Album ##{n}" }
     sequence(:year) {|n| 1960 + n }
     artist
@@ -32,13 +32,13 @@ FactoryGirl.define do
     end
   end
 
-  factory :song do
+  factory :song, :class => MyApp::Song do
     sequence(:title) {|n| "Song ##{n}" }
     artist
     album
   end
 
-  factory :payment do
+  factory :payment, :class => MyApp::Payment do
     amount 999
     artist
   end

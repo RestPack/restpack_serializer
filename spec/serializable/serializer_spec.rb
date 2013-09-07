@@ -78,7 +78,7 @@ describe RestPack::Serializer do
     end
 
     context "links" do
-      let(:serializer) { SongSerializer.new }
+      let(:serializer) { MyApp::SongSerializer.new }
       it "includes 'links' data" do
         @album1 = FactoryGirl.create(:album_with_songs, song_count: 11)
         json = serializer.as_json(@album1.songs.first)

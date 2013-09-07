@@ -7,7 +7,7 @@ describe RestPack::Serializer::Paging do
   end
 
   context "#page" do
-    let(:page) { SongSerializer.page(params) }
+    let(:page) { MyApp::SongSerializer.page(params) }
     let(:params) { { } }
 
     context "with defaults" do
@@ -46,7 +46,7 @@ describe RestPack::Serializer::Paging do
     end
 
     it "serializes results" do
-      first = Song.first
+      first = MyApp::Song.first
       page[:songs].first.should == {
         id: first.id.to_s,
         title: first.title,
@@ -145,8 +145,8 @@ describe RestPack::Serializer::Paging do
         FactoryGirl.create(:album, year: 1930)
         FactoryGirl.create(:album, year: 1948)
       end
-      let(:page) { AlbumSerializer.page(params, scope) }
-      let(:scope) { Album.classic }
+      let(:page) { MyApp::AlbumSerializer.page(params, scope) }
+      let(:scope) { MyApp::Album.classic }
 
       it "returns a page of scoped data" do
         page[:meta][:albums][:count].should == 2
@@ -155,9 +155,9 @@ describe RestPack::Serializer::Paging do
   end
 
   context "#page_with_options" do
-    let(:page) { SongSerializer.page_with_options(options) }
+    let(:page) { MyApp::SongSerializer.page_with_options(options) }
     let(:params) { {} }
-    let(:options) { RestPack::Serializer::Options.new(SongSerializer, params) }
+    let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer, params) }
 
     context "with defaults" do
       it "includes valid paging meta data" do
@@ -178,8 +178,8 @@ describe RestPack::Serializer::Paging do
   end
 
   context "paging with paged side-load" do
-    let(:page) { AlbumSerializer.page_with_options(options) }
-    let(:options) { RestPack::Serializer::Options.new(AlbumSerializer, { includes: 'songs' }) }
+    let(:page) { MyApp::AlbumSerializer.page_with_options(options) }
+    let(:options) { RestPack::Serializer::Options.new(MyApp::AlbumSerializer, { includes: 'songs' }) }
 
     it "includes side-loaded paging data in meta data" do
       page[:meta][:albums].should_not == nil
@@ -190,8 +190,8 @@ describe RestPack::Serializer::Paging do
   end
 
   context "paging with two paged side-loads" do
-    let(:page) { ArtistSerializer.page_with_options(options) }
-    let(:options) { RestPack::Serializer::Options.new(ArtistSerializer, { includes: 'albums,songs' }) }
+    let(:page) { MyApp::ArtistSerializer.page_with_options(options) }
+    let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { includes: 'albums,songs' }) }
 
     it "includes side-loaded paging data in meta data" do
       page[:meta][:albums].should_not == nil

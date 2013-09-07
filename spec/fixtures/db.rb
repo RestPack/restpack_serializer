@@ -39,31 +39,33 @@ ActiveRecord::Schema.define(:version => 1) do
   end
 end
 
-class Artist < ActiveRecord::Base
-  attr_accessible :name, :website
+module MyApp
+  class Artist < ActiveRecord::Base
+    attr_accessible :name, :website
 
-  has_many :albums
-  has_many :songs
-  has_many :payments
-end
+    has_many :albums
+    has_many :songs
+    has_many :payments
+  end
 
-class Album < ActiveRecord::Base
-  attr_accessible :title, :year, :artist
-  scope :classic, where("year < 1950")
+  class Album < ActiveRecord::Base
+    attr_accessible :title, :year, :artist
+    scope :classic, where("year < 1950")
 
-  belongs_to :artist
-  has_many :songs
-end
+    belongs_to :artist
+    has_many :songs
+  end
 
-class Song < ActiveRecord::Base
-  attr_accessible :title, :artist, :album
+  class Song < ActiveRecord::Base
+    attr_accessible :title, :artist, :album
 
-  belongs_to :artist
-  belongs_to :album
-end
+    belongs_to :artist
+    belongs_to :album
+  end
 
-class Payment < ActiveRecord::Base
-  attr_accessible :amount, :artist
+  class Payment < ActiveRecord::Base
+    attr_accessible :amount, :artist
 
-  belongs_to :artist
+    belongs_to :artist
+  end
 end
