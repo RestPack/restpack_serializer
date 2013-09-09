@@ -7,7 +7,7 @@ describe RestPack::Serializer::Resource do
   end
 
   let(:resource) { MyApp::SongSerializer.resource(params) }
-  let(:params) { { id: @song.id.to_s } }
+  let(:params) { { id: @song.id } }
 
   it "returns a resource by id" do
     resource[:songs].count.should == 1
@@ -15,7 +15,7 @@ describe RestPack::Serializer::Resource do
   end
 
   describe "side-loading" do
-    let(:params) { { id: @song.id.to_s, includes: 'albums' } }
+    let(:params) { { id: @song.id, includes: 'albums' } }
 
     it "includes side-loaded models" do
       resource[:albums].count.should == 1
