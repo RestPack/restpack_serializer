@@ -22,7 +22,7 @@ describe RestPack::Serializer do
       include RestPack::Serializer
     end
 
-    it "serializes to an empty hash" do
+    it ".as_json serializes to an empty hash" do
       EmptySerializer.as_json(person).should == { }
     end
   end
@@ -46,6 +46,17 @@ describe RestPack::Serializer do
     def custom_attributes
       {
         :custom_key => "custom value for model id #{@model.id}"
+      }
+    end
+  end
+
+  describe ".serialize" do
+    it "serializes to an array" do
+      serializer.class.serialize(person).should == {
+        people: [{
+          id: '123', name: 'Gavin', description: 'This is person #123',
+          href: '/people/123.json', custom_key: 'custom value for model id 123'
+        }]
       }
     end
   end

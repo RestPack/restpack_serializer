@@ -74,6 +74,14 @@ module RestPack
         new.as_json(model, context)
       end
 
+      def serialize(models, context = {})
+        models = [models] unless models.kind_of?(Array)
+
+        {
+          self.key() => models.map {|model| self.as_json(model, context)}
+        }
+      end
+
       def model_class
         @model_class || self.name.chomp('Serializer').constantize
       end
