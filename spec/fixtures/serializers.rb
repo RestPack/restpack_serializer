@@ -3,12 +3,14 @@ module MyApp
     include RestPack::Serializer
     attributes :id, :title, :album_id
     can_include :albums, :artists
+    can_filter_by :title
   end
 
   class AlbumSerializer
     include RestPack::Serializer
     attributes :id, :title, :year, :artist_id
     can_include :artists, :songs
+    can_filter_by :year
   end
 
   class ArtistSerializer

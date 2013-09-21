@@ -45,6 +45,22 @@ describe RestPack::Serializer::Paging do
       end
     end
 
+    context "with custom filter" do
+      context "valid :title" do
+        let(:params) { { title: @album1.songs[0].title } }
+        it "returns the album" do
+          page[:meta][:songs][:count].should == 1
+        end
+      end
+
+      context "invalid :title" do
+        let(:params) { { title: "this doesn't exist" } }
+        it "returns the album" do
+          page[:meta][:songs][:count].should == 0
+        end
+      end
+    end
+
     it "serializes results" do
       first = MyApp::Song.first
       page[:songs].first.should == {

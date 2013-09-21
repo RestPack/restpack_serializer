@@ -77,12 +77,12 @@ describe RestPack::Serializer::SideLoading do
     end
     context "a model with a single :belongs_torelations" do
       it "is filterable by primary key and foreign keys" do
-        MyApp::AlbumSerializer.filterable_by.should =~ [:id, :artist_id]
+        MyApp::AlbumSerializer.filterable_by.should =~ [:id, :artist_id, :year]
       end
     end
     context "a model with multiple :belongs_to relations" do
       it "is filterable by primary key and foreign keys" do
-        MyApp::SongSerializer.filterable_by.should =~ [:id, :artist_id, :album_id]
+        MyApp::SongSerializer.filterable_by.should =~ [:id, :artist_id, :album_id, :title]
       end
     end
   end
