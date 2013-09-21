@@ -1,4 +1,4 @@
-require './spec/spec_helper'
+require 'spec_helper'
 
 describe RestPack::Serializer do
   let(:serializer) { PersonSerializer.new }

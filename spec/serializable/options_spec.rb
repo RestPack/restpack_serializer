@@ -1,4 +1,4 @@
-require './spec/spec_helper'
+require 'spec_helper'
 
 describe RestPack::Serializer::Options do
   let(:subject) { RestPack::Serializer::Options.new(MyApp::SongSerializer, params, scope) }
