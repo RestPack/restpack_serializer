@@ -271,7 +271,7 @@ which yields:
 
 * http://restpack-serializer-sample.herokuapp.com/albums.json?includes=songs
 
-An album `:has_many` songs, so the side-loads are paged. We'll be soon adding URLs to the response meta data which will point to the next page of side-loaded data. These URLs will be something like:
+An album `:has_many` songs, so the side-loaded songs are paged. The `meta.songs` includes `previous_href` and `next_href` which point to the previous and next page of this side-loaded data. These URLs take the form:
 
 * http://restpack-serializer-sample.herokuapp.com/songs.json?album_ids=1,2,3,4&page=2
 
