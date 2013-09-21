@@ -281,7 +281,7 @@ An album `:has_many` songs, so the side-loaded songs are paged. The `meta.songs`
 
 ## Filtering
 
-Simple filtering based on primary and foreign keys is possible:
+Simple filtering based on primary and foreign keys is supported by default:
 
 #### By primary key:
 
@@ -292,6 +292,19 @@ Simple filtering based on primary and foreign keys is possible:
 
  * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_id=1
  * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_ids=2,3
+
+ #### Custom filters:
+
+ Custom filters can be defined with the `can_filter_by` option:
+
+ ```ruby
+class Account
+    include RestPack::Serializer
+    attributes :id, :application_id, :created_by, :name, :href
+
+    can_filter_by :application_id
+end
+```
 
 Side-loading is available when filtering:
 
