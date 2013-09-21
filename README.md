@@ -293,9 +293,9 @@ Simple filtering based on primary and foreign keys is supported by default:
  * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_id=1
  * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_ids=2,3
 
- #### Custom filters:
+#### Custom filters:
 
- Custom filters can be defined with the `can_filter_by` option:
+Custom filters can be defined with the `can_filter_by` option:
 
  ```ruby
 class Account
