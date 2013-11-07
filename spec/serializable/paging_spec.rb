@@ -98,29 +98,29 @@ describe RestPack::Serializer::Paging do
     end
 
     context "when sideloading" do
-      let(:params) { { includes: 'albums' } }
+      let(:params) { { include: 'albums' } }
 
       it "includes side-loaded models" do
         page[:albums].should_not == nil
       end
 
       it "includes the side-loads in the main meta data" do
-        page[:meta][:songs][:includes].should == [:albums]
+        page[:meta][:songs][:include].should == [:albums]
       end
 
       it "includes the side-loads in page hrefs" do
-        page[:meta][:songs][:next_href].should == '/songs.json?page=2&includes=albums'
+        page[:meta][:songs][:next_href].should == '/songs.json?page=2&include=albums'
       end
 
       context "with includes as comma delimited string" do
-        let(:params) { { includes: "albums,artists" } }
+        let(:params) { { include: "albums,artists" } }
         it "includes side-loaded models" do
           page[:albums].should_not == nil
           page[:artists].should_not == nil
         end
 
         it "includes the side-loads in page hrefs" do
-          page[:meta][:songs][:next_href].should == '/songs.json?page=2&includes=albums,artists'
+          page[:meta][:songs][:next_href].should == '/songs.json?page=2&include=albums,artists'
         end
 
         it "includes links" do
@@ -195,7 +195,7 @@ describe RestPack::Serializer::Paging do
 
   context "paging with paged side-load" do
     let(:page) { MyApp::AlbumSerializer.page_with_options(options) }
-    let(:options) { RestPack::Serializer::Options.new(MyApp::AlbumSerializer, { includes: 'songs' }) }
+    let(:options) { RestPack::Serializer::Options.new(MyApp::AlbumSerializer, { include: 'songs' }) }
 
     it "includes side-loaded paging data in meta data" do
       page[:meta][:albums].should_not == nil
@@ -207,7 +207,7 @@ describe RestPack::Serializer::Paging do
 
   context "paging with two paged side-loads" do
     let(:page) { MyApp::ArtistSerializer.page_with_options(options) }
-    let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { includes: 'albums,songs' }) }
+    let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { include: 'albums,songs' }) }
 
     it "includes side-loaded paging data in meta data" do
       page[:meta][:albums].should_not == nil

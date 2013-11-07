@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe RestPack::Serializer::SideLoading do
-  context "invalid :includes" do
+  context "invalid :include" do
     before(:each) do
       FactoryGirl.create(:song)
     end
@@ -12,7 +12,7 @@ describe RestPack::Serializer::SideLoading do
         message = ":wrong is not a valid include for MyApp::Song"
 
         expect do
-          MyApp::SongSerializer.side_loads([MyApp::Song.first], RestPack::Serializer::Options.new(MyApp::SongSerializer, { "includes" => "wrong" }))
+          MyApp::SongSerializer.side_loads([MyApp::Song.first], RestPack::Serializer::Options.new(MyApp::SongSerializer, { "include" => "wrong" }))
         end.to raise_error(exception, message)
       end
     end
@@ -24,7 +24,7 @@ describe RestPack::Serializer::SideLoading do
         message = ":payments is not a valid include for MyApp::Artist"
 
         expect do
-          MyApp::ArtistSerializer.side_loads([payment.artist], RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { "includes" => "payments" }))
+          MyApp::ArtistSerializer.side_loads([payment.artist], RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { "include" => "payments" }))
         end.to raise_error(exception, message)
       end
     end

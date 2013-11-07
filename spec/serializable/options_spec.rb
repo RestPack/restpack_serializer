@@ -7,7 +7,7 @@ describe RestPack::Serializer::Options do
 
   describe 'default values' do
     it { subject.model_class.should == MyApp::Song }
-    it { subject.includes.should == [] }
+    it { subject.include.should == [] }
     it { subject.page.should == 1 }
     it { subject.page_size.should == 10 }
     it { subject.filters.should == {} }
@@ -22,9 +22,9 @@ describe RestPack::Serializer::Options do
     it { subject.page_size.should == 8 }
   end
 
-  describe 'with includes' do
-    let(:params) { { 'includes' => 'model1,model2' } }
-    it { subject.includes.should == [:model1, :model2] }
+  describe 'with include' do
+    let(:params) { { 'include' => 'model1,model2' } }
+    it { subject.include.should == [:model1, :model2] }
   end
 
   context 'with filters' do
