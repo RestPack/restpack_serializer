@@ -14,7 +14,7 @@ describe RestPack::Serializer::SideLoading do
         let(:models) { [@artist1] }
 
         context "when including :albums" do
-          let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { "includes" => "albums" }) }
+          let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { "include" => "albums" }) }
 
           it "returns side-loaded albums" do
             side_loads[:albums].count.should == @artist1.albums.count
@@ -28,7 +28,7 @@ describe RestPack::Serializer::SideLoading do
         let(:models) { [@artist1, @artist2] }
 
         context "when including :albums" do
-          let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { "includes" => "albums" }) }
+          let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { "include" => "albums" }) }
 
           it "returns side-loaded albums" do
             expected_count = @artist1.albums.count + @artist2.albums.count

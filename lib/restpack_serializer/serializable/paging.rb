@@ -21,7 +21,7 @@ module RestPack::Serializer::Paging
 
       if options.include_links
         result[:links] = self.links
-        Array(RestPack::Serializer::Factory.create(*options.includes)).each do |serializer|
+        Array(RestPack::Serializer::Factory.create(*options.include)).each do |serializer|
           result[:links].merge! serializer.class.links
         end
       end
@@ -42,7 +42,7 @@ module RestPack::Serializer::Paging
         page: options.page,
         page_size: options.page_size,
         count: page.total_entries,
-        includes: options.includes
+        include: options.include
       }
 
       meta[:page_count] = ((page.total_entries - 1) / options.page_size) + 1
@@ -62,7 +62,7 @@ module RestPack::Serializer::Paging
       params = []
       params << "page=#{page}" unless page == 1
       params << "page_size=#{options.page_size}" unless options.default_page_size?
-      params << "includes=#{options.includes.join(',')}" if options.includes.any?
+      params << "include=#{options.include.join(',')}" if options.include.any?
       params << options.filters_as_url_params if options.filters.any?
 
       url += '?' + params.join('&') if params.any?

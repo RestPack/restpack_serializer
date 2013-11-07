@@ -120,7 +120,7 @@ http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yi
             "page": 2,
             "page_size": 3,
             "count": 42,
-            "includes": [],
+            "include": [],
             "page_count": 14,
             "previous_page": 1,
             "next_page": 3,
@@ -159,7 +159,7 @@ class AlbumSerializer
 end
 ```
 
-In this example, we are allowing related `songs` and `artists` to be included in API responses. Side-loads can be specifed by using the `includes` parameter:
+In this example, we are allowing related `songs` and `artists` to be included in API responses. Side-loads can be specifed by using the `include` parameter:
 
 #### No side-loads
 
@@ -167,7 +167,7 @@ In this example, we are allowing related `songs` and `artists` to be included in
 
 #### Side-load related Artists
 
-* http://restpack-serializer-sample.herokuapp.com/albums.json?includes=artists
+* http://restpack-serializer-sample.herokuapp.com/albums.json?include=artists
 
 which yields:
 
@@ -216,7 +216,7 @@ which yields:
             "page": 1,
             "page_size": 10,
             "count": 4,
-            "includes": [
+            "include": [
                 "artists"
             ],
             "page_count": 1,
@@ -269,7 +269,7 @@ which yields:
 
 #### Side-load related Songs
 
-* http://restpack-serializer-sample.herokuapp.com/albums.json?includes=songs
+* http://restpack-serializer-sample.herokuapp.com/albums.json?include=songs
 
 An album `:has_many` songs, so the side-loaded songs are paged. The `meta.songs` includes `previous_href` and `next_href` which point to the previous and next page of this side-loaded data. These URLs take the form:
 
@@ -277,7 +277,7 @@ An album `:has_many` songs, so the side-loaded songs are paged. The `meta.songs`
 
 #### Side-load related Artists and Songs
 
-* http://restpack-serializer-sample.herokuapp.com/albums.json?includes=artists,songs
+* http://restpack-serializer-sample.herokuapp.com/albums.json?include=artists,songs
 
 ## Filtering
 
@@ -308,4 +308,4 @@ end
 
 Side-loading is available when filtering:
 
- * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_ids=2,3&includes=artists,songs
+ * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_ids=2,3&include=artists,songs

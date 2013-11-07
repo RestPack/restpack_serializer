@@ -6,9 +6,9 @@ module RestPack::Serializer::SideLoading
       side_loads = {
         :meta => { }
       }
-      return side_loads if models.empty? || options.includes.nil?
+      return side_loads if models.empty? || options.include.nil?
 
-      options.includes.each do |include|
+      options.include.each do |include|
         side_load_data = side_load(include, models, options)
         side_loads[:meta].merge!(side_load_data[:meta] || {})
         side_loads.merge! side_load_data.except(:meta)
