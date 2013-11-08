@@ -112,6 +112,19 @@ describe RestPack::Serializer::Paging do
         page[:meta][:songs][:next_href].should == '/songs.json?page=2&include=albums'
       end
 
+      it "includes links between documents" do
+        song = page[:songs].first
+        song_model = MyApp::Song.find(song[:id])
+        song[:links][:album].should == song_model.album_id.to_s
+        song[:links][:artist].should == song_model.artist_id.to_s
+
+        album = page[:albums].first
+        album_model = MyApp::Album.find(album[:id])
+
+        album[:links][:artist].should == album_model.artist_id.to_s
+        album[:links][:songs].should == page[:songs].map { |song| song[:id] }
+      end
+
       context "with includes as comma delimited string" do
         let(:params) { { include: "albums,artists" } }
         it "includes side-loaded models" do
