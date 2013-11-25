@@ -42,7 +42,7 @@ end
   "title": "Kid A",
   "year": 2000,
   "artist_id": 1,
-  "href": "/albums/1.json"
+  "href": "/albums/1"
 }
 ```
 
@@ -62,7 +62,7 @@ class AlbumsController < ApplicationController
 end
 ```
 
-These endpoint will live at URLs such as `/albums.json` and `/albums/142857.json`:
+These endpoint will live at URLs such as `/albums` and `/albums/142857`:
 
 * http://restpack-serializer-sample.herokuapp.com/albums.json
 * http://restpack-serializer-sample.herokuapp.com/albums/4.json
@@ -90,7 +90,7 @@ http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yi
         {
             "id": "4",
             "title": "How to Dissapear Completely",
-            "href": "/songs/4.json",
+            "href": "/songs/4",
             "links": {
                 "artist": "1",
                 "album": "1"
@@ -99,7 +99,7 @@ http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yi
         {
             "id": "5",
             "title": "Treefingers",
-            "href": "/songs/5.json",
+            "href": "/songs/5",
             "links": {
                 "artist": "1",
                 "album": "1"
@@ -108,7 +108,7 @@ http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yi
         {
             "id": "6",
             "title": "Optimistic",
-            "href": "/songs/6.json",
+            "href": "/songs/6",
             "links": {
                 "artist": "1",
                 "album": "1"
@@ -124,17 +124,17 @@ http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yi
             "page_count": 14,
             "previous_page": 1,
             "next_page": 3,
-            "previous_href": "/api/v1/songs.json?page_size=3",
-            "next_href": "/api/v1/songs.json?page=3&page_size=3"
+            "previous_href": "/api/v1/songs?page_size=3",
+            "next_href": "/api/v1/songs?page=3&page_size=3"
         }
     },
     "links": {
         "songs.artist": {
-            "href": "/artists/{songs.artist}.json",
+            "href": "/artists/{songs.artist}",
             "type": "artists"
         },
         "songs.album": {
-            "href": "/albums/{songs.album}.json",
+            "href": "/albums/{songs.album}",
             "type": "albums"
         }
     }
@@ -143,8 +143,8 @@ http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yi
 
 URL Templates to related data are included in the `links` element. These can be used to construct URLs such as:
 
-* /artists/1.json
-* /albums/1.json
+* /artists/1
+* /albums/1
 
 ## Side-loading
 
@@ -178,7 +178,7 @@ which yields:
             "id": "1",
             "title": "Kid A",
             "year": 2000,
-            "href": "/albums/1.json",
+            "href": "/albums/1",
             "links": {
                 "artist": "1"
             }
@@ -187,7 +187,7 @@ which yields:
             "id": "2",
             "title": "Amnesiac",
             "year": 2001,
-            "href": "/albums/2.json",
+            "href": "/albums/2",
             "links": {
                 "artist": "1"
             }
@@ -196,7 +196,7 @@ which yields:
             "id": "3",
             "title": "Murder Ballads",
             "year": 1996,
-            "href": "/albums/3.json",
+            "href": "/albums/3",
             "links": {
                 "artist": "2"
             }
@@ -205,7 +205,7 @@ which yields:
             "id": "4",
             "title": "Curtains",
             "year": 2005,
-            "href": "/albums/4.json",
+            "href": "/albums/4",
             "links": {
                 "artist": "3"
             }
@@ -228,19 +228,19 @@ which yields:
     },
     "links": {
         "albums.songs": {
-            "href": "/songs.json?album_id={albums.id}",
+            "href": "/songs?album_id={albums.id}",
             "type": "songs"
         },
         "albums.artist": {
-            "href": "/artists/{albums.artist}.json",
+            "href": "/artists/{albums.artist}",
             "type": "artists"
         },
         "artists.albums": {
-            "href": "/albums.json?artist_id={artists.id}",
+            "href": "/albums?artist_id={artists.id}",
             "type": "albums"
         },
         "artists.songs": {
-            "href": "/songs.json?artist_id={artists.id}",
+            "href": "/songs?artist_id={artists.id}",
             "type": "songs"
         }
     },
@@ -249,19 +249,19 @@ which yields:
             "id": "1",
             "name": "Radiohead",
             "website": "http://radiohead.com/",
-            "href": "/artists/1.json"
+            "href": "/artists/1"
         },
         {
             "id": "2",
             "name": "Nick Cave & The Bad Seeds",
             "website": "http://www.nickcave.com/",
-            "href": "/artists/2.json"
+            "href": "/artists/2"
         },
         {
             "id": "3",
             "name": "John Frusciante",
             "website": "http://johnfrusciante.com/",
-            "href": "/artists/3.json"
+            "href": "/artists/3"
         }
     ]
 }

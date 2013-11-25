@@ -23,12 +23,12 @@ describe RestPack::Serializer::Paging do
         page[:meta][:songs][:previous_page].should == nil
         page[:meta][:songs][:previous_href].should == nil
         page[:meta][:songs][:next_page].should == 2
-        page[:meta][:songs][:next_href].should == '/songs.json?page=2'
+        page[:meta][:songs][:next_href].should == '/songs?page=2'
       end
       it "includes links" do
         page[:links].should == {
-          'songs.album' => { :href => "/albums/{songs.album}.json", :type => :albums },
-          'songs.artist' => { :href => "/artists/{songs.artist}.json", :type => :artists }
+          'songs.album' => { :href => "/albums/{songs.album}", :type => :albums },
+          'songs.artist' => { :href => "/artists/{songs.artist}", :type => :artists }
         }
       end
     end
@@ -41,7 +41,7 @@ describe RestPack::Serializer::Paging do
       end
       it "includes the custom page size in the page hrefs" do
         page[:meta][:songs][:next_page].should == 2
-        page[:meta][:songs][:next_href].should == '/songs.json?page=2&page_size=3'
+        page[:meta][:songs][:next_href].should == '/songs?page=2&page_size=3'
       end
     end
 
@@ -93,7 +93,7 @@ describe RestPack::Serializer::Paging do
         page[:meta][:songs][:page].should == 2
         page[:meta][:songs][:previous_page].should == 1
         page[:meta][:songs][:next_page].should == nil
-        page[:meta][:songs][:previous_href].should == '/songs.json'
+        page[:meta][:songs][:previous_href].should == '/songs'
       end
     end
 
@@ -109,7 +109,7 @@ describe RestPack::Serializer::Paging do
       end
 
       it "includes the side-loads in page hrefs" do
-        page[:meta][:songs][:next_href].should == '/songs.json?page=2&include=albums'
+        page[:meta][:songs][:next_href].should == '/songs?page=2&include=albums'
       end
 
       it "includes links between documents" do
@@ -133,7 +133,7 @@ describe RestPack::Serializer::Paging do
         end
 
         it "includes the side-loads in page hrefs" do
-          page[:meta][:songs][:next_href].should == '/songs.json?page=2&include=albums,artists'
+          page[:meta][:songs][:next_href].should == '/songs?page=2&include=albums,artists'
         end
 
         it "includes links" do
@@ -164,7 +164,7 @@ describe RestPack::Serializer::Paging do
         end
 
         it "includes the filter in page hrefs" do
-          page[:meta][:songs][:next_href].should == "/songs.json?page=2&album_id=#{@album1.id}"
+          page[:meta][:songs][:next_href].should == "/songs?page=2&album_id=#{@album1.id}"
         end
       end
     end

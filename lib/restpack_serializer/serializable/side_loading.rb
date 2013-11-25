@@ -31,11 +31,11 @@ module RestPack::Serializer::SideLoading
       associations.each do |association|
         if association.macro == :belongs_to
           link_key = "#{self.key}.#{association.name}"
-          href = "/#{association.plural_name}/{#{link_key}}.json"
+          href = "/#{association.plural_name}/{#{link_key}}"
         elsif association.macro == :has_many
           singular_key = self.key.to_s.singularize
           link_key = "#{self.key}.#{association.plural_name}"
-          href = "/#{association.plural_name}.json?#{singular_key}_id={#{key}.id}"
+          href = "/#{association.plural_name}?#{singular_key}_id={#{key}.id}"
         end
 
         links[link_key] = {
