@@ -64,8 +64,8 @@ end
 
 These endpoint will live at URLs such as `/albums` and `/albums/142857`:
 
-* http://restpack-serializer-sample.herokuapp.com/albums.json
-* http://restpack-serializer-sample.herokuapp.com/albums/4.json
+* http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json
+* http://restpack-serializer-sample.herokuapp.com/api/v1/albums/4.json
 
 Both `page` and `resource` methods take an optional scope argument allowing us to enforce arbitrary constraints:
 
@@ -77,12 +77,12 @@ AlbumSerializer.page(params, Albums.where("year < 1950"))
 
 Collections are paged by default. `page` and `page_size` parameters are available:
 
-* http://restpack-serializer-sample.herokuapp.com/songs.json?page=2
-* http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3
+* http://restpack-serializer-sample.herokuapp.com/api/v1/songs.json?page=2
+* http://restpack-serializer-sample.herokuapp.com/api/v1/songs.json?page=2&page_size=3
 
 Paging details are included in a `meta` attribute:
 
-http://restpack-serializer-sample.herokuapp.com/songs.json?page=2&page_size=3 yields:
+http://restpack-serializer-sample.herokuapp.com/api/v1/songs.json?page=2&page_size=3 yields:
 
 ```javascript
 {
@@ -163,11 +163,11 @@ In this example, we are allowing related `songs` and `artists` to be included in
 
 #### No side-loads
 
-* http://restpack-serializer-sample.herokuapp.com/albums.json
+* http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json
 
 #### Side-load related Artists
 
-* http://restpack-serializer-sample.herokuapp.com/albums.json?include=artists
+* http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?include=artists
 
 which yields:
 
@@ -269,15 +269,15 @@ which yields:
 
 #### Side-load related Songs
 
-* http://restpack-serializer-sample.herokuapp.com/albums.json?include=songs
+* http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?include=songs
 
 An album `:has_many` songs, so the side-loaded songs are paged. The `meta.songs` includes `previous_href` and `next_href` which point to the previous and next page of this side-loaded data. These URLs take the form:
 
-* http://restpack-serializer-sample.herokuapp.com/songs.json?album_ids=1,2,3,4&page=2
+* http://restpack-serializer-sample.herokuapp.com/api/v1/songs.json?album_ids=1,2,3,4&page=2
 
 #### Side-load related Artists and Songs
 
-* http://restpack-serializer-sample.herokuapp.com/albums.json?include=artists,songs
+* http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?include=artists,songs
 
 ## Filtering
 
@@ -285,13 +285,13 @@ Simple filtering based on primary and foreign keys is supported by default:
 
 #### By primary key:
 
- * http://restpack-serializer-sample.herokuapp.com/albums.json?id=1
- * http://restpack-serializer-sample.herokuapp.com/albums.json?ids=1,2,4
+ * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?id=1
+ * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?ids=1,2,4
 
 #### By foreign key:
 
- * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_id=1
- * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_ids=2,3
+ * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?artist_id=1
+ * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?artist_ids=2,3
 
 #### Custom filters:
 
@@ -308,4 +308,4 @@ end
 
 Side-loading is available when filtering:
 
- * http://restpack-serializer-sample.herokuapp.com/albums.json?artist_ids=2,3&include=artists,songs
+ * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?artist_ids=2,3&include=artists,songs
