@@ -11,23 +11,23 @@ module RestPack::Serializer
     def serialize
       result = {}
 
-      result[:meta] = @meta unless @meta.empty?
-      result[:links] = @links unless @links.empty?
-
       unless @resources.empty?
-        inject_to_many_links!
+        inject_has_many_links!
         result[@resources.keys.first] = @resources.values.first
 
         linked = @resources.except(@resources.keys.first)
         result[:linked] = linked unless linked.empty?
       end
 
+      result[:links] = @links unless @links.empty?
+      result[:meta] = @meta unless @meta.empty?
+
       result
     end
 
     private
 
-    def inject_to_many_links! #find and inject to_many links from related @resources
+    def inject_has_many_links!
       @resources.keys.each do |key|
         @resources[key].each do |item|
           if item[:links]
@@ -41,6 +41,7 @@ module RestPack::Serializer
                     linked_resource[:links] ||= {}
                     linked_resource[:links][key] ||= []
                     linked_resource[:links][key] << item[:id]
+                    linked_resource[:links][key].uniq!
                   end
                 end
               end
