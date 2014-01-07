@@ -12,24 +12,21 @@ module RestPack::Serializer::Paging
         per_page: options.page_size
       )
 
-      result = {
-        self.key => serialize_page(page),
-        :meta => {
-          self.key => serialize_meta(page, options)
-        }
-      }
+      result = RestPack::Serializer::Result.new
+      result.resources[self.key] = serialize_page(page)
+      result.meta[self.key] = serialize_meta(page, options)
 
       if options.include_links
-        result[:links] = self.links
+        result.links = self.links
         Array(RestPack::Serializer::Factory.create(*options.include)).each do |serializer|
-          result[:links].merge! serializer.class.links
+          result.links.merge! serializer.class.links
         end
       end
 
       side_load_data = side_loads(page, options)
-      result[:meta].merge!(side_load_data[:meta] || {})
-      result = result.merge side_load_data.except(:meta)
-      inject_to_many_links result
+      result.meta.merge!(side_load_data[:meta] || {})
+      result.resources.merge! side_load_data.except(:meta)
+      result.serialize
     end
 
     private
@@ -68,33 +65,6 @@ module RestPack::Serializer::Paging
 
       url += '?' + params.join('&') if params.any?
       url
-    end
-
-    def inject_to_many_links(result) #TODO: GJ: extract this into a result class and refactor
-      keys = result.keys - [:meta, :links]
-
-      keys.each do |key|
-        result[key].each do |item|
-          if item[:links]
-            item[:links].each do |link_key, link_value|
-              unless link_value.is_a? Array
-                plural_linked_key = "#{link_key}s".to_sym
-
-                if result[plural_linked_key]
-                  linked_resource = result[plural_linked_key].find { |i| i[:id] == link_value }
-                  if linked_resource
-                    linked_resource[:links] ||= {}
-                    linked_resource[:links][key] ||= []
-                    linked_resource[:links][key] << item[:id]
-                  end
-                end
-              end
-            end
-          end
-        end
-      end
-
-      result
     end
   end
 end

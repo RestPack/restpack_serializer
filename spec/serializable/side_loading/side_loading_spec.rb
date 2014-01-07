@@ -75,7 +75,7 @@ describe RestPack::Serializer::SideLoading do
         MyApp::ArtistSerializer.filterable_by.should == [:id]
       end
     end
-    context "a model with a single :belongs_torelations" do
+    context "a model with a single :belongs_to relations" do
       it "is filterable by primary key and foreign keys" do
         MyApp::AlbumSerializer.filterable_by.should =~ [:id, :artist_id, :year]
       end
