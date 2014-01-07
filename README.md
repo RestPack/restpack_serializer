@@ -9,7 +9,7 @@ restpack_serializer allows you to quickly provide a set of RESTful endpoints for
 
 ---
 
-* [An overview of RestPack](http://goo.gl/rGoIQ)
+* [An overview of RestPack](http://www.slideshare.net/gavinjoyce/taming-monolithic-monsters)
 * [JSON API](http://jsonapi.org/)
 
 ## Serialization
@@ -244,26 +244,28 @@ which yields:
             "type": "songs"
         }
     },
-    "artists": [
-        {
-            "id": "1",
-            "name": "Radiohead",
-            "website": "http://radiohead.com/",
-            "href": "/artists/1"
-        },
-        {
-            "id": "2",
-            "name": "Nick Cave & The Bad Seeds",
-            "website": "http://www.nickcave.com/",
-            "href": "/artists/2"
-        },
-        {
-            "id": "3",
-            "name": "John Frusciante",
-            "website": "http://johnfrusciante.com/",
-            "href": "/artists/3"
-        }
-    ]
+    "linked": {
+        "artists": [
+            {
+                "id": "1",
+                "name": "Radiohead",
+                "website": "http://radiohead.com/",
+                "href": "/artists/1"
+            },
+            {
+                "id": "2",
+                "name": "Nick Cave & The Bad Seeds",
+                "website": "http://www.nickcave.com/",
+                "href": "/artists/2"
+            },
+            {
+                "id": "3",
+                "name": "John Frusciante",
+                "website": "http://johnfrusciante.com/",
+                "href": "/artists/3"
+            }
+        ]
+    }
 }
 ```
 
