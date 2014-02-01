@@ -67,12 +67,6 @@ end
 AlbumSerializer.as_json(album, { admin?: true })
 ```
 
-In addition to `scope`, all three methods also accept an optional `context` hash:
-
-```ruby
-AlbumSerializer.page(params, Albums.where("year < 1950"), { admin?: true })
-```
-
 ## Exposing an API
 
 The `AlbumSerializer` provides `page` and `resource` methods which provide paged collection and singular resource GET endpoints.
@@ -100,6 +94,12 @@ The `AlbumSerializer` also provides a `single` method which will return a serial
 
 ```ruby
 AlbumSerializer.page(params, Albums.where("year < 1950"))
+```
+
+In addition to `scope`, all three methods also accept an optional `context` hash:
+
+```ruby
+AlbumSerializer.page(params, Albums.where("year < 1950"), { admin?: true })
 ```
 
 Other features:
