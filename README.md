@@ -46,6 +46,27 @@ end
 }
 ```
 
+`as_json` accepts an optional `context` hash parameter which can be used be your Serializers to customize their output:
+
+```ruby
+class AlbumSerializer
+  include RestPack::Serializer
+  attributes :id, :title, :year, :artist_id, :extras
+  can_include :artists, :songs
+  can_filter_by :year
+
+  def extras
+    if @context[:admin?]
+      { markup_percent: 95 }
+    end
+  end
+end
+```
+
+```ruby
+AlbumSerializer.as_json(album, { admin?: true })
+```
+
 ## Exposing an API
 
 The `AlbumSerializer` provides `page` and `resource` methods which provide paged collection and singular resource GET endpoints.
@@ -67,10 +88,18 @@ These endpoint will live at URLs such as `/albums` and `/albums/142857`:
 * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json
 * http://restpack-serializer-sample.herokuapp.com/api/v1/albums/4.json
 
-Both `page` and `resource` methods take an optional scope argument allowing us to enforce arbitrary constraints:
+The `AlbumSerializer` also provides a `single` method which will return a serialized resource similar to `as_json` above.
+
+`page`, `resource` and `single` methods take an optional scope argument allowing us to enforce arbitrary constraints:
 
 ```ruby
 AlbumSerializer.page(params, Albums.where("year < 1950"))
+```
+
+In addition to `scope`, all three methods also accept an optional `context` hash:
+
+```ruby
+AlbumSerializer.page(params, Albums.where("year < 1950"), { admin?: true })
 ```
 
 ## Paging
