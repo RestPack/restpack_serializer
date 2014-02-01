@@ -102,6 +102,10 @@ In addition to `scope`, all three methods also accept an optional `context` hash
 AlbumSerializer.page(params, Albums.where("year < 1950"), { admin?: true })
 ```
 
+Other features:
+ * [Dynamically Include/Exclude Attributes](https://github.com/RestPack/restpack_serializer/blob/master/spec/serializable/serializer_spec.rb#L42)
+ * [Custom Attributes Hash](https://github.com/RestPack/restpack_serializer/blob/master/spec/serializable/serializer_spec.rb#L46)
+
 ## Paging
 
 Collections are paged by default. `page` and `page_size` parameters are available:
