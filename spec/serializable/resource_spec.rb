@@ -6,12 +6,22 @@ describe RestPack::Serializer::Resource do
     @song = @album.songs.first
   end
 
-  let(:resource) { MyApp::SongSerializer.resource(params) }
+  let(:resource) { MyApp::SongSerializer.resource(params, scope, context) }
   let(:params) { { id: @song.id } }
+  let(:scope) { nil }
+  let(:context) { { } }
 
   it "returns a resource by id" do
     resource[:songs].count.should == 1
     resource[:songs][0][:id].should == @song.id.to_s
+  end
+
+  context "with context" do
+    let(:context) { { reverse_title?: true } }
+
+    it "returns reversed titles" do
+      resource[:songs][0][:title].should == @song.title.reverse
+    end
   end
 
   describe "side-loading" do
