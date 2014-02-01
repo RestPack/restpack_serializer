@@ -50,7 +50,7 @@ module MyApp
 
   class Album < ActiveRecord::Base
     attr_accessible :title, :year, :artist
-    scope :classic, where("year < 1950")
+    scope :classic, -> { where("year < 1950") }
 
     belongs_to :artist
     has_many :songs
