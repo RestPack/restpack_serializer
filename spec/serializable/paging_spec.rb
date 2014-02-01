@@ -7,8 +7,10 @@ describe RestPack::Serializer::Paging do
   end
 
   context "#page" do
-    let(:page) { MyApp::SongSerializer.page(params) }
+    let(:page) { MyApp::SongSerializer.page(params, scope, context) }
     let(:params) { { } }
+    let(:scope) { nil }
+    let(:context) { { } }
 
     context "with defaults" do
       it "page defaults to 1" do
@@ -58,6 +60,15 @@ describe RestPack::Serializer::Paging do
         it "returns the album" do
           page[:meta][:songs][:count].should == 0
         end
+      end
+    end
+
+    context "with context" do
+      let(:context) { { reverse_title?: true } }
+
+      it "returns reversed titles" do
+        first = MyApp::Song.first
+        page[:songs].first[:title].should == first.title.reverse
       end
     end
 

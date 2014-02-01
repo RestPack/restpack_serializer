@@ -2,8 +2,8 @@ module RestPack::Serializer::Paging
   extend ActiveSupport::Concern
 
   module ClassMethods
-    def page(params = {}, scope = nil)
-      page_with_options RestPack::Serializer::Options.new(self, params, scope)
+    def page(params = {}, scope = nil, context = {})
+      page_with_options RestPack::Serializer::Options.new(self, params, scope, context)
     end
 
     def page_with_options(options)
@@ -13,7 +13,7 @@ module RestPack::Serializer::Paging
       )
 
       result = RestPack::Serializer::Result.new
-      result.resources[self.key] = serialize_page(page)
+      result.resources[self.key] = serialize_page(page, options)
       result.meta[self.key] = serialize_meta(page, options)
 
       if options.include_links
@@ -31,8 +31,8 @@ module RestPack::Serializer::Paging
 
     private
 
-    def serialize_page(page)
-      page.map { |model| self.as_json(model) }
+    def serialize_page(page, options)
+      page.map { |model| self.as_json(model, options.context) }
     end
 
     def serialize_meta(page, options)
