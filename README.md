@@ -311,3 +311,8 @@ end
 Side-loading is available when filtering:
 
  * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?artist_ids=2,3&include=artists,songs
+
+### Running Tests
+
+`bundle`
+`rake spec`
