@@ -1,5 +1,4 @@
-require 'will_paginate'
-require 'will_paginate/active_record'
+require 'kaminari'
 require 'protected_attributes'
 
 require 'restpack_serializer/version'
@@ -7,6 +6,8 @@ require 'restpack_serializer/configuration'
 require 'restpack_serializer/serializable'
 require 'restpack_serializer/factory'
 require 'restpack_serializer/result'
+
+Kaminari::Hooks.init
 
 module RestPack
   module Serializer
