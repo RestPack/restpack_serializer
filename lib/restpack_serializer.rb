@@ -1,5 +1,6 @@
 require 'will_paginate'
 require 'will_paginate/active_record'
+require 'protected_attributes'
 
 require 'restpack_serializer/version'
 require 'restpack_serializer/configuration'

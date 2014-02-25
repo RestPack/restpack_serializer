@@ -17,12 +17,12 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'activerecord', '~> 4.0'
-  gem.add_dependency 'activesupport', '~> 4.0'
-  gem.add_dependency 'protected_attributes', '~> 1.0.3'
-  gem.add_dependency 'will_paginate', '~> 3.0'
-  gem.add_dependency 'restpack_gem', '~> 0.0.9'
+  gem.add_dependency 'activerecord', '~> 4.0.3'
+  gem.add_dependency 'activesupport', '~> 4.0.3'
+  # gem.add_dependency 'protected_attributes', '~> 1.0.5'
+  gem.add_dependency 'will_paginate', '~> 3.0.5'
 
+  gem.add_development_dependency 'restpack_gem', '~> 0.0.9'
   gem.add_development_dependency 'rake', '~> 10.0.3'
   gem.add_development_dependency 'rspec', '~> 2.12'
   gem.add_development_dependency 'guard-rspec', '~> 2.5.4'
