@@ -7,10 +7,7 @@ module RestPack::Serializer::Paging
     end
 
     def page_with_options(options)
-      page = options.scope_with_filters.paginate(
-        page: options.page,
-        per_page: options.page_size
-      )
+      page = options.scope_with_filters.page(options.page).per(options.page_size)
 
       result = RestPack::Serializer::Result.new
       result.resources[self.key] = serialize_page(page, options)
@@ -39,11 +36,11 @@ module RestPack::Serializer::Paging
       meta = {
         page: options.page,
         page_size: options.page_size,
-        count: page.total_entries,
+        count: page.total_count,
         include: options.include
       }
 
-      meta[:page_count] = ((page.total_entries - 1) / options.page_size) + 1
+      meta[:page_count] = ((page.total_count - 1) / options.page_size) + 1
       meta[:previous_page] = meta[:page] > 1 ? meta[:page] - 1 : nil
       meta[:next_page] = meta[:page] < meta[:page_count] ? meta[:page] + 1 : nil
 
