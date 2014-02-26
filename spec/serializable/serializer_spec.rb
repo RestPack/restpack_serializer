@@ -69,6 +69,22 @@ describe RestPack::Serializer do
       }
     end
 
+    context "serializes an array" do
+      let(:people) { [person, person] }
+      it "results in a serialized array" do
+        serializer.as_json(people).should == [
+          {
+            id: '123', name: 'Gavin', description: 'This is person #123',
+            href: '/people/123', custom_key: 'custom value for model id 123'
+          },
+          {
+            id: '123', name: 'Gavin', description: 'This is person #123',
+            href: '/people/123', custom_key: 'custom value for model id 123'
+          }
+        ]
+      end
+    end
+
     context "with options" do
       it "excludes specified attributes" do
         serializer.as_json(person, { include_description?: false }).should == {
