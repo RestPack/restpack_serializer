@@ -69,7 +69,7 @@ describe RestPack::Serializer do
       }
     end
 
-    context "serializes an array" do
+    context "an array" do
       let(:people) { [person, person] }
       it "results in a serialized array" do
         serializer.as_json(people).should == [
@@ -82,6 +82,12 @@ describe RestPack::Serializer do
             href: '/people/123', custom_key: 'custom value for model id 123'
           }
         ]
+      end
+    end
+
+    context "nil" do
+      it "results in nil" do
+        serializer.as_json(nil).should == nil
       end
     end
 
