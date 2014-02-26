@@ -29,6 +29,7 @@ module RestPack
     class InvalidInclude < Exception; end
 
     def as_json(model, context = {})
+      return if model.nil?
       if model.kind_of?(Array)
         return model.map { |item| as_json(item, context) }
       end
