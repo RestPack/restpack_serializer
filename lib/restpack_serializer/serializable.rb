@@ -14,7 +14,7 @@ module RestPack
     @@class_map ||= {}
 
     included do
-      identifier = self.to_s.downcase.chomp('serializer')
+      identifier = self.to_s.gsub(/(.)([A-Z])/,'\1_\2').downcase.chomp('_serializer')
       @@class_map[identifier] = self
       @@class_map[identifier.split('::').last] = self
     end
