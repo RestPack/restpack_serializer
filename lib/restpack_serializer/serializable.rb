@@ -28,10 +28,6 @@ module RestPack
 
     class InvalidInclude < Exception; end
 
-    def array_as_json(models, context = {})
-      as_json(models, context)
-    end
-
     def as_json(model, context = {})
       return if model.nil?
       if model.kind_of?(Array)
@@ -83,6 +79,10 @@ module RestPack
 
     module ClassMethods
       attr_accessor :model_class, :key
+
+      def array_as_json(models, context = {})
+        new.as_json(models, context)
+      end
 
       def as_json(model, context = {})
         new.as_json(model, context)
