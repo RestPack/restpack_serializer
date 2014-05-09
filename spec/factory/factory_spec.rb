@@ -18,6 +18,14 @@ describe RestPack::Serializer::Factory do
   it "creates by class" do
     factory.create(MyApp::Song).should be_an_instance_of(MyApp::SongSerializer)
   end
+  it "creates by multiple words separated by underscore" do
+    class OrderLineSerializer
+      include RestPack::Serializer
+      attributes :a, :b, :c
+    end
+
+    factory.create('order_lines').should be_an_instance_of(OrderLineSerializer)
+  end
 
   it "creates multiple with Array" do
     serializers = factory.create("Song", "artists", :album)
