@@ -157,8 +157,10 @@ http://restpack-serializer-sample.herokuapp.com/api/v1/songs.json?page=2&page_si
             "page_count": 14,
             "previous_page": 1,
             "next_page": 3,
-            "previous_href": "/api/v1/songs?page_size=3",
-            "next_href": "/api/v1/songs?page=3&page_size=3"
+            "first_href": "/songs?page_size=3",
+            "previous_href": "/songs?page_size=3",
+            "next_href": "/songs?page=3&page_size=3"
+            "last_href": "/songs?page=14&page_size=3"
         }
     },
     "links": {
@@ -255,8 +257,10 @@ which yields:
             "page_count": 1,
             "previous_page": null,
             "next_page": null,
+            "first_href": '/albums',
             "previous_href": null,
             "next_href": null
+            "last_href": '/albums'
         }
     },
     "links": {

@@ -22,10 +22,12 @@ describe RestPack::Serializer::Paging do
       it "includes valid paging meta data" do
         page[:meta][:songs][:count].should == 18
         page[:meta][:songs][:page_count].should == 2
+        page[:meta][:songs][:first_href].should == '/songs'
         page[:meta][:songs][:previous_page].should == nil
         page[:meta][:songs][:previous_href].should == nil
         page[:meta][:songs][:next_page].should == 2
         page[:meta][:songs][:next_href].should == '/songs?page=2'
+        page[:meta][:songs][:last_href].should == '/songs?page=2'
       end
       it "includes links" do
         page[:links].should == {
@@ -44,6 +46,7 @@ describe RestPack::Serializer::Paging do
       it "includes the custom page size in the page hrefs" do
         page[:meta][:songs][:next_page].should == 2
         page[:meta][:songs][:next_href].should == '/songs?page=2&page_size=3'
+        page[:meta][:songs][:last_href].should == '/songs?page=6&page_size=3'
       end
     end
 
