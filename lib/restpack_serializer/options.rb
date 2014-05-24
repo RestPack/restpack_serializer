@@ -24,23 +24,24 @@ module RestPack::Serializer
     end
 
     def scope_with_filters
-      scope_filter = {}
-      @filters.keys.each do |filter|
-        value = @filters[filter]
-        if value.is_a?(String)
-          value = value.split(',')
-        end
-        scope_filter[filter] = value
-      end
-
       if @through.any?
         join_table_name = @through[:join_table]
         foreign_key = @through[:source_key]
         foreign_values = @through[:source_ids].join(',')
 
         # TODO potential injection ?
+        # TODO handle @filters
         @scope.joins("INNER JOIN #{join_table_name} ON #{join_table_name}.#{foreign_key} IN (#{foreign_values})")
       else
+        scope_filter = {}
+        @filters.keys.each do |filter|
+          value = @filters[filter]
+          if value.is_a?(String)
+            value = value.split(',')
+          end
+          scope_filter[filter] = value
+        end
+
         @scope.where(scope_filter)
       end
     end
