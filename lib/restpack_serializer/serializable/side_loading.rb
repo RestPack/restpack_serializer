@@ -60,7 +60,6 @@ module RestPack::Serializer::SideLoading
 
     def side_load(include, models, options)
       association = association_from_include(include)
-
       if supported_association?(association)
         serializer = RestPack::Serializer::Factory.create(association.class_name)
         return send("side_load_#{association.macro}", association, models, serializer)
@@ -86,7 +85,12 @@ module RestPack::Serializer::SideLoading
     def side_load_has_many(association, models, serializer)
       return {} if models.empty?
       options = RestPack::Serializer::Options.new(serializer.class)
-      options.filters = { association.foreign_key.to_sym => models.map(&:id) }
+
+      if association.options[:through]
+        options.through = { join_table: association.options[:through], source_key: association.chain.last.foreign_key, source_ids: models.map(&:id)}
+      else
+        options.filters = { association.foreign_key.to_sym => models.map(&:id) }
+      end
       options.include_links = false
       return serializer.class.page_with_options(options)
     end

@@ -43,6 +43,15 @@ ActiveRecord::Schema.define(:version => 1) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "tags", :force => true do |t|
+    t.string  "name"
+  end
+
+  create_table "tag_albums", force: true, id: false do |t|
+    t.integer  "album_id"
+    t.integer  "tag_id"
+  end
 end
 
 module MyApp
@@ -60,6 +69,8 @@ module MyApp
 
     belongs_to :artist
     has_many :songs
+    has_many :tag_albums
+    has_many :tags, through: :tag_albums
   end
 
   class Song < ActiveRecord::Base
@@ -78,6 +89,17 @@ module MyApp
   class OrderItem < ActiveRecord::Base
     attr_accessible :id, :album
 
+    belongs_to :album
+  end
+
+  class Tag < ActiveRecord::Base
+    attr_accessible :name
+    has_many :tag_albums
+    has_many :albums, through: :tag_albums
+  end
+
+  class TagAlbum < ActiveRecord::Base
+    belongs_to :tag
     belongs_to :album
   end
 end

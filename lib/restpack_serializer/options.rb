@@ -1,7 +1,8 @@
 module RestPack::Serializer
   class Options
     attr_accessor :page, :page_size, :include, :filters, :serializer,
-                  :model_class, :scope, :context, :include_links
+                  :model_class, :scope, :context, :include_links,
+                  :through
 
     def initialize(serializer, params = {}, scope = nil, context = {})
       params.symbolize_keys! if params.respond_to?(:symbolize_keys!)
@@ -10,6 +11,7 @@ module RestPack::Serializer
       @page_size = RestPack::Serializer.config.page_size
       @include = []
       @filters = filters_from_params(params, serializer)
+      @through = {}
       @serializer = serializer
       @model_class = serializer.model_class
       @scope = scope || model_class.send(:all)
@@ -31,7 +33,16 @@ module RestPack::Serializer
         scope_filter[filter] = value
       end
 
-      @scope.where(scope_filter)
+      if @through.any?
+        join_table_name = @through[:join_table]
+        foreign_key = @through[:source_key]
+        foreign_values = @through[:source_ids].join(',')
+
+        # TODO potential injection ?
+        @scope.joins("INNER JOIN #{join_table_name} ON #{join_table_name}.#{foreign_key} IN (#{foreign_values})")
+      else
+        @scope.where(scope_filter)
+      end
     end
 
     def default_page_size?

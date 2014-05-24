@@ -28,4 +28,10 @@ module MyApp
     attributes :id, :album_id
     can_include :albums
   end
+
+  class TagSerializer
+    include RestPack::Serializer
+    attributes :name, :album_id
+    can_include :albums
+  end
 end
