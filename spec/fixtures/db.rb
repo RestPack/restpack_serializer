@@ -37,6 +37,12 @@ ActiveRecord::Schema.define(:version => 1) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "order_items", :force => true do |t|
+    t.integer  "album_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 end
 
 module MyApp
@@ -67,5 +73,11 @@ module MyApp
     attr_accessible :amount, :artist
 
     belongs_to :artist
+  end
+
+  class OrderItem < ActiveRecord::Base
+    attr_accessible :id, :album
+
+    belongs_to :album
   end
 end

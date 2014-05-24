@@ -18,6 +18,12 @@ describe RestPack::Serializer::Factory do
   it "creates by class" do
     factory.create(MyApp::Song).should be_an_instance_of(MyApp::SongSerializer)
   end
+  it "creates by underscore capitalized string" do
+    factory.create("OrderItem").should be_an_instance_of(MyApp::OrderItemSerializer)
+  end
+  it "creates by underscore capitalized class" do
+    factory.create(MyApp::OrderItem).should be_an_instance_of(MyApp::OrderItemSerializer)
+  end
 
   it "creates multiple with Array" do
     serializers = factory.create("Song", "artists", :album)

@@ -22,4 +22,10 @@ module MyApp
     attributes :id, :name, :website
     can_include :albums, :songs
   end
+
+  class OrderItemSerializer
+    include RestPack::Serializer
+    attributes :id, :album_id
+    can_include :albums
+  end
 end
