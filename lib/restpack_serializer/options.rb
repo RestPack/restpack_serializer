@@ -31,7 +31,7 @@ module RestPack::Serializer
 
         # TODO potential injection ?
         # TODO handle @filters
-        @scope.joins("INNER JOIN #{join_table_name} ON #{join_table_name}.#{foreign_key} IN (#{foreign_values})")
+        @scope.joins(join_table_name.to_sym).where("#{join_table_name}.#{foreign_key} IN (?)", @through[:source_ids])
       else
         scope_filter = {}
         @filters.keys.each do |filter|
