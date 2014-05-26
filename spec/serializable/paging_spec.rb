@@ -195,6 +195,14 @@ describe RestPack::Serializer::Paging do
         page[:meta][:albums][:count].should == 2
       end
     end
+
+    context 'with allowed parameters' do
+      let(:params) { { created_at: '2000-01-01' } }
+
+      it 'includes the parameters in page hrefs' do
+        page[:meta][:songs][:next_href].should == '/songs?page=2&created_at=2000-01-01'
+      end
+    end
   end
 
   context "#page_with_options" do

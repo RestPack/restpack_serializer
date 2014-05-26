@@ -4,6 +4,7 @@ module MyApp
     attributes :id, :title, :album_id
     can_include :albums, :artists
     can_filter_by :title
+    allow_parameters :created_at
 
     def title
       @context[:reverse_title?] ? @model.title.reverse : @model.title

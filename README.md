@@ -347,6 +347,19 @@ Side-loading is available when filtering:
 
  * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?artist_ids=2,3&include=artists,songs
 
+## Allow custom parameters
+
+Custom parameters to include in the pagination hrefs can be defined with the `allow_parameters` option:
+
+```ruby
+class Account
+    include RestPack::Serializer
+    attributes :id, :application_id, :created_by, :name, :href
+
+    allow_parameters :created_by, :another_attribute
+end
+```
+
 ## Running Tests
 
 `bundle`

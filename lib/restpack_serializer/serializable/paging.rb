@@ -60,6 +60,7 @@ module RestPack::Serializer::Paging
       params << "page_size=#{options.page_size}" unless options.default_page_size?
       params << "include=#{options.include.join(',')}" if options.include.any?
       params << options.filters_as_url_params if options.filters.any?
+      params << options.allowed_parameters_as_url_params if options.allowed_parameters.any?
 
       url += '?' + params.join('&') if params.any?
       url
