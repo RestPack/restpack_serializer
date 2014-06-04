@@ -15,6 +15,10 @@ describe RestPack::Serializer do
     def self.table_name
       "people"
     end
+
+    def to_param
+      id.to_s
+    end
   end
 
   context "bare bones serializer" do
