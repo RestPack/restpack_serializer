@@ -36,7 +36,12 @@ describe RestPack::Serializer do
     end
 
     def admin_info
-      { key: "super_secret_sauce" }
+      {
+        "key" => "super_secret_sauce",
+        "array" => [
+          { "name" => "Alex" }
+        ]
+      }
     end
 
     def include_admin_info?
@@ -120,7 +125,12 @@ describe RestPack::Serializer do
 
       it "includes custom attributes if specified" do
         hash = serializer.as_json(person, { is_admin?: true })
-        hash[:admin_info].should == { key: "super_secret_sauce" }
+        hash[:admin_info].should == {
+          key: "super_secret_sauce",
+          array: [
+            name: 'Alex'
+          ]
+        }
       end
     end
 
