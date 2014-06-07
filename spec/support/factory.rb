@@ -42,4 +42,12 @@ FactoryGirl.define do
     amount 999
     artist
   end
+
+  factory :tag, :class => MyApp::Tag do
+    name "soul"
+
+    after :build do |tag, evaluator|
+      tag.albums << FactoryGirl.build_list(:album, 1)
+    end
+  end
 end
