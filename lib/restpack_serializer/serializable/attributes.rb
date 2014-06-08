@@ -2,7 +2,7 @@ module RestPack::Serializer::Attributes
   extend ActiveSupport::Concern
 
   def default_href
-    "#{RestPack::Serializer.config.href_prefix}/#{self.class.key}/#{@model.id}"
+    "#{RestPack::Serializer.config.href_prefix}/#{self.class.key}/#{@model.to_param}"
   end
 
   module ClassMethods
