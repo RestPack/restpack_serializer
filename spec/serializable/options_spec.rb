@@ -11,9 +11,11 @@ describe RestPack::Serializer::Options do
     it { subject.page.should == 1 }
     it { subject.page_size.should == 10 }
     it { subject.filters.should == {} }
+    it { subject.allowed_parameters.should == {} }
     it { subject.scope.should == MyApp::Song.all }
     it { subject.default_page_size?.should == true }
     it { subject.filters_as_url_params.should == '' }
+    it { subject.allowed_parameters_as_url_params.should == '' }
   end
 
   describe 'with paging params' do
@@ -56,6 +58,23 @@ describe RestPack::Serializer::Options do
       let(:params) { { 'album_id' => '111,222', 'artist_id' => '888,999' } }
       it { subject.filters.should == { album_id: ['111', '222'], artist_id: ['888', '999'] } }
       it { subject.filters_as_url_params.should == 'album_id=111,222&artist_id=888,999' }
+    end
+  end
+
+  context 'with allowed parameters' do
+    describe 'with no params' do
+      let(:params) { { } }
+      it { subject.allowed_parameters.should == {} }
+    end
+    describe 'with an allowed params' do
+      let(:params) { { 'created_at' => '2000-01-01' } }
+      it { subject.allowed_parameters.should == { created_at: '2000-01-01' } }
+      it { subject.allowed_parameters_as_url_params.should == 'created_at=2000-01-01' }
+    end
+    describe 'with allowed and not allowed params' do
+      let(:params) { { 'created_at' => '2000-01-01', 'unallowed_param' => '123'} }
+      it { subject.allowed_parameters.should == { created_at: '2000-01-01' } }
+      it { subject.allowed_parameters_as_url_params.should == 'created_at=2000-01-01' }
     end
   end
 

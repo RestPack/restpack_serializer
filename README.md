@@ -18,8 +18,6 @@ Let's say we have an `Album` model:
 
 ```ruby
 class Album < ActiveRecord::Base
-  attr_accessible :title, :year, :artist
-
   belongs_to :artist
   has_many :songs
 end
@@ -157,8 +155,10 @@ http://restpack-serializer-sample.herokuapp.com/api/v1/songs.json?page=2&page_si
             "page_count": 14,
             "previous_page": 1,
             "next_page": 3,
-            "previous_href": "/api/v1/songs?page_size=3",
-            "next_href": "/api/v1/songs?page=3&page_size=3"
+            "first_href": "/songs?page_size=3",
+            "previous_href": "/songs?page_size=3",
+            "next_href": "/songs?page=3&page_size=3"
+            "last_href": "/songs?page=14&page_size=3"
         }
     },
     "links": {
@@ -255,8 +255,10 @@ which yields:
             "page_count": 1,
             "previous_page": null,
             "next_page": null,
+            "first_href": '/albums',
             "previous_href": null,
             "next_href": null
+            "last_href": '/albums'
         }
     },
     "links": {
@@ -344,6 +346,19 @@ end
 Side-loading is available when filtering:
 
  * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?artist_ids=2,3&include=artists,songs
+
+## Allow custom parameters
+
+Custom parameters to include in the pagination hrefs can be defined with the `allow_parameters` option:
+
+```ruby
+class Account
+    include RestPack::Serializer
+    attributes :id, :application_id, :created_by, :name, :href
+
+    allow_parameters :created_by, :another_attribute
+end
+```
 
 ## Running Tests
 

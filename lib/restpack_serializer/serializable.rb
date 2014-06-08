@@ -3,6 +3,7 @@ require_relative "options"
 require_relative "serializable/attributes"
 require_relative "serializable/filterable"
 require_relative "serializable/paging"
+require_relative "serializable/parameterizable"
 require_relative "serializable/resource"
 require_relative "serializable/single"
 require_relative "serializable/side_loading"
@@ -25,6 +26,7 @@ module RestPack
     include RestPack::Serializer::Single
     include RestPack::Serializer::Attributes
     include RestPack::Serializer::Filterable
+    include RestPack::Serializer::Parameterizable
     include RestPack::Serializer::SideLoading
 
     class InvalidInclude < Exception; end
