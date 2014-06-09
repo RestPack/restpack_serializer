@@ -8,6 +8,7 @@ module RestPack::Serializer::Paging
 
     def page_with_options(options)
       page = options.scope_with_filters.page(options.page).per(options.page_size)
+      page = page.reorder(options.sorting) if options.sorting.any?
 
       result = RestPack::Serializer::Result.new
       result.resources[self.key] = serialize_page(page, options)
@@ -58,6 +59,7 @@ module RestPack::Serializer::Paging
       params << "page=#{page}" unless page == 1
       params << "page_size=#{options.page_size}" unless options.default_page_size?
       params << "include=#{options.include.join(',')}" if options.include.any?
+      params << options.sorting_as_url_params if options.sorting.any?
       params << options.filters_as_url_params if options.filters.any?
 
       url += '?' + params.join('&') if params.any?

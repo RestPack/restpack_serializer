@@ -180,6 +180,28 @@ describe RestPack::Serializer::Paging do
       end
     end
 
+    context 'when sorting' do
+      context 'with no sorting' do
+        let(:params) { {} }
+
+        it "uses the model's sorting" do
+          page[:songs].first[:id].to_i.should < page[:songs].last[:id].to_i
+        end
+      end
+
+      context 'with descending title sorting' do
+        let(:params) { { sort: '-title' } }
+
+        it 'returns a page with sorted songs' do
+          page[:songs].first[:title].should > page[:songs].last[:title]
+        end
+
+        it 'includes the sorting in page hrefs' do
+          page[:meta][:songs][:next_href].should == '/songs?page=2&sort=-title'
+        end
+      end
+    end
+
     context "with custom scope" do
       before do
         FactoryGirl.create(:album, year: 1930)
