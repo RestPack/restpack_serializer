@@ -57,6 +57,8 @@ module MyApp
   end
 
   class Song < ActiveRecord::Base
+    default_scope -> { order(id: :asc) }
+
     attr_accessible :title, :artist, :album
 
     belongs_to :artist

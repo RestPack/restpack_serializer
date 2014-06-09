@@ -59,6 +59,33 @@ describe RestPack::Serializer::Options do
     end
   end
 
+  context 'with sorting parameters' do
+    describe 'with no params' do
+      let(:params) { { } }
+      it { subject.sorting.should == {} }
+    end
+    describe 'with a sorting value' do
+      let(:params) { { 'sort' => 'Title' } }
+      it { subject.sorting.should == { title: :asc } }
+      it { subject.sorting_as_url_params.should == 'sort=title' }
+    end
+    describe 'with a descending sorting value' do
+      let(:params) { { 'sort' => '-title' } }
+      it { subject.sorting.should == { title: :desc } }
+      it { subject.sorting_as_url_params.should == 'sort=-title' }
+    end
+    describe 'with multiple sorting values' do
+      let(:params) { { 'sort' => '-Title,ID' } }
+      it { subject.sorting.should == { title: :desc, id: :asc } }
+      it { subject.sorting_as_url_params.should == 'sort=-title,id' }
+    end
+    describe 'with a not allowed sorting value' do
+      let(:params) { { 'sort' => '-title,album_id,id' } }
+      it { subject.sorting.should == { title: :desc, id: :asc } }
+      it { subject.sorting_as_url_params.should == 'sort=-title,id' }
+    end
+  end
+
   context 'scopes' do
     describe 'with default scope' do
       it { subject.scope.should == MyApp::Song.all }

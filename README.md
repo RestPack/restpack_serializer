@@ -345,6 +345,23 @@ Side-loading is available when filtering:
 
  * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?artist_ids=2,3&include=artists,songs
 
+## Sorting
+
+Sorting attributes can be defined with the `can_sort_by` option:
+
+ ```ruby
+class Account
+    include RestPack::Serializer
+    attributes :id, :application_id, :created_by, :name, :href
+
+    can_sort_by :id, :name
+end
+```
+
+ * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?sort=id
+ * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?sort=-name
+ * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json?sort=name,-id
+
 ## Running Tests
 
 `bundle`
