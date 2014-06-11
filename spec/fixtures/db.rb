@@ -23,6 +23,13 @@ ActiveRecord::Schema.define(:version => 1) do
     t.datetime "updated_at"
   end
 
+  create_table "album_reviews", :force => true do |t|
+    t.string   "message"
+    t.integer  "album_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "songs", :force => true do |t|
     t.string   "title"
     t.integer  "album_id"
@@ -54,6 +61,12 @@ module MyApp
 
     belongs_to :artist
     has_many :songs
+    has_many :album_reviews
+  end
+
+  class AlbumReview < ActiveRecord::Base
+    attr_accessible :message
+    belongs_to :album
   end
 
   class Song < ActiveRecord::Base
