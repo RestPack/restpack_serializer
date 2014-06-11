@@ -14,9 +14,9 @@ module RestPack
     @@class_map ||= {}
 
     included do
-      identifier = self.to_s.gsub(/(.)([A-Z])/,'\1_\2').downcase.chomp('_serializer')
+      identifier = self.to_s.underscore.chomp('_serializer')
       @@class_map[identifier] = self
-      @@class_map[identifier.split('::').last] = self
+      @@class_map[identifier.split('/').last] = self
     end
 
     include RestPack::Serializer::Paging
