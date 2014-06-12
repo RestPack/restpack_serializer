@@ -18,6 +18,12 @@ module MyApp
     can_filter_by :year
   end
 
+  class AlbumReviewSerializer
+    include RestPack::Serializer
+    attributes :message
+    can_filter_by :album
+  end
+
   class ArtistSerializer
     include RestPack::Serializer
     attributes :id, :name, :website
