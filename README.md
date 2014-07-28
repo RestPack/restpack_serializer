@@ -12,6 +12,17 @@ restpack_serializer allows you to quickly provide a set of RESTful endpoints for
 * [An overview of RestPack](http://www.slideshare.net/gavinjoyce/taming-monolithic-monsters)
 * [JSON API](http://jsonapi.org/)
 
+## Getting Started
+
+### For rails projects:
+After adding the gem `restpack_serializer` to your Gemfile, add this code to `config/initializers/restpack_serializer.rb`:
+
+```ruby
+Dir[Rails.root.join('app/serializers/**/*.rb')].each do |path|
+  require path
+end
+```
+
 ## Serialization
 
 Let's say we have an `Album` model:
