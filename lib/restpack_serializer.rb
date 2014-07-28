@@ -1,5 +1,4 @@
 require 'kaminari'
-require 'protected_attributes'
 
 require 'restpack_serializer/version'
 require 'restpack_serializer/configuration'
