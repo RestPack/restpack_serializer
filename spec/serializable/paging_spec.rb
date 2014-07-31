@@ -133,7 +133,7 @@ describe RestPack::Serializer::Paging do
         album_model = MyApp::Album.find(album[:id])
 
         album[:links][:artist].should == album_model.artist_id.to_s
-        album[:links][:songs].should == page[:songs].map { |song| song[:id] }
+        (page[:songs].map { |song| song[:id] } - album[:links][:songs]).empty?.should be_truthy
       end
 
       context "with includes as comma delimited string" do

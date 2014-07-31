@@ -159,9 +159,7 @@ describe RestPack::Serializer do
           artist_with_fans = FactoryGirl.create :artist_with_fans
 
           json = artist_serializer.as_json(artist_with_fans)
-          json[:links].should == {
-            fans: artist_with_fans.fans.collect {|obj| obj.id.to_s }
-          }
+          json[:links][:fans].should == artist_with_fans.fans.collect {|obj| obj.id.to_s }
         end
       end
     end
