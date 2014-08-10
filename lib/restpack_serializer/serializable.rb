@@ -112,6 +112,13 @@ module RestPack
         (@key || self.model_class.send(:table_name)).to_sym
       end
 
+      def singular_key
+        self.key.to_s.singularize.to_sym
+      end
+
+      def plural_key
+        self.key
+      end
     end
   end
 end

@@ -190,18 +190,32 @@ describe RestPack::Serializer do
   end
 
   describe "#key" do
-    it "returns the correct key" do
-      PersonSerializer.key.should == :people
+    context "with default key" do
+      it "returns the correct key" do
+        PersonSerializer.key.should == :people
+      end
+
+      it "has correct #singular_key" do
+        PersonSerializer.singular_key.should == :person
+      end
+
+      it "has correct #plural_key" do
+        PersonSerializer.plural_key.should == :people
+      end
     end
 
     context "with custom key" do
       class SerializerWithCustomKey
         include RestPack::Serializer
-        self.key = :custom_key
+        self.key = :customers
       end
 
       it "returns the correct key" do
-        SerializerWithCustomKey.key.should == :custom_key
+        SerializerWithCustomKey.key.should == :customers
+      end
+
+      it "has correct #singular_key" do
+        SerializerWithCustomKey.singular_key.should == :customer
       end
     end
   end
