@@ -57,7 +57,7 @@ end
 }
 ```
 
-`as_json` accepts an optional `context` hash parameter which can be used be your Serializers to customize their output:
+`as_json` accepts an optional `context` hash parameter which can be used by your Serializers to customize their output:
 
 ```ruby
 class AlbumSerializer
