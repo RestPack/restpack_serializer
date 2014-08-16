@@ -44,8 +44,10 @@ module RestPack::Serializer::Paging
           next_page: page.next_page
       }
 
+      meta[:first_href] = page_href(1, options)
       meta[:previous_href] = page_href(meta[:previous_page], options)
       meta[:next_href] = page_href(meta[:next_page], options)
+      meta[:last_href] = page_href(meta[:page_count], options)
       meta
     end
 
