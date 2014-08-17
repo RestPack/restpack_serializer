@@ -67,7 +67,11 @@ module RestPack
       self.class.associations.each do |association|
         if association.macro == :belongs_to
           data[:links] ||= {}
-          foreign_key_value = model.send(association.foreign_key)
+          foreign_key_value = if association.polymorphic?
+            model.send(association.name).to_param
+          else
+            model.send(association.foreign_key)
+          end
           if foreign_key_value
             data[:links][association.name.to_sym] = foreign_key_value.to_s
           end
