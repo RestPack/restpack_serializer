@@ -6,6 +6,7 @@ require_relative "serializable/paging"
 require_relative "serializable/resource"
 require_relative "serializable/single"
 require_relative "serializable/side_loading"
+require_relative "serializable/side_load_data_builder"
 require_relative "serializable/symbolizer"
 require_relative "serializable/sortable"
 
@@ -65,17 +66,15 @@ module RestPack
 
     def add_links(model, data)
       self.class.associations.each do |association|
-        if association.macro == :belongs_to
-          data[:links] ||= {}
-          foreign_key_value = model.send(association.foreign_key)
-          if foreign_key_value
-            data[:links][association.name.to_sym] = foreign_key_value.to_s
-          end
-        elsif association.macro == :has_many
-          ids = model.send(association.name).pluck(:id).map { |id| id.to_s }
-
-          data[:links] ||= {}
-          data[:links][association.name.to_sym] = ids
+        data[:links] ||= {}
+        links_value = case
+        when association.macro == :belongs_to
+          model.send(association.foreign_key).try(:to_s)
+        when association.macro.to_s.match(/has_/)
+          model.send(association.name).pluck(:id).map(&:to_s)
+        end
+        unless links_value.blank?
+          data[:links][association.name.to_sym] = links_value
         end
       end
       data

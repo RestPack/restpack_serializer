@@ -23,6 +23,15 @@ FactoryGirl.define do
         create_list(:payment, evaluator.fans_count, artist: artist)
       end
     end
+
+    factory :artist_with_stalkers do
+      ignore do
+        stalker_count 2
+      end
+      after(:create) do |artist, evaluator|
+        create_list(:stalker, evaluator.stalker_count, artists: [ artist ])
+      end
+    end
   end
 
   factory :album, :class => MyApp::Album do
@@ -55,5 +64,9 @@ FactoryGirl.define do
 
   factory :fan, :class => MyApp::Fan do
     sequence(:name) {|n| "Fan ##{n}"}
+  end
+
+  factory :stalker, :class => MyApp::Stalker do
+    sequence(:name) {|n| "Stalker ##{n}"}
   end
 end
