@@ -51,6 +51,17 @@ ActiveRecord::Schema.define(:version => 1) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "stalkers", :force => true do |t|
+    t.string "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "artists_stalkers", force: true, id: false do |t|
+    t.integer :artist_id
+    t.integer :stalker_id
+  end
 end
 
 module MyApp
@@ -61,6 +72,7 @@ module MyApp
     has_many :songs
     has_many :payments
     has_many :fans, :through => :payments
+    has_and_belongs_to_many :stalkers
   end
 
   class Album < ActiveRecord::Base
@@ -97,5 +109,10 @@ module MyApp
     attr_accessible :name
     has_many :payments
     has_many :artists, :through => :albums
+  end
+
+  class Stalker < ActiveRecord::Base
+    attr_accessible :name
+    has_and_belongs_to_many :artists
   end
 end

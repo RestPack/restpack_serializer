@@ -152,14 +152,27 @@ describe RestPack::Serializer do
         end
       end
 
-      context "'has_many, through' associations" do
+      context "with a serializer with has_* associations" do
         let(:artist_serializer) { MyApp::ArtistSerializer.new }
+        let(:json) { artist_serializer.as_json(artist_factory) }
+        let(:side_load_ids) { artist_has_association.map {|obj| obj.id.to_s } }
 
-        it "includes 'links' data when there are associated records" do
-          artist_with_fans = FactoryGirl.create :artist_with_fans
+        describe "'has_many, through' associations" do
+          let(:artist_factory) { FactoryGirl.create :artist_with_fans }
+          let(:artist_has_association) { artist_factory.fans }
 
-          json = artist_serializer.as_json(artist_with_fans)
-          json[:links][:fans].should == artist_with_fans.fans.collect {|obj| obj.id.to_s }
+          it "includes 'links' data when there are associated records" do
+            expect(json[:links][:fans]).to match_array(side_load_ids)
+          end
+        end
+
+        describe "'has_and_belongs_to_many' associations" do
+          let(:artist_factory) { FactoryGirl.create :artist_with_stalkers }
+          let(:artist_has_association) { artist_factory.stalkers }
+
+          it "includes 'links' data when there are associated records" do
+            expect(json[:links][:stalkers]).to match_array(side_load_ids)
+          end
         end
       end
     end

@@ -27,10 +27,15 @@ module MyApp
   class ArtistSerializer
     include RestPack::Serializer
     attributes :id, :name, :website
-    can_include :albums, :songs, :fans
+    can_include :albums, :songs, :fans, :stalkers
   end
 
   class FanSerializer
+    include RestPack::Serializer
+    attributes :id, :name
+  end
+
+  class StalkerSerializer
     include RestPack::Serializer
     attributes :id, :name
   end
