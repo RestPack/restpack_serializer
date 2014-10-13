@@ -153,12 +153,23 @@ describe RestPack::Serializer do
       end
 
       context "with a serializer with has_* associations" do
+        let(:artist_factory) { FactoryGirl.create :artist_with_fans }
         let(:artist_serializer) { MyApp::ArtistSerializer.new }
         let(:json) { artist_serializer.as_json(artist_factory) }
         let(:side_load_ids) { artist_has_association.map {|obj| obj.id.to_s } }
 
+        context "when the association has been eager loaded" do
+          before do
+            artist_factory.fans.stub(:loaded?) { true }
+          end
+          it "does not make a query to retrieve id values" do
+            expect(artist_factory.fans).not_to receive(:pluck)
+            json
+          end
+        end
+
+
         describe "'has_many, through' associations" do
-          let(:artist_factory) { FactoryGirl.create :artist_with_fans }
           let(:artist_has_association) { artist_factory.fans }
 
           it "includes 'links' data when there are associated records" do
