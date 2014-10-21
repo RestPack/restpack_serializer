@@ -34,8 +34,9 @@ module RestPack::Serializer::SideLoading
             link_key = "#{self.key}.#{association.plural_name}"
             href = "/#{association.plural_name}?#{singular_key}_id={#{key}.id}"
           end
+
           links.merge!(link_key => {
-            :href => RestPack::Serializer.config.href_prefix + href,
+            :href => href_prefix + href,
             :type => association.plural_name.to_sym
             }
           )

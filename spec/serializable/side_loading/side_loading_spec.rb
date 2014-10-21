@@ -67,6 +67,13 @@ describe RestPack::Serializer::SideLoading do
       MyApp::AlbumSerializer.links["albums.artist"][:href].should == "/api/v1/artists/{albums.artist}"
       RestPack::Serializer.config.href_prefix = original
     end
+
+    it "applies custom serializer  href_prefix" do
+      original = RestPack::Serializer.config.href_prefix
+      MyApp::AlbumSerializer.href_prefix = '/api/v2'
+      MyApp::AlbumSerializer.links["albums.artist"][:href].should == "/api/v2/artists/{albums.artist}"
+      MyApp::AlbumSerializer.href_prefix = original
+    end
   end
 
   describe "#filterable_by" do
