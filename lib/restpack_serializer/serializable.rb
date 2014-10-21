@@ -89,7 +89,7 @@ module RestPack
     end
 
     module ClassMethods
-      attr_accessor :model_class, :key
+      attr_accessor :model_class, :href_prefix, :key
 
       def array_as_json(models, context = {})
         new.as_json(models, context)
@@ -109,6 +109,10 @@ module RestPack
 
       def model_class
         @model_class || self.name.chomp('Serializer').constantize
+      end
+
+      def href_prefix
+        @href_prefix || RestPack::Serializer.config.href_prefix
       end
 
       def key

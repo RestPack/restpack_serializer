@@ -37,6 +37,22 @@ describe RestPack::Serializer::Paging do
       end
     end
 
+    context 'when href prefix is set' do
+      before do
+        @original_prefix = MyApp::SongSerializer.href_prefix
+        MyApp::SongSerializer.href_prefix = '/api/v3'
+      end
+      after do
+        MyApp::SongSerializer.href_prefix = @original_prefix
+      end
+      let(:page) do
+        MyApp::SongSerializer.page(params, scope, context)
+      end
+      it 'should use prefixed links' do
+        page[:meta][:songs][:next_href].should == '/api/v3/songs?page=2'
+      end
+    end
+
     context "with custom page size" do
       let(:params) { { page_size: '3' } }
       it "returns custom page sizes" do
