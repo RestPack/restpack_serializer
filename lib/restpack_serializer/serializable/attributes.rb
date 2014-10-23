@@ -10,15 +10,23 @@ module RestPack::Serializer::Attributes
       @serializable_attributes
     end
 
+     def serializable_attributes_options
+      @serializable_attributes_options
+    end
+
     def attributes(*attrs)
       attrs.each { |attr| attribute attr }
     end
 
     def attribute(name, options={})
-      options[:key] ||= name.to_sym
+      key = options[:key] || name.to_sym
+      options.delete :key
 
       @serializable_attributes ||= {}
-      @serializable_attributes[options[:key]] = name
+      @serializable_attributes[key] = name
+
+      @serializable_attributes_options ||= {}
+      @serializable_attributes_options[key] = options
 
       define_attribute_method name
       define_include_method name
