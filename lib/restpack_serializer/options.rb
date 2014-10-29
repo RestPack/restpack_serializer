@@ -10,7 +10,12 @@ module RestPack::Serializer
       @page = params[:page] ? params[:page].to_i : 1
       @page_size = params[:page_size] ? params[:page_size].to_i : RestPack::Serializer.config.page_size
       @include = params[:include] ? params[:include].split(',').map(&:to_sym) : []
-      @filters = filters_from_params(params, serializer)
+      if serializer.respond_to? :filters_from_params
+        @filters = serializer.filters_from_params(params, serializer)
+      else
+        @filters = filters_from_params(params, serializer)
+      end
+      
       @sorting = sorting_from_params(params, serializer)
       @serializer = serializer
       @model_class = serializer.model_class
