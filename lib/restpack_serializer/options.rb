@@ -77,6 +77,7 @@ module RestPack::Serializer
       case value
       when Hash
         value.map { |k,v| map_filter_ids(k,v) }
+      when Range
       else
          "#{key}=#{value.join(',')}"
       end
