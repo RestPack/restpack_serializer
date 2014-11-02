@@ -14,12 +14,22 @@ module RestPack::Serializer::Attributes
       attrs.each { |attr| attribute attr }
     end
 
+    def transform(attrs = [], transform_lambda)
+      attrs.each { |attr| transform_attribute(attr, transform_lambda) }
+    end
+
+    def transform_attribute(name, transform_lambda, options = {})
+      add_to_serializable(name, options)
+
+      define_method name do
+        transform_lambda.call(name, @model)
+      end
+
+      define_include_method name
+    end
+
     def attribute(name, options={})
-      options[:key] ||= name.to_sym
-
-      @serializable_attributes ||= {}
-      @serializable_attributes[options[:key]] = name
-
+      add_to_serializable(name, options)
       define_attribute_method name
       define_include_method name
     end
@@ -43,6 +53,13 @@ module RestPack::Serializer::Attributes
           @context[method].nil? || @context[method]
         end
       end
+    end
+
+    def add_to_serializable(name, options = {})
+      options[:key] ||= name.to_sym
+
+      @serializable_attributes ||= {}
+      @serializable_attributes[options[:key]] = name
     end
   end
 end
