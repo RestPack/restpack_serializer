@@ -376,6 +376,23 @@ class Account
 
         return filters
     end
+
+    def self.scope_with_filters(options)
+        if (options.filters[:participant_id])
+          participant_id = options.filters[:participant_id]
+          options.filters.delete(:participant_id)
+
+          filter = {game_participations: {
+              participant_id: participant_id
+          }}
+          .merge(options.filters)
+          options.scope = options.scope.joins(:game_participations).where(filter)
+          return options.scope
+        end
+
+        # Let Default Options take care of it
+        return nil
+    end
 end
 ```
 
