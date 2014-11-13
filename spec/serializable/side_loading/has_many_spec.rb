@@ -65,6 +65,17 @@ describe RestPack::Serializer::SideLoading do
             side_loads[:meta][:fans][:page].should == 1
             side_loads[:meta][:fans][:count].should == expected_count
           end
+
+          context "when there are shared fans" do
+            before do
+              artist_1.fans << artist_2.fans.first
+            end
+            it "should not include duplicates in the linked resource collection" do
+              expected_count = (artist_1.fans + artist_2.fans).uniq.count
+              expect(side_loads[:fans].count).to eq(expected_count)
+              expect(side_loads[:meta][:fans][:count]).to eq(expected_count)
+            end
+          end
         end
       end
     end
