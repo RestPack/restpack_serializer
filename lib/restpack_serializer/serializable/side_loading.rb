@@ -19,24 +19,25 @@ module RestPack::Serializer::SideLoading
     end
 
     def can_include(*includes)
+      @can_include_options = {}
+      @can_include_options = includes.last if includes.last.is_a?(Hash)
       @can_includes ||= []
-      @can_includes += includes
+      @can_includes += includes.flat_map do
+        |include| include.try(:keys)|| include
+      end
     end
-
+ 
     def links
       {}.tap do |links|
         associations.each do |association|
-          if association.macro == :belongs_to
-            link_key = "#{self.key}.#{association.name}"
-            href = "/#{association.plural_name}/{#{link_key}}"
+          link_key = if association.macro == :belongs_to
+            "#{key}.#{association.name}"
           elsif association.macro.to_s.match(/has_/)
-            singular_key = self.key.to_s.singularize
-            link_key = "#{self.key}.#{association.plural_name}"
-            href = "/#{association.plural_name}?#{singular_key}_id={#{key}.id}"
+            "#{key}.#{association.plural_name}"
           end
-
+          
           links.merge!(link_key => {
-            :href => href_prefix + href,
+            :href => href_prefix + url_for_association(association),
             :type => association.plural_name.to_sym
             }
           )
@@ -56,7 +57,7 @@ module RestPack::Serializer::SideLoading
     def side_load(include, models, options)
       association = association_from_include(include)
       return {} unless supported_association?(association.macro)
-      serializer = RestPack::Serializer::Factory.create(association.class_name)
+      serializer = serializer_from_association_class(association)
       builder = RestPack::Serializer::SideLoadDataBuilder.new(association,
                                                               models,
                                                               serializer)
@@ -85,6 +86,31 @@ module RestPack::Serializer::SideLoading
     def raise_invalid_include(include)
       raise RestPack::Serializer::InvalidInclude.new,
         ":#{include} is not a valid include for #{self.model_class}"
+    end
+
+    def url_from_association(association)
+      serializer_from_association_class(association).url
+    end
+    
+    def url_for_association(association)
+      identifier = if association.macro == :belongs_to
+        "/{#{key}.#{association.name}}"
+      else association.macro.to_s.match(/has_/)
+        param = can_include_options(association)[:param] || "#{singular_key}_id"
+        value = can_include_options(association)[:value] || "id"
+      
+        "?#{param}={#{key}.#{value}}"
+      end
+
+      "/#{url_from_association(association)}#{identifier}"
+    end
+
+    def can_include_options(association)
+      @can_include_options.fetch(association.name.to_sym, {})
+    end
+
+    def serializer_from_association_class(association)
+      RestPack::Serializer::Factory.create(association.class_name)
     end
   end
 end
