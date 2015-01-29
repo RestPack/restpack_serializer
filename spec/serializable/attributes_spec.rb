@@ -27,10 +27,10 @@ describe RestPack::Serializer::Attributes do
   describe '#transform_attributes' do
     let(:model) { OpenStruct.new(gonzaga: 'IS A SCHOOL') }
 
-    subject(:as_json) { CustomSerializer.as_json(model) }
+    subject(:as_serialized) { CustomSerializer.as_serialized(model) }
 
     it 'uses the transform method on the model attribute' do
-      expect(as_json[:gonzaga]).to eq('is a school')
+      expect(as_serialized[:gonzaga]).to eq('is a school')
     end
   end
 end
