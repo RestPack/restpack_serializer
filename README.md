@@ -15,7 +15,9 @@ restpack_serializer allows you to quickly provide a set of RESTful endpoints for
 ## Getting Started
 
 ### For rails projects:
-After adding the gem `restpack_serializer` to your Gemfile, add this code to `config/initializers/restpack_serializer.rb`:
+Rails autoloading will automatically pull in top-level serializers. This means you no longer need to restart your server when changing serializers in development. If you previously had a restpack serializer initializer script, please remove it, as the two are not compatible.
+
+If your serializers or your model classes are nested in a module, you'll need to make sure you add this to your project in `config/initializers/restpack_serializer.rb`:
 
 ```ruby
 Dir[Rails.root.join('app/serializers/**/*.rb')].each do |path|

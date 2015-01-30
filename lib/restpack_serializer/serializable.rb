@@ -13,13 +13,23 @@ require_relative "serializable/sortable"
 module RestPack
   module Serializer
     extend ActiveSupport::Concern
-    mattr_accessor :class_map
+
     @@class_map ||= {}
 
     included do
       identifier = self.to_s.underscore.chomp('_serializer')
       @@class_map[identifier] = self
       @@class_map[identifier.split('/').last] = self
+    end
+
+    def self.class_for_identifier(identifier)
+      klass = begin
+        "#{identifier}_serializer".camelize.constantize
+      rescue NameError => e
+        nil
+      end
+
+      klass ||= @@class_map[identifier]
     end
 
     include RestPack::Serializer::Paging
