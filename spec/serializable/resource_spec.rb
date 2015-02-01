@@ -33,7 +33,7 @@ describe RestPack::Serializer::Resource do
     end
 
     it "includes the side-loads in the main meta data" do
-      resource[:meta][:songs][:include].should == [:albums]
+      resource[:meta][:songs][:include].should == ["albums"]
     end
   end
 

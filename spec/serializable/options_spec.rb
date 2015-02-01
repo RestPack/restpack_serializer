@@ -24,7 +24,7 @@ describe RestPack::Serializer::Options do
 
   describe 'with include' do
     let(:params) { { 'include' => 'model1,model2' } }
-    it { subject.include.should == [:model1, :model2] }
+    it { subject.include.should == ["model1", "model2"] }
   end
 
   context 'with filters' do

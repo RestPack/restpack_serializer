@@ -9,7 +9,7 @@ module RestPack::Serializer
 
       @page = params[:page] ? params[:page].to_i : 1
       @page_size = params[:page_size] ? params[:page_size].to_i : RestPack::Serializer.config.page_size
-      @include = params[:include] ? params[:include].split(',').map(&:to_sym) : []
+      @include = params[:include] ? params[:include].split(',') : []
       @filters = filters_from_params(params, serializer)
       @sorting = sorting_from_params(params, serializer)
       @serializer = serializer
