@@ -32,10 +32,15 @@ module RestPack
 
     class InvalidInclude < Exception; end
 
+    ## Note: `as_json is deprecated. Please use `as_serialized` instead.
     def as_json(model, context = {})
+      as_serialized(model, context)
+    end
+
+    def as_serialized(model, context = {})
       return if model.nil?
       if model.kind_of?(Array)
-        return model.map { |item| as_json(item, context) }
+        return model.map { |item| as_serialized(item, context) }
       end
 
       @model, @context = model, context
@@ -91,19 +96,30 @@ module RestPack
     module ClassMethods
       attr_accessor :model_class, :href_prefix, :key
 
+      ## NOTE: `array_as_json` has been renamed
+      ## to `array_as_serialized` and is  nowdeprecated.
       def array_as_json(models, context = {})
-        new.as_json(models, context)
+        array_as_serialized(models, context)
       end
 
+      def array_as_serialized(models, context = {})
+        new.as_serialized(models, context = {})
+      end
+
+      ## NOTE: `as_json` has been renamed to `as_serialized` and is now deprecated.
       def as_json(model, context = {})
-        new.as_json(model, context)
+        as_serialized(model,context)
+      end
+
+      def as_serialized(model, context = {})
+        new.as_serialized(model, context)
       end
 
       def serialize(models, context = {})
         models = [models] unless models.kind_of?(Array)
 
         {
-          self.key() => models.map {|model| self.as_json(model, context)}
+          self.key() => models.map {|model| self.as_serialized(model, context)}
         }
       end
 

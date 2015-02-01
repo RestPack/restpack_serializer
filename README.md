@@ -45,7 +45,7 @@ class AlbumSerializer
 end
 ```
 
-`AlbumSerializer.as_json(album)` produces:
+`AlbumSerializer.as_serialized(album)` produces:
 
 ```javascript
 {
@@ -57,7 +57,7 @@ end
 }
 ```
 
-`as_json` accepts an optional `context` hash parameter which can be used by your Serializers to customize their output:
+`as_serialized` accepts an optional `context` hash parameter which can be used by your Serializers to customize their output:
 
 ```ruby
 class AlbumSerializer
@@ -75,7 +75,7 @@ end
 ```
 
 ```ruby
-AlbumSerializer.as_json(album, { admin?: true })
+AlbumSerializer.as_serialized(album, { admin?: true })
 ```
 
 ## Exposing an API
@@ -99,7 +99,7 @@ These endpoint will live at URLs such as `/albums` and `/albums/142857`:
 * http://restpack-serializer-sample.herokuapp.com/api/v1/albums.json
 * http://restpack-serializer-sample.herokuapp.com/api/v1/albums/4.json
 
-The `AlbumSerializer` also provides a `single` method which will return a serialized resource similar to `as_json` above.
+The `AlbumSerializer` also provides a `single` method which will return a serialized resource similar to `as_serialized` above.
 
 `page`, `resource` and `single` methods take an optional scope argument allowing us to enforce arbitrary constraints:
 
@@ -381,3 +381,7 @@ end
 
 `bundle`
 `rake spec`
+
+## Deprecation Notice
+
+The `as_json` method has been renamed to `as_serialized` to more accurately represent the output of the method. In addition, the `array_as_json` method has been renamed to `array_as_serialized`. For the time being, `as_json` and `array_as_json` wrappers have been provided to prevent breaking changes, but they will be removed in the future.

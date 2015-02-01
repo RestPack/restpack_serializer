@@ -26,8 +26,8 @@ describe RestPack::Serializer do
       include RestPack::Serializer
     end
 
-    it ".as_json serializes to an empty hash" do
-      EmptySerializer.as_json(person).should == { }
+    it ".as_serialized serializes to an empty hash" do
+      EmptySerializer.as_serialized(person).should == { }
     end
   end
 
@@ -70,9 +70,9 @@ describe RestPack::Serializer do
     end
   end
 
-  describe ".as_json" do
+  describe ".as_serialized" do
     it "serializes specified attributes" do
-      serializer.as_json(person).should == {
+      serializer.as_serialized(person).should == {
         id: '123', name: 'Gavin', description: 'This is person #123',
         href: '/people/123', custom_key: 'custom value for model id 123'
       }
@@ -81,7 +81,7 @@ describe RestPack::Serializer do
     context "an array" do
       let(:people) { [person, person] }
       it "results in a serialized array" do
-        serializer.as_json(people).should == [
+        serializer.as_serialized(people).should == [
           {
             id: '123', name: 'Gavin', description: 'This is person #123',
             href: '/people/123', custom_key: 'custom value for model id 123'
@@ -92,9 +92,9 @@ describe RestPack::Serializer do
           }
         ]
       end
-      context "#array_as_json" do
+      context "#array_as_serialized" do
         it "results in a serialized array" do
-          serializer.class.array_as_json(people).should == [
+          serializer.class.array_as_serialized(people).should == [
             {
               id: '123', name: 'Gavin', description: 'This is person #123',
               href: '/people/123', custom_key: 'custom value for model id 123'
@@ -110,25 +110,25 @@ describe RestPack::Serializer do
 
     context "nil" do
       it "results in nil" do
-        serializer.as_json(nil).should == nil
+        serializer.as_serialized(nil).should == nil
       end
     end
 
     context "with options" do
       it "excludes specified attributes" do
-        serializer.as_json(person, { include_description?: false }).should == {
+        serializer.as_serialized(person, { include_description?: false }).should == {
           id: '123', name: 'Gavin', href: '/people/123',
           custom_key: 'custom value for model id 123'
         }
       end
 
       it "excludes custom attributes if specified" do
-        hash = serializer.as_json(person, { is_admin?: false })
+        hash = serializer.as_serialized(person, { is_admin?: false })
         hash[:admin_info].should == nil
       end
 
       it "includes custom attributes if specified" do
-        hash = serializer.as_json(person, { is_admin?: true })
+        hash = serializer.as_serialized(person, { is_admin?: true })
         hash[:admin_info].should == {
           key: "super_secret_sauce",
           array: [
@@ -144,7 +144,7 @@ describe RestPack::Serializer do
 
         it "includes 'links' data for :belongs_to associations" do
           @album1 = FactoryGirl.create(:album_with_songs, song_count: 11)
-          json = serializer.as_json(@album1.songs.first)
+          json = serializer.as_serialized(@album1.songs.first)
           json[:links].should == {
             artist: @album1.artist_id.to_s,
             album: @album1.id.to_s
@@ -155,7 +155,7 @@ describe RestPack::Serializer do
       context "with a serializer with has_* associations" do
         let(:artist_factory) { FactoryGirl.create :artist_with_fans }
         let(:artist_serializer) { MyApp::ArtistSerializer.new }
-        let(:json) { artist_serializer.as_json(artist_factory) }
+        let(:json) { artist_serializer.as_serialized(artist_factory) }
         let(:side_load_ids) { artist_has_association.map {|obj| obj.id.to_s } }
 
         context "when the association has been eager loaded" do
