@@ -48,14 +48,17 @@ describe RestPack::Serializer do
       }
     end
 
-    def include_admin_info?
-      @context[:is_admin?]
-    end
-
     def custom_attributes
       {
         :custom_key => "custom value for model id #{@model.id}"
       }
+    end
+
+    private
+
+    def include_admin_info?
+      # true
+      @context[:is_admin?]
     end
   end
 
