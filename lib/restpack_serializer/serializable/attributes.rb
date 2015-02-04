@@ -48,7 +48,11 @@ module RestPack::Serializer::Attributes
       unless method_defined?(name)
         define_method name do
           value = self.default_href if name == :href
-          value ||= @model.send(name)
+          if @model.is_a?(Hash)
+            value ||= @model[name] || @model[name.to_s]
+          else
+            value ||= @model.send(name)
+          end
           value = value.to_s if name == :id
           value
         end
