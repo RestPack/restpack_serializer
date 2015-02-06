@@ -12,7 +12,7 @@ module RestPack
         foreign_keys = @models.map { |model| model.send(@association.foreign_key) }.uniq.compact
         side_load = foreign_keys.any? ? @association.klass.find(foreign_keys) : []
         json_model_data = side_load.map { |model| @serializer.as_json(model) }
-        { @association.class_name.underscore.pluralize.to_sym => json_model_data, meta: { } }
+        { @association.plural_name.to_sym => json_model_data, meta: { } }
       end
 
       def side_load_has_many

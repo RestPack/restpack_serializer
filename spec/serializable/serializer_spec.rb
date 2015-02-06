@@ -147,6 +147,7 @@ describe RestPack::Serializer do
           json = serializer.as_json(@album1.songs.first)
           json[:links].should == {
             artist: @album1.artist_id.to_s,
+            record: @album1.id.to_s,
             album: @album1.id.to_s
           }
         end

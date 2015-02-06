@@ -96,6 +96,7 @@ module MyApp
     attr_accessible :title, :artist, :album
 
     belongs_to :artist
+    belongs_to :record, class_name: 'Album', foreign_key: 'album_id'
     belongs_to :album
   end
 
