@@ -28,16 +28,15 @@ module RestPack::Serializer::SideLoading
         associations.each do |association|
           if association.macro == :belongs_to
             link_key = "#{self.key}.#{association.name}"
-            href = "/#{association.plural_name}/{#{link_key}}"
+            href = "/#{association.class_name.underscore.pluralize}/{#{link_key}}"
           elsif association.macro.to_s.match(/has_/)
-            singular_key = self.key.to_s.singularize
             link_key = "#{self.key}.#{association.plural_name}"
-            href = "/#{association.plural_name}?#{singular_key}_id={#{key}.id}"
+            href = "/#{association.class_name.underscore.pluralize}?#{association.foreign_key}={#{key}.id}"
           end
 
           links.merge!(link_key => {
             :href => href_prefix + href,
-            :type => association.plural_name.to_sym
+            :type => association.class_name.underscore.pluralize.to_sym
             }
           )
         end

@@ -2,9 +2,9 @@ module RestPack::Serializer
   class Options
     attr_accessor :page, :page_size, :include, :filters, :serializer,
                   :model_class, :scope, :context, :include_links,
-                  :sorting
+                  :sorting, :key
 
-    def initialize(serializer, params = {}, scope = nil, context = {})
+    def initialize(serializer, params = {}, scope = nil, context = {}, key = nil)
       params.symbolize_keys! if params.respond_to?(:symbolize_keys!)
 
       @page = params[:page] ? params[:page].to_i : 1
