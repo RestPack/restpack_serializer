@@ -49,7 +49,8 @@ module RestPack::Serializer::Attributes
         define_method name do
           value = self.default_href if name == :href
           if @model.is_a?(Hash)
-            value ||= @model[name] || @model[name.to_s]
+            value = @model[name]
+            value = @model[name.to_s] if value.nil?
           else
             value ||= @model.send(name)
           end

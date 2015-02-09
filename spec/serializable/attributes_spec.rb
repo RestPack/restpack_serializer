@@ -57,13 +57,14 @@ describe RestPack::Serializer::Attributes do
   end
 
   describe "model as a hash" do
-    let(:model) { { a: 'A', 'b' => 'B' } }
+    let(:model) { { a: 'A', 'b' => 'B', c: false } }
 
     subject(:as_json) { CustomSerializer.as_json(model, include_gonzaga?: false) }
 
     it 'uses the transform method on the model attribute' do
       expect(as_json[:a]).to eq('A')
       expect(as_json[:b]).to eq('B')
+      expect(as_json[:c]).to eq(false)
     end
   end
 end
