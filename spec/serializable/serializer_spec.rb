@@ -152,6 +152,23 @@ describe RestPack::Serializer do
         end
       end
 
+      context "'belongs to polymorphic' associations" do
+        let(:serializer) { MyApp::GenericMetadatumSerializer.new }
+
+        it "includes a hash describe its polymorphic relationship" do
+          linked = FactoryGirl.create(:album)
+          datum = FactoryGirl.create(:generic_metadatum, linked: linked)
+          json = serializer.as_json(datum)
+          json[:links].should == {
+            linked: {
+              href: "/albums/#{linked.id}",
+              id: linked.id.to_s,
+              type: "albums"
+            }
+          }
+        end
+      end
+
       context "with a serializer with has_* associations" do
         let(:artist_factory) { FactoryGirl.create :artist_with_fans }
         let(:artist_serializer) { MyApp::ArtistSerializer.new }
