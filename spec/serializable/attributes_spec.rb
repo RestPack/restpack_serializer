@@ -4,7 +4,7 @@ describe RestPack::Serializer::Attributes do
   class CustomSerializer
     include RestPack::Serializer
     attributes :a, :b, :c
-    attributes :d, :e
+    attributes :d, :e, :f?
     optional :sometimes, :maybe
     attribute :old_attribute, :key => :new_key
     transform [:gonzaga], lambda { |name, model| model.send(name).downcase }
@@ -13,11 +13,11 @@ describe RestPack::Serializer::Attributes do
   subject(:attributes) { CustomSerializer.serializable_attributes }
 
   it "correctly models specified attributes" do
-    expect(attributes.length).to be(9)
+    expect(attributes.length).to be(10)
   end
 
   it "correctly maps normal attributes" do
-    [:a, :b, :c, :d, :e].each do |attr|
+    [:a, :b, :c, :d, :e, :f?].each do |attr|
       expect(attributes[attr]).to eq(attr)
     end
   end
@@ -57,7 +57,7 @@ describe RestPack::Serializer::Attributes do
   end
 
   describe "model as a hash" do
-    let(:model) { { a: 'A', 'b' => 'B', c: false } }
+    let(:model) { { a: 'A', 'b' => 'B', c: false, :f? => 2 } }
 
     subject(:as_json) { CustomSerializer.as_json(model, include_gonzaga?: false) }
 
@@ -65,6 +65,7 @@ describe RestPack::Serializer::Attributes do
       expect(as_json[:a]).to eq('A')
       expect(as_json[:b]).to eq('B')
       expect(as_json[:c]).to eq(false)
+      expect(as_json[:f?]).to eq(2)
     end
   end
 end
