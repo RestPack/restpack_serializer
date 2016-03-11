@@ -14,35 +14,77 @@ module RestPack::Serializer::Attributes
       attrs.each { |attr| attribute attr }
     end
 
+    def optional(*attrs)
+      attrs.each { |attr| optional_attribute attr }
+    end
+
+    def transform(attrs = [], transform_lambda)
+      attrs.each { |attr| transform_attribute(attr, transform_lambda) }
+    end
+
+    def transform_attribute(name, transform_lambda, options = {})
+      add_to_serializable(name, options)
+
+      define_method name do
+        transform_lambda.call(name, @model)
+      end
+
+      define_include_method name
+    end
+
     def attribute(name, options={})
-      options[:key] ||= name.to_sym
-
-      @serializable_attributes ||= {}
-      @serializable_attributes[options[:key]] = name
-
+      add_to_serializable(name, options)
       define_attribute_method name
       define_include_method name
+    end
+
+    def optional_attribute(name, options={})
+      add_to_serializable(name, options)
+      define_attribute_method name
+      define_optional_include_method name
     end
 
     def define_attribute_method(name)
       unless method_defined?(name)
         define_method name do
           value = self.default_href if name == :href
-          value ||= @model.send(name)
+          if @model.is_a?(Hash)
+            value = @model[name]
+            value = @model[name.to_s] if value.nil?
+          else
+            value ||= @model.send(name)
+          end
           value = value.to_s if name == :id
           value
         end
       end
     end
 
-    def define_include_method(name)
+    def define_optional_include_method(name)
+      define_include_method(name, false)
+    end
+
+    def define_include_method(name, include_by_default=true)
       method = "include_#{name}?".to_sym
 
       unless method_defined?(method)
-        define_method method do
-          @context[method].nil? || @context[method]
+        if include_by_default
+          define_method method do
+            @context[method].nil? || @context[method]
+          end
+        else
+          define_method method do
+            @context[method].present?
+          end
         end
       end
+    end
+
+    def add_to_serializable(name, options = {})
+      options[:key] ||= name.to_sym
+
+      @serializable_attributes ||= {}
+      @serializable_attributes[options[:key]] = name
     end
   end
 end

@@ -67,6 +67,19 @@ describe RestPack::Serializer::SideLoading do
         end
       end
 
+      context 'without an associated model' do
+        let!(:b_side) { FactoryGirl.create(:song, album: nil) }
+        let(:models) { [b_side] }
+
+        context 'when including :albums' do
+          let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer, { "include" => "albums" }) }
+
+          it 'return a hash with no data' do
+            side_loads.should == { :meta => {}, :albums => [] }
+          end
+        end
+      end
+
     end
   end
 end

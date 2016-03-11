@@ -9,7 +9,7 @@ module RestPack::Serializer
 
       @page = params[:page] ? params[:page].to_i : 1
       @page_size = params[:page_size] ? params[:page_size].to_i : RestPack::Serializer.config.page_size
-      @include = params[:include] ? params[:include].split(',').map(&:to_sym) : []
+      @include = params[:include] ? params[:include].split(',') : []
 
       if serializer.respond_to? :filters_from_params
         @filters = serializer.filters_from_params(params, serializer)
@@ -87,11 +87,10 @@ module RestPack::Serializer
 
     def map_filter_ids(key,value)
       case value
-        when Hash
-          value.map { |k,v| map_filter_ids(k,v) }
-        when Range
-        else
-          "#{key}=#{value.join(',')}"
+      when Hash
+        value.map { |k,v| map_filter_ids(k,v) }
+      else
+         "#{key}=#{value.join(',')}"
       end
     end
 

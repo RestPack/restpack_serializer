@@ -135,7 +135,7 @@ describe RestPack::Serializer::Paging do
       end
 
       it "includes the side-loads in the main meta data" do
-        page[:meta][:songs][:include].should == [:albums]
+        page[:meta][:songs][:include].should == ["albums"]
       end
 
       it "includes the side-loads in page hrefs" do
