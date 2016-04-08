@@ -9,6 +9,10 @@ restpack_serializer allows you to quickly provide a set of RESTful endpoints for
 
 ---
 
+**NOTE: This gem needs maintainers**: https://github.com/RestPack/restpack_serializer/issues/128
+
+---
+
 * [An overview of RestPack](http://www.slideshare.net/gavinjoyce/taming-monolithic-monsters)
 * [JSON API](http://jsonapi.org/)
 
