@@ -48,7 +48,7 @@ module RestPack
       end
 
       add_custom_attributes(data)
-      add_links(model, data)
+      add_links(model, data) unless self.class.associations.empty?
 
       Symbolizer.recursive_symbolize(data)
     end
