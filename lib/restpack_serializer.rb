@@ -1,10 +1,10 @@
 require 'kaminari'
 
-require 'restpack_serializer/version'
-require 'restpack_serializer/configuration'
-require 'restpack_serializer/serializable'
-require 'restpack_serializer/factory'
-require 'restpack_serializer/result'
+require_relative 'restpack_serializer/version'
+require_relative 'restpack_serializer/configuration'
+require_relative 'restpack_serializer/serializable'
+require_relative 'restpack_serializer/factory'
+require_relative 'restpack_serializer/result'
 
 Kaminari::Hooks.init
 
