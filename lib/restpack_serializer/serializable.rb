@@ -50,6 +50,11 @@ module RestPack
       add_custom_attributes(data)
       add_links(model, data) unless self.class.associations.empty?
 
+      data
+    end
+
+    def as_json_symbolized(model, context = {})
+      data = as_json(model, context)
       Symbolizer.recursive_symbolize(data)
     end
 
@@ -97,6 +102,10 @@ module RestPack
 
       def as_json(model, context = {})
         new.as_json(model, context)
+      end
+
+      def as_json_symbolized(model, context = {})
+        new.as_json_symbolized(model, context)
       end
 
       def serialize(models, context = {})
