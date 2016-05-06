@@ -22,13 +22,12 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'kaminari', '~> 0.16.1'
 
   gem.add_development_dependency 'restpack_gem', '~> 0.0.9'
-  gem.add_development_dependency 'rake', '~> 10.0.3'
-  gem.add_development_dependency 'guard-rspec', '~> 2.5.4'
-  gem.add_development_dependency 'growl', '~> 1.0.3'
-  gem.add_development_dependency 'factory_girl', '~> 4.2.0'
+  gem.add_development_dependency 'rake', '~> 11.1.2'
+  gem.add_development_dependency 'guard-rspec', '~> 4.6.4'
+  gem.add_development_dependency 'factory_girl', '~> 4.7.0'
   gem.add_development_dependency 'sqlite3', '~> 1.3.7'
-  gem.add_development_dependency 'database_cleaner', '~> 1.0.1'
+  gem.add_development_dependency 'database_cleaner', '~> 1.5.3'
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'bump'
-  gem.add_development_dependency 'protected_attributes', '~> 1.0.5'
+  gem.add_development_dependency 'protected_attributes', '~> 1.1.3'
 end
