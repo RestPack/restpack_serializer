@@ -7,7 +7,6 @@ require_relative "serializable/resource"
 require_relative "serializable/single"
 require_relative "serializable/side_loading"
 require_relative "serializable/side_load_data_builder"
-require_relative "serializable/symbolizer"
 require_relative "serializable/sortable"
 
 module RestPack
@@ -51,11 +50,6 @@ module RestPack
       add_links(model, data) unless self.class.associations.empty?
 
       data
-    end
-
-    def as_json_symbolized(model, context = {})
-      data = as_json(model, context)
-      Symbolizer.recursive_symbolize(data)
     end
 
     def custom_attributes
@@ -102,10 +96,6 @@ module RestPack
 
       def as_json(model, context = {})
         new.as_json(model, context)
-      end
-
-      def as_json_symbolized(model, context = {})
-        new.as_json_symbolized(model, context)
       end
 
       def serialize(models, context = {})

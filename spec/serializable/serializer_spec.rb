@@ -201,22 +201,6 @@ describe RestPack::Serializer do
         end
       end
     end
-
-    describe ".as_json_symbolized" do
-      it "symbolizes keys recursively" do
-        serializer.as_json_symbolized(person, { is_ben?: true }).should == {
-          id: '123', name: 'Gavin', description: 'This is person #123',
-          href: '/people/123', custom_key: 'custom value for model id 123',
-          string_keys: {
-            kid_b: "Ben",
-            likes: {
-              foods: ["crackers", "stawberries"],
-              books: ["Dumpy", "That's Not My Tiger"]
-            }
-          }
-        }
-      end
-    end
   end
 
   describe "#model_class" do
