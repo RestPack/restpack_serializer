@@ -33,7 +33,7 @@ describe RestPack::Serializer do
 
   class PersonSerializer
     include RestPack::Serializer
-    attributes :id, :name, :description, :href, :admin_info
+    attributes :id, :name, :description, :href, :admin_info, :string_keys
 
     def description
       "This is person ##{id}"
@@ -41,15 +41,29 @@ describe RestPack::Serializer do
 
     def admin_info
       {
-        "key" => "super_secret_sauce",
-        "array" => [
-          { "name" => "Alex" }
+        key: "super_secret_sauce",
+        array: [
+          { name: "Alex" }
         ]
       }
     end
 
     def include_admin_info?
       @context[:is_admin?]
+    end
+
+    def string_keys
+      {
+        "kid_b" => "Ben",
+        "likes" => {
+          "foods" => ["crackers", "stawberries"],
+          "books" => ["Dumpy", "That's Not My Tiger"]
+        }
+      }
+    end
+
+    def include_string_keys?
+      @context[:is_ben?]
     end
 
     def custom_attributes
@@ -185,6 +199,22 @@ describe RestPack::Serializer do
             expect(json[:links][:stalkers]).to match_array(side_load_ids)
           end
         end
+      end
+    end
+
+    describe ".as_json_symbolized" do
+      it "symbolizes keys recursively" do
+        serializer.as_json_symbolized(person, { is_ben?: true }).should == {
+          id: '123', name: 'Gavin', description: 'This is person #123',
+          href: '/people/123', custom_key: 'custom value for model id 123',
+          string_keys: {
+            kid_b: "Ben",
+            likes: {
+              foods: ["crackers", "stawberries"],
+              books: ["Dumpy", "That's Not My Tiger"]
+            }
+          }
+        }
       end
     end
   end
