@@ -37,7 +37,7 @@ describe RestPack::Serializer do
       attributes :name
 
       def name
-        "Ben"
+        @context[:name]
       end
 
       def age
@@ -49,12 +49,16 @@ describe RestPack::Serializer do
       attributes :name, :age
 
       def age
-        1
+        @context[:age]
+      end
+
+      def food
+        'crackers'
       end
     end
 
     it ".as_json serializes" do
-      DerivedSerializer.as_json(person).should == { name: "Ben", age: 1 }
+      DerivedSerializer.as_json({}, { include_food?: false, name: 'Ben', age: 1 }).should == { name: "Ben", age: 1 }
     end
   end
 
