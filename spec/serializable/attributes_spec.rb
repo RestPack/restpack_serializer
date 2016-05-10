@@ -18,12 +18,18 @@ describe RestPack::Serializer::Attributes do
 
   it "correctly maps normal attributes" do
     [:a, :b, :c, :d, :e, :f?].each do |attr|
-      expect(attributes[attr]).to eq(attr)
+      expect(attributes[attr]).to eq({
+        name: attr,
+        include_method_name: "include_#{attr}?".to_sym
+      })
     end
   end
 
   it "correctly maps attribute with :key options" do
-    expect(attributes[:new_key]).to eq(:old_attribute)
+    expect(attributes[:new_key]).to eq({
+      name: :old_attribute,
+      include_method_name: :include_new_key?
+    })
   end
 
   describe "optional attributes" do
