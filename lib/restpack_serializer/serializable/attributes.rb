@@ -25,11 +25,13 @@ module RestPack::Serializer::Attributes
     def transform_attribute(name, transform_lambda, options = {})
       add_to_serializable(name, options)
 
+      self.track_defined_methods = false
       define_method name do
         transform_lambda.call(name, @model)
       end
 
       define_include_method name
+      self.track_defined_methods = true
     end
 
     def attribute(name, options={})
@@ -46,6 +48,7 @@ module RestPack::Serializer::Attributes
 
     def define_attribute_method(name)
       unless method_defined?(name)
+        self.track_defined_methods = false
         define_method name do
           value = self.default_href if name == :href
           if @model.is_a?(Hash)
@@ -57,6 +60,7 @@ module RestPack::Serializer::Attributes
           value = value.to_s if name == :id
           value
         end
+        self.track_defined_methods = true
       end
     end
 
@@ -68,11 +72,7 @@ module RestPack::Serializer::Attributes
       method = "include_#{name}?".to_sym
 
       unless method_defined?(method)
-        if include_by_default
-          define_method method do
-            @context[method].nil? || @context[method]
-          end
-        else
+        unless include_by_default
           define_method method do
             @context[method].present?
           end
@@ -84,7 +84,10 @@ module RestPack::Serializer::Attributes
       options[:key] ||= name.to_sym
 
       @serializable_attributes ||= {}
-      @serializable_attributes[options[:key]] = name
+      @serializable_attributes[options[:key]] = {
+        name: name,
+        include_method_name: "include_#{options[:key]}?".to_sym
+      }
     end
   end
 end
