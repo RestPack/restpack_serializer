@@ -38,7 +38,7 @@ module RestPack
       end
 
       @model, @context = model, context
-      user_defined_methods = self.class.user_defined_methods
+      user_defined_methods = self.class.user_defined_methods || []
 
       data = {}
       if self.class.serializable_attributes.present?

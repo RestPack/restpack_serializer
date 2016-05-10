@@ -31,6 +31,33 @@ describe RestPack::Serializer do
     end
   end
 
+  context "serializer inheritance" do
+    class BaseSerializer
+      include RestPack::Serializer
+      attributes :name
+
+      def name
+        "Ben"
+      end
+
+      def age
+        -2
+      end
+    end
+
+    class DerivedSerializer < BaseSerializer
+      attributes :name, :age
+
+      def age
+        1
+      end
+    end
+
+    it ".as_json serializes" do
+      DerivedSerializer.as_json(person).should == { name: "Ben", age: 1 }
+    end
+  end
+
   class PersonSerializer
     include RestPack::Serializer
     attributes :id, :name, :description, :href, :admin_info, :string_keys
