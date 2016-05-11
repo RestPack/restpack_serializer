@@ -34,19 +34,32 @@ describe RestPack::Serializer do
   context "serializer inheritance" do
     class BaseSerializer
       include RestPack::Serializer
-      attributes :name
+      attributes :name, :colour
+      optional :count
 
       def name
         @context[:name]
       end
 
+      def count
+        99
+      end
+
       def age
         -2
+      end
+
+      def colour
+        'purple'
+      end
+
+      def include_colour?
+        false
       end
     end
 
     class DerivedSerializer < BaseSerializer
-      attributes :name, :age
+      attributes :name, :age, :food, :colour, :count
 
       def age
         @context[:age]
@@ -58,7 +71,11 @@ describe RestPack::Serializer do
     end
 
     it ".as_json serializes" do
-      DerivedSerializer.as_json({}, { include_food?: false, name: 'Ben', age: 1 }).should == { name: "Ben", age: 1 }
+      serialized = DerivedSerializer.as_json({}, { include_food?: false, name: 'Ben', age: 1 })
+      serialized.should == { #NOTE: I think this should include colour as DerivedSerializer defines it, but this would be a big breaking change
+        name: "Ben",
+        age: 1
+      }
     end
   end
 
