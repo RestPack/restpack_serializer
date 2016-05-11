@@ -38,15 +38,13 @@ module RestPack
       end
 
       @model, @context = model, context
-      user_defined_methods = self.class.user_defined_methods || []
 
       data = {}
       if self.class.serializable_attributes.present?
         self.class.serializable_attributes.each do |key, attribute|
           method_name = attribute[:include_method_name]
           name = attribute[:name]
-
-          if user_defined_methods.include?(method_name)
+          if self.class.memoized_has_user_defined_method?(method_name)
             data[key] = self.send(name) if self.send(method_name)
           else
             #the default implementation of `include_abc?`
@@ -102,6 +100,24 @@ module RestPack
         @user_defined_methods ||= []
         if @track_defined_methods
           @user_defined_methods << name
+        end
+      end
+
+      def has_user_defined_method?(method_name)
+        user_defined_methods = self.user_defined_methods || []
+        return true if user_defined_methods.include?(method_name)
+        return self.superclass.try(:has_user_defined_method?, method_name)
+      end
+
+      def memoized_has_user_defined_method?(method_name)
+        @memoized_user_defined_methods ||= {}
+
+        if @memoized_user_defined_methods.has_key? method_name
+          return @memoized_user_defined_methods[method_name]
+        else
+          has_method = has_user_defined_method?(method_name)
+          @memoized_user_defined_methods[method_name] = has_method
+          return has_method
         end
       end
 
