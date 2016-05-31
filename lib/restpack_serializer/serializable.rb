@@ -37,6 +37,7 @@ module RestPack
         return model.map { |item| as_json(item, context) }
       end
 
+      apply_whitelist_and_blacklist(context)
       @model, @context = model, context
 
       data = {}
@@ -70,6 +71,41 @@ module RestPack
     def add_custom_attributes(data)
       custom = custom_attributes
       data.merge!(custom) if custom
+    end
+
+    def apply_whitelist_and_blacklist(context)
+      blacklist = context[:attribute_blacklist]
+      whitelist = context[:attribute_whitelist]
+
+      if blacklist.present? && whitelist.present?
+        raise ArgumentError.new "the context can't define both an `attribute_whitelist` and an `attribute_blacklist`"
+      end
+
+      if blacklist.present?
+        blacklist = csv_to_symbol_array(blacklist)
+        self.class.serializable_attributes.each do |key, value|
+          if blacklist.include? key
+            context[value[:include_method_name]] = false
+          end
+        end
+      end
+
+      if whitelist.present?
+        whitelist = csv_to_symbol_array(whitelist)
+        self.class.serializable_attributes.each do |key, value|
+          unless whitelist.include? key
+            context[value[:include_method_name]] = false
+          end
+        end
+      end
+    end
+
+    def csv_to_symbol_array(maybe_csv)
+      if maybe_csv.is_a? String
+        maybe_csv.split(',').map {|a| a.strip.to_sym}
+      else
+        maybe_csv
+      end
     end
 
     def add_links(model, data)

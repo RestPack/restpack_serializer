@@ -198,6 +198,44 @@ describe RestPack::Serializer do
           ]
         }
       end
+
+      it "excludes a blacklist of attributes if specified as an array" do
+        serializer.as_json(person, { attribute_blacklist: [:name, :description] }).should == {
+          id: '123',
+          href: '/people/123',
+          custom_key: 'custom value for model id 123'
+        }
+      end
+
+      it "excludes a blacklist of attributes if specified as a string" do
+        serializer.as_json(person, { attribute_blacklist: 'name, description' }).should == {
+          id: '123',
+          href: '/people/123',
+          custom_key: 'custom value for model id 123'
+        }
+      end
+
+      it "includes a whitelist of attributes if specified as an array" do
+        serializer.as_json(person, { attribute_whitelist: [:name, :description] }).should == {
+          name: 'Gavin',
+          description: 'This is person #123',
+          custom_key: 'custom value for model id 123'
+        }
+      end
+
+      it "includes a whitelist of attributes if specified as a string" do
+        serializer.as_json(person, { attribute_whitelist: 'name, description' }).should == {
+          name: 'Gavin',
+          description: 'This is person #123',
+          custom_key: 'custom value for model id 123'
+        }
+      end
+
+      it "raises an exception if both the whitelist and blacklist are provided" do
+        expect do
+          serializer.as_json(person, { attribute_whitelist: [:name], attribute_blacklist: [:id] })
+        end.to raise_error(ArgumentError, "the context can't define both an `attribute_whitelist` and an `attribute_blacklist`")
+      end
     end
 
     context "links" do
