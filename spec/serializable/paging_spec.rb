@@ -32,6 +32,7 @@ describe RestPack::Serializer::Paging do
       it "includes links" do
         page[:links].should == {
           'songs.album' => { :href => "/albums/{songs.album}", :type => :albums },
+          'songs.record' => { :href => "/albums/{songs.record}", :type => :albums },
           'songs.artist' => { :href => "/artists/{songs.artist}", :type => :artists }
         }
       end
@@ -99,6 +100,7 @@ describe RestPack::Serializer::Paging do
         album_id: first.album_id,
         links: {
           album: first.album_id.to_s,
+          record: first.album_id.to_s,
           artist: first.artist_id.to_s
         }
       }

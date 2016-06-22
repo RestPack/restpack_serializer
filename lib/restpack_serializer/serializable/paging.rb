@@ -11,12 +11,15 @@ module RestPack::Serializer::Paging
       page = page.reorder(options.sorting) if options.sorting.any?
 
       result = RestPack::Serializer::Result.new
-      result.resources[self.key] = serialize_page(page, options)
-      result.meta[self.key] = serialize_meta(page, options)
+      result.resources[options.key || self.key] = serialize_page(page, options)
+      result.meta[options.key || self.key] = serialize_meta(page, options)
 
       if options.include_links
         result.links = self.links
-        Array(RestPack::Serializer::Factory.create(*options.include)).each do |serializer|
+        options.include.each do |inclusion|
+          association = model_class.reflect_on_association inclusion
+          class_name = association ? association.class_name : inclusion
+          serializer = RestPack::Serializer::Factory.create class_name
           result.links.merge! serializer.class.links
         end
       end

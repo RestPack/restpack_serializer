@@ -2,7 +2,7 @@ module MyApp
   class SongSerializer
     include RestPack::Serializer
     attributes :id, :title, :album_id
-    can_include :albums, :artists
+    can_include :albums, :records, :artists
     can_filter_by :title
     can_sort_by :id, :title
 
@@ -27,7 +27,7 @@ module MyApp
   class ArtistSerializer
     include RestPack::Serializer
     attributes :id, :name, :website
-    can_include :albums, :songs, :fans, :stalkers
+    can_include :albums, :records, :songs, :fans, :stalkers
   end
 
   class FanSerializer

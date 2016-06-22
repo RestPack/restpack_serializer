@@ -38,6 +38,17 @@ describe RestPack::Serializer::SideLoading do
           end
         end
       end
+
+      context 'with a model renaming an association' do
+        let(:models){ [@artist1] }
+        let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { "include" => "records" }) }
+
+        it 'should return side-loaded records' do
+          side_loads[:records].count.should == @artist1.albums.count
+          side_loads[:meta][:records][:page].should == 1
+          side_loads[:meta][:records][:count].should == @artist1.albums.count
+        end
+      end
     end
 
     describe '.has_many through' do

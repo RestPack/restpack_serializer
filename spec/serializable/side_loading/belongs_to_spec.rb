@@ -67,6 +67,18 @@ describe RestPack::Serializer::SideLoading do
         end
       end
 
+      context 'with a renamed association' do
+        let(:models) { [MyApp::Song.first] }
+        let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer, { "include" => "records" }) }
+
+        it 'should side-load records' do
+          side_loads.should == {
+            records: [MyApp::AlbumSerializer.as_json(MyApp::Song.first.album)],
+            meta: { }
+          }
+        end
+      end
+
       context 'without an associated model' do
         let!(:b_side) { FactoryGirl.create(:song, album: nil) }
         let(:models) { [b_side] }

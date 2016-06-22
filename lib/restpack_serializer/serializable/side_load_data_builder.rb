@@ -17,6 +17,7 @@ module RestPack
 
       def side_load_has_many
         has_association_relation do |options|
+          options.key = @association.name
           if join_table = @association.options[:through]
             options.scope = options.scope.joins(join_table).distinct
             association_fk = @association.through_reflection.foreign_key.to_sym
@@ -30,7 +31,7 @@ module RestPack
       def side_load_has_and_belongs_to_many
         has_association_relation do |options|
           join_table_name = @association.join_table
-          join_clause = "join #{join_table_name} on #{@association.plural_name}.id = #{join_table_name}.#{@association.class_name.foreign_key}"
+          join_clause = "join #{join_table_name} on #{@association.klass.table_name }.id = #{join_table_name}.#{@association.class_name.foreign_key}"
           options.scope = options.scope.joins(join_clause)
           association_fk = @association.foreign_key.to_sym
           options.filters = { join_table_name.to_sym => { association_fk => model_ids } }
