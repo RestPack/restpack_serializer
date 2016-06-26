@@ -56,6 +56,7 @@ module RestPack
         end
       end
 
+      add_type(data)
       add_custom_attributes(data)
       add_links(model, data) unless self.class.associations.empty?
 
@@ -67,6 +68,10 @@ module RestPack
     end
 
     private
+
+    def add_type(data)
+      data[:type] ||= String(self.class.key)
+    end
 
     def add_custom_attributes(data)
       custom = custom_attributes
