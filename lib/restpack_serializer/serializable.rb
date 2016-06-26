@@ -57,8 +57,14 @@ module RestPack
       end
 
       add_custom_attributes(data)
-      add_links(model, data) unless self.class.associations.empty?
 
+      # Nest all non JSON API standards into the attributes key
+      attributes = data.dup.stringify_keys.except('href', 'id')
+      data[:attributes] = attributes
+      data = data.delete_if { |k, _| attributes[k.to_s].present? }
+
+      add_links(model, data) unless self.class.associations.empty?
+      add_type(data)
       data
     end
 
@@ -67,6 +73,10 @@ module RestPack
     end
 
     private
+
+    def add_type(data)
+      data[:type] ||= String(self.class.key)
+    end
 
     def add_custom_attributes(data)
       custom = custom_attributes
