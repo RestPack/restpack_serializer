@@ -40,17 +40,19 @@ module RestPack
       apply_whitelist_and_blacklist(context)
       @model, @context = model, context
 
-      data = {}
+      data = {
+        attributes: {},
+      }
       if self.class.serializable_attributes.present?
         self.class.serializable_attributes.each do |key, attribute|
           method_name = attribute[:include_method_name]
           name = attribute[:name]
           if self.class.memoized_has_user_defined_method?(method_name)
-            data[key] = self.send(name) if self.send(method_name)
+            data[:attributes][key] = self.send(name) if self.send(method_name)
           else
             #the default implementation of `include_abc?`
             if @context[method_name].nil? || @context[method_name]
-              data[key] = self.send(name)
+              data[:attributes][key] = self.send(name)
             end
           end
         end
