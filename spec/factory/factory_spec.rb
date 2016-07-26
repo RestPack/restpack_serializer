@@ -32,6 +32,7 @@ describe RestPack::Serializer::Factory do
     it "creates multi-word string" do
       factory.create("AlbumReview").should be_an_instance_of(MyApp::AlbumReviewSerializer)
     end
+
     it "creates multi-word lowercase string" do
       factory.create("album_review").should be_an_instance_of(MyApp::AlbumReviewSerializer)
     end
@@ -43,6 +44,17 @@ describe RestPack::Serializer::Factory do
     end
     it "creates multi-word class" do
       factory.create(MyApp::AlbumReview).should be_an_instance_of(MyApp::AlbumReviewSerializer)
+    end
+  end
+
+  describe "unknown serializer word" do
+
+    it "raises a custom exception" do
+      unknown_serializer_class = "UnknownModelType"
+      message = "Unknown serializer class: #{unknown_serializer_class}"
+      expect do
+        factory.create(unknown_serializer_class)
+      end.to raise_error(RestPack::Serializer::UnknownSerializer, message)
     end
   end
 

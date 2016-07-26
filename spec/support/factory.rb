@@ -69,4 +69,8 @@ FactoryGirl.define do
   factory :stalker, :class => MyApp::Stalker do
     sequence(:name) {|n| "Stalker ##{n}"}
   end
+
+  factory :generic_metadatum, :class => MyApp::GenericMetadatum do
+    some_stuff_about_the_link "Somethinge!"
+  end
 end

@@ -175,6 +175,17 @@ describe RestPack::Serializer::Paging do
           page[:links]['artists.albums'].should_not == nil
         end
       end
+
+      context "with an unknown include link" do
+        let(:params) { { include: "unknown_link" } }
+
+        it "raises an exception" do
+          message = ":unknown_link is not a valid include for MyApp::Song"
+          expect do
+            page[:links]
+          end.to raise_error(RestPack::Serializer::InvalidInclude, message)
+        end
+      end
     end
 
     context "when filtering" do
@@ -254,6 +265,17 @@ describe RestPack::Serializer::Paging do
       it "returns custom page sizes" do
         page[:meta][:songs][:page_size].should == 3
         page[:meta][:songs][:page_count].should == 6
+      end
+    end
+
+    context "with an unknown include link" do
+      let(:params) { { include: "unknown_link" } }
+
+      it "raises an exception" do
+        message = ":unknown_link is not a valid include for MyApp::Song"
+        expect do
+          page[:links]
+        end.to raise_error(RestPack::Serializer::InvalidInclude, message)
       end
     end
   end
