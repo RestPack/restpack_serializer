@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 1) do
     t.string   "title"
     t.integer  "year"
     t.integer  "artist_id"
+    t.string "producer"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -62,6 +63,11 @@ ActiveRecord::Schema.define(:version => 1) do
     t.integer :artist_id
     t.integer :stalker_id
   end
+
+  create_table "producers", force: true do |t|
+    t.string :name
+    t.string :album
+  end
 end
 
 module MyApp
@@ -82,6 +88,7 @@ module MyApp
     belongs_to :artist
     has_many :songs
     has_many :album_reviews
+    has_many :producers, foreign_key: :album
   end
 
   class AlbumReview < ActiveRecord::Base
@@ -114,5 +121,10 @@ module MyApp
   class Stalker < ActiveRecord::Base
     attr_accessible :name
     has_and_belongs_to_many :artists
+  end
+
+  class Producer < ActiveRecord::Base
+    attr_accessible :name
+    belongs_to :album, foreign_key: :album
   end
 end

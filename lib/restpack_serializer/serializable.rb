@@ -65,6 +65,10 @@ module RestPack
     def custom_attributes
       nil
     end
+    
+    def url
+      self.class.url
+    end
 
     private
 
@@ -191,6 +195,11 @@ module RestPack
 
       def plural_key
         self.key
+      end
+
+      def url(path=nil)
+        return @url || plural_key unless path
+        @url = path
       end
     end
   end

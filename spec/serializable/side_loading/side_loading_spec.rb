@@ -58,6 +58,10 @@ describe RestPack::Serializer::SideLoading do
       "albums.songs" => {
         :href => "/songs?album_id={albums.id}",
         :type => :songs
+      },
+      "albums.producers" => {
+        :href => "/producers?album={albums.title}",
+        :type => :producers
       }
     }
 
@@ -73,6 +77,12 @@ describe RestPack::Serializer::SideLoading do
       MyApp::AlbumSerializer.href_prefix = '/api/v2'
       MyApp::AlbumSerializer.links["albums.artist"][:href].should == "/api/v2/artists/{albums.artist}"
       MyApp::AlbumSerializer.href_prefix = original
+    end
+
+    it "applies a custom url to links" do
+      MyApp::ProducerSerializer.url("prods")
+      MyApp::AlbumSerializer.links["albums.producers"][:href].should == "/prods?album={albums.title}"
+      MyApp::ProducerSerializer.url("producers")
     end
   end
 
