@@ -17,9 +17,9 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'activesupport', ['>= 4.0.3', '< 5.0']
-  gem.add_dependency 'activerecord', ['>= 4.0.3', '< 5.0']
-  gem.add_dependency 'kaminari', '~> 0.16.1'
+  gem.add_dependency 'activesupport', ['>= 4.0.3', '< 6.0']
+  gem.add_dependency 'activerecord', ['>= 4.0.3', '< 6.0']
+  gem.add_dependency 'kaminari', '~> 0.17.0'
 
   gem.add_development_dependency 'restpack_gem', '~> 0.0.9'
   gem.add_development_dependency 'rake', '~> 11.1.2'
