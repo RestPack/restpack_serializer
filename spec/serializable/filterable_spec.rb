@@ -9,6 +9,6 @@ describe RestPack::Serializer::Filterable do
   end
 
   it "captures the specified filters" do
-    CustomSerializer.serializable_filters.should == [:a, :c]
+    expect(CustomSerializer.serializable_filters).to eq([:a, :c])
   end
 end

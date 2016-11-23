@@ -6,8 +6,8 @@ describe RestPack::Serializer do
 
   context "#setup" do
     it "has defaults" do
-      subject.config.href_prefix.should == ''
-      subject.config.page_size.should == 10
+      expect(subject.config.href_prefix).to eq('')
+      expect(subject.config.page_size).to eq(10)
     end
 
     it "can be configured" do
@@ -16,8 +16,8 @@ describe RestPack::Serializer do
         config.page_size = 50
       end
 
-      subject.config.href_prefix.should == '/api/v1'
-      subject.config.page_size.should == 50
+      expect(subject.config.href_prefix).to eq('/api/v1')
+      expect(subject.config.page_size).to eq(50)
     end
   end
 end

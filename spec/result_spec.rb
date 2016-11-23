@@ -3,18 +3,19 @@ require 'spec_helper'
 describe RestPack::Serializer::Result do
   context 'a new instance' do
     it 'has defaults' do
-      subject.resources.should == {}
-      subject.meta.should == {}
-      subject.links.should == {}
+      expect(subject.resources).to eq({})
+      expect(subject.meta).to eq({})
+      expect(subject.links).to eq({})
     end
   end
 
   context 'when serializing' do
     let(:result) { subject.serialize }
+
     context 'in jsonapi.org format' do
       context 'an empty result' do
         it 'returns an empty result' do
-          result.should == {}
+          expect(result).to eq({})
         end
       end
 
@@ -26,9 +27,9 @@ describe RestPack::Serializer::Result do
         end
 
         it 'returns correct jsonapi.org format' do
-          result[:albums].should == subject.resources[:albums]
-          result[:meta].should == subject.meta
-          result[:links].should == subject.links
+          expect(result[:albums]).to eq(subject.resources[:albums])
+          expect(result[:meta]).to eq(subject.meta)
+          expect(result[:links]).to eq(subject.links)
         end
       end
 
@@ -43,16 +44,16 @@ describe RestPack::Serializer::Result do
         end
 
         it 'returns correct jsonapi.org format, including injected has_many links' do
-          result[:albums].should == [{ id: '1', name: 'AMOK', links: { songs: ['91'] } }]
-          result[:links].should == subject.links
-          result[:linked][:songs].should == subject.resources[:songs]
+          expect(result[:albums]).to eq([{ id: '1', name: 'AMOK', links: { songs: ['91'] } }])
+          expect(result[:links]).to eq(subject.links)
+          expect(result[:linked][:songs]).to eq(subject.resources[:songs])
         end
 
         it 'includes resources in correct order' do
-          result.keys[0].should == :albums
-          result.keys[1].should == :linked
-          result.keys[2].should == :links
-          result.keys[3].should == :meta
+          expect(result.keys[0]).to eq(:albums)
+          expect(result.keys[1]).to eq(:linked)
+          expect(result.keys[2]).to eq(:links)
+          expect(result.keys[3]).to eq(:meta)
         end
 
         context 'with multiple calls to serialize' do
@@ -62,7 +63,7 @@ describe RestPack::Serializer::Result do
           end
 
           it 'does not create duplicate has_many links' do
-            result[:albums].first[:links][:songs].count.should == 1
+            expect(result[:albums].first[:links][:songs].count).to eq(1)
           end
         end
       end

@@ -17,15 +17,15 @@ describe RestPack::Serializer::SideLoading do
           let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer) }
 
           it "returns a hash with no data" do
-            side_loads.should == { :meta => {} }
+            expect(side_loads).to eq(meta: {})
           end
         end
 
         context "when including :albums" do
-          let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer, { "include" => "albums" }) }
+          let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer, "include" => "albums") }
 
           it "returns a hash with no data" do
-            side_loads.should == { :meta => {} }
+            expect(side_loads).to eq(meta: {})
           end
         end
       end
@@ -34,13 +34,13 @@ describe RestPack::Serializer::SideLoading do
         let(:models) { [MyApp::Song.first] }
 
         context "when including :albums" do
-          let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer, { "include" => "albums" }) }
+          let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer, "include" => "albums") }
 
           it "returns side-loaded albums" do
-            side_loads.should == {
+            expect(side_loads).to eq(
               albums: [MyApp::AlbumSerializer.as_json(MyApp::Song.first.album)],
-              meta: { }
-            }
+              meta: {}
+            )
           end
         end
       end
@@ -53,16 +53,16 @@ describe RestPack::Serializer::SideLoading do
         let(:models) { [song1, song2] }
 
         context "when including :albums" do
-          let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer, { "include" => "albums" }) }
+          let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer, "include" => "albums") }
 
           it "returns side-loaded albums" do
-            side_loads.should == {
+            expect(side_loads).to eq(
               albums: [
                 MyApp::AlbumSerializer.as_json(song1.album),
                 MyApp::AlbumSerializer.as_json(song2.album)
               ],
-              :meta => { }
-            }
+              meta: {}
+            )
           end
         end
       end
@@ -72,10 +72,13 @@ describe RestPack::Serializer::SideLoading do
         let(:models) { [b_side] }
 
         context 'when including :albums' do
-          let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer, { "include" => "albums" }) }
+          let(:options) { RestPack::Serializer::Options.new(MyApp::SongSerializer, "include" => "albums") }
 
           it 'return a hash with no data' do
-            side_loads.should == { :meta => {}, :albums => [] }
+            expect(side_loads).to eq(
+              albums: [],
+              meta: {}
+            )
           end
         end
       end

@@ -15,12 +15,12 @@ describe RestPack::Serializer::SideLoading do
         let(:models) { [@artist1] }
 
         context "when including :albums" do
-          let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { "include" => "albums" }) }
+          let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, "include" => "albums") }
 
           it "returns side-loaded albums" do
-            side_loads[:albums].count.should == @artist1.albums.count
-            side_loads[:meta][:albums][:page].should == 1
-            side_loads[:meta][:albums][:count].should == @artist1.albums.count
+            expect(side_loads[:albums].count).to eq(@artist1.albums.count)
+            expect(side_loads[:meta][:albums][:page]).to eq(1)
+            expect(side_loads[:meta][:albums][:count]).to eq(@artist1.albums.count)
           end
         end
       end
@@ -29,12 +29,12 @@ describe RestPack::Serializer::SideLoading do
         let(:models) { [@artist1, @artist2] }
 
         context "when including :albums" do
-          let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { "include" => "albums" }) }
+          let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, "include" => "albums") }
 
           it "returns side-loaded albums" do
             expected_count = @artist1.albums.count + @artist2.albums.count
-            side_loads[:albums].count.should == expected_count
-            side_loads[:meta][:albums][:count].should == expected_count
+            expect(side_loads[:albums].count).to eq(expected_count)
+            expect(side_loads[:meta][:albums][:count]).to eq(expected_count)
           end
         end
       end
@@ -42,28 +42,27 @@ describe RestPack::Serializer::SideLoading do
 
     describe '.has_many through' do
       context 'when including :fans' do
-        let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, { "include" => "fans" }) }
-        let(:artist_1) {FactoryGirl.create :artist_with_fans}
-        let(:artist_2) {FactoryGirl.create :artist_with_fans}
+        let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, "include" => "fans") }
+        let(:artist_1) { FactoryGirl.create :artist_with_fans }
+        let(:artist_2) { FactoryGirl.create :artist_with_fans }
 
         context "with a single model" do
-          let(:models) {[artist_1]}
+          let(:models) { [artist_1] }
 
           it 'returns side-loaded fans' do
-            side_loads[:fans].count.should == artist_1.fans.count
-            side_loads[:meta][:fans][:page].should == 1
-            side_loads[:meta][:fans][:count].should == artist_1.fans.count
+            expect(side_loads[:fans].count).to eq(artist_1.fans.count)
+            expect(side_loads[:meta][:fans][:page]).to eq(1)
+            expect(side_loads[:meta][:fans][:count]).to eq(artist_1.fans.count)
           end
         end
         context "with a multiple models" do
-          let(:models) {[artist_1, artist_2]}
+          let(:models) { [artist_1, artist_2] }
 
           it 'returns side-loaded fans' do
-            expected_count = artist_1.fans.count  + artist_2.fans.count
-
-            side_loads[:fans].count.should == expected_count
-            side_loads[:meta][:fans][:page].should == 1
-            side_loads[:meta][:fans][:count].should == expected_count
+            expected_count = artist_1.fans.count + artist_2.fans.count
+            expect(side_loads[:fans].count).to eq(expected_count)
+            expect(side_loads[:meta][:fans][:page]).to eq(1)
+            expect(side_loads[:meta][:fans][:count]).to eq(expected_count)
           end
 
           context "when there are shared fans" do
