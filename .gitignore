@@ -3,3 +3,4 @@
 tmp
 /coverage
 Gemfile.lock
+/.idea
