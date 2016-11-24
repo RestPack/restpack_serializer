@@ -27,7 +27,7 @@ describe RestPack::Serializer do
     end
 
     it ".as_json serializes to an empty hash" do
-      EmptySerializer.as_json(person).should == { }
+      expect(EmptySerializer.as_json(person)).to eq({})
     end
   end
 
@@ -71,11 +71,11 @@ describe RestPack::Serializer do
     end
 
     it ".as_json serializes" do
-      serialized = DerivedSerializer.as_json({}, { include_food?: false, name: 'Ben', age: 1 })
-      serialized.should == { #NOTE: I think this should include colour as DerivedSerializer defines it, but this would be a big breaking change
+      serialized = DerivedSerializer.as_json({}, include_food?: false, name: 'Ben', age: 1)
+      expect(serialized).to eq({ #NOTE: I think this should include colour as DerivedSerializer defines it, but this would be a big breaking change
         name: "Ben",
         age: 1
-      }
+      })
     end
   end
 
@@ -116,34 +116,35 @@ describe RestPack::Serializer do
 
     def custom_attributes
       {
-        :custom_key => "custom value for model id #{@model.id}"
+        custom_key: "custom value for model id #{@model.id}"
       }
     end
   end
 
   describe ".serialize" do
     it "serializes to an array" do
-      serializer.class.serialize(person).should == {
+      expect(serializer.class.serialize(person)).to eq(
         people: [{
           id: '123', name: 'Gavin', description: 'This is person #123',
           href: '/people/123', custom_key: 'custom value for model id 123'
         }]
-      }
+      )
     end
   end
 
   describe ".as_json" do
     it "serializes specified attributes" do
-      serializer.as_json(person).should == {
+      expect(serializer.as_json(person)).to eq(
         id: '123', name: 'Gavin', description: 'This is person #123',
         href: '/people/123', custom_key: 'custom value for model id 123'
-      }
+      )
     end
 
     context "an array" do
       let(:people) { [person, person] }
+
       it "results in a serialized array" do
-        serializer.as_json(people).should == [
+        expect(serializer.as_json(people)).to eq([
           {
             id: '123', name: 'Gavin', description: 'This is person #123',
             href: '/people/123', custom_key: 'custom value for model id 123'
@@ -152,11 +153,12 @@ describe RestPack::Serializer do
             id: '123', name: 'Gavin', description: 'This is person #123',
             href: '/people/123', custom_key: 'custom value for model id 123'
           }
-        ]
+        ])
       end
+
       context "#array_as_json" do
         it "results in a serialized array" do
-          serializer.class.array_as_json(people).should == [
+          expect(serializer.class.array_as_json(people)).to eq([
             {
               id: '123', name: 'Gavin', description: 'This is person #123',
               href: '/people/123', custom_key: 'custom value for model id 123'
@@ -165,75 +167,75 @@ describe RestPack::Serializer do
               id: '123', name: 'Gavin', description: 'This is person #123',
               href: '/people/123', custom_key: 'custom value for model id 123'
             }
-          ]
+          ])
         end
       end
     end
 
     context "nil" do
       it "results in nil" do
-        serializer.as_json(nil).should == nil
+        expect(serializer.as_json(nil)).to eq(nil)
       end
     end
 
     context "with options" do
       it "excludes specified attributes" do
-        serializer.as_json(person, { include_description?: false }).should == {
+        expect(serializer.as_json(person, include_description?: false)).to eq(
           id: '123', name: 'Gavin', href: '/people/123',
           custom_key: 'custom value for model id 123'
-        }
+        )
       end
 
       it "excludes custom attributes if specified" do
-        hash = serializer.as_json(person, { is_admin?: false })
-        hash[:admin_info].should == nil
+        hash = serializer.as_json(person, is_admin?: false)
+        expect(hash[:admin_info]).to eq(nil)
       end
 
       it "includes custom attributes if specified" do
-        hash = serializer.as_json(person, { is_admin?: true })
-        hash[:admin_info].should == {
+        hash = serializer.as_json(person, is_admin?: true)
+        expect(hash[:admin_info]).to eq(
           key: "super_secret_sauce",
           array: [
             name: 'Alex'
           ]
-        }
+        )
       end
 
       it "excludes a blacklist of attributes if specified as an array" do
-        serializer.as_json(person, { attribute_blacklist: [:name, :description] }).should == {
+        expect(serializer.as_json(person, attribute_blacklist: [:name, :description])).to eq(
           id: '123',
           href: '/people/123',
           custom_key: 'custom value for model id 123'
-        }
+        )
       end
 
       it "excludes a blacklist of attributes if specified as a string" do
-        serializer.as_json(person, { attribute_blacklist: 'name, description' }).should == {
+        expect(serializer.as_json(person, attribute_blacklist: 'name, description')).to eq(
           id: '123',
           href: '/people/123',
           custom_key: 'custom value for model id 123'
-        }
+        )
       end
 
       it "includes a whitelist of attributes if specified as an array" do
-        serializer.as_json(person, { attribute_whitelist: [:name, :description] }).should == {
+        expect(serializer.as_json(person, attribute_whitelist: [:name, :description])).to eq(
           name: 'Gavin',
           description: 'This is person #123',
           custom_key: 'custom value for model id 123'
-        }
+        )
       end
 
       it "includes a whitelist of attributes if specified as a string" do
-        serializer.as_json(person, { attribute_whitelist: 'name, description' }).should == {
+        expect(serializer.as_json(person, attribute_whitelist: 'name, description')).to eq(
           name: 'Gavin',
           description: 'This is person #123',
           custom_key: 'custom value for model id 123'
-        }
+        )
       end
 
       it "raises an exception if both the whitelist and blacklist are provided" do
         expect do
-          serializer.as_json(person, { attribute_whitelist: [:name], attribute_blacklist: [:id] })
+          serializer.as_json(person, attribute_whitelist: [:name], attribute_blacklist: [:id])
         end.to raise_error(ArgumentError, "the context can't define both an `attribute_whitelist` and an `attribute_blacklist`")
       end
     end
@@ -245,10 +247,10 @@ describe RestPack::Serializer do
         it "includes 'links' data for :belongs_to associations" do
           @album1 = FactoryGirl.create(:album_with_songs, song_count: 11)
           json = serializer.as_json(@album1.songs.first)
-          json[:links].should == {
+          expect(json[:links]).to eq(
             artist: @album1.artist_id.to_s,
             album: @album1.id.to_s
-          }
+          )
         end
       end
 
@@ -256,12 +258,13 @@ describe RestPack::Serializer do
         let(:artist_factory) { FactoryGirl.create :artist_with_fans }
         let(:artist_serializer) { MyApp::ArtistSerializer.new }
         let(:json) { artist_serializer.as_json(artist_factory) }
-        let(:side_load_ids) { artist_has_association.map {|obj| obj.id.to_s } }
+        let(:side_load_ids) { artist_has_association.map { |obj| obj.id.to_s } }
 
         context "when the association has been eager loaded" do
           before do
-            artist_factory.fans.stub(:loaded?) { true }
+            allow(artist_factory.fans).to receive(:loaded?).and_return(true)
           end
+
           it "does not make a query to retrieve id values" do
             expect(artist_factory.fans).not_to receive(:pluck)
             json
@@ -291,7 +294,7 @@ describe RestPack::Serializer do
 
   describe "#model_class" do
     it "extracts the Model name from the Serializer name" do
-      PersonSerializer.model_class.should == Person
+      expect(PersonSerializer.model_class).to eq(Person)
     end
 
     context "with namespaced model class" do
@@ -306,7 +309,7 @@ describe RestPack::Serializer do
       end
 
       it "returns the correct class" do
-        NamespacedSerializer.model_class.should == SomeNamespace::Model
+        expect(NamespacedSerializer.model_class).to eq(SomeNamespace::Model)
       end
     end
   end
@@ -314,15 +317,15 @@ describe RestPack::Serializer do
   describe "#key" do
     context "with default key" do
       it "returns the correct key" do
-        PersonSerializer.key.should == :people
+        expect(PersonSerializer.key).to eq(:people)
       end
 
       it "has correct #singular_key" do
-        PersonSerializer.singular_key.should == :person
+        expect(PersonSerializer.singular_key).to eq(:person)
       end
 
       it "has correct #plural_key" do
-        PersonSerializer.plural_key.should == :people
+        expect(PersonSerializer.plural_key).to eq(:people)
       end
     end
 
@@ -333,11 +336,11 @@ describe RestPack::Serializer do
       end
 
       it "returns the correct key" do
-        SerializerWithCustomKey.key.should == :customers
+        expect(SerializerWithCustomKey.key).to eq(:customers)
       end
 
       it "has correct #singular_key" do
-        SerializerWithCustomKey.singular_key.should == :customer
+        expect(SerializerWithCustomKey.singular_key).to eq(:customer)
       end
     end
   end

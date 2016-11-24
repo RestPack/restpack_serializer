@@ -1,6 +1,6 @@
 require 'sqlite3'
 require 'active_record'
-require 'protected_attributes'
+require 'protected_attributes_continued'
 
 ActiveRecord::Base.establish_connection(
   :adapter => 'sqlite3',

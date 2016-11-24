@@ -10,6 +10,7 @@ FactoryGirl.find_definitions
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
+  config.raise_errors_for_deprecations!
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)

@@ -12,15 +12,15 @@ describe RestPack::Serializer::Single do
   let(:context) { { } }
 
   it "returns a resource by id" do
-    resource[:id].should == @song.id.to_s
-    resource[:title].should == @song.title
+    expect(resource[:id]).to eq(@song.id.to_s)
+    expect(resource[:title]).to eq(@song.title)
   end
 
   context "with context" do
     let(:context) { { reverse_title?: true } }
 
     it "returns reversed titles" do
-      resource[:title].should == @song.title.reverse
+      expect(resource[:title]).to eq(@song.title.reverse)
     end
   end
 
@@ -28,7 +28,7 @@ describe RestPack::Serializer::Single do
     let(:params) { { id: @song.id + 100 } }
 
     it "returns nil" do
-      resource.should == nil
+      expect(resource).to eq(nil)
     end
   end
 end
