@@ -79,6 +79,27 @@ describe RestPack::Serializer do
     end
   end
 
+  context "serializer instance variables" do
+    class MemoizingSerializer
+      include RestPack::Serializer
+
+      attributes :id, :memoized_id
+
+      def memoized_id
+        @memoized_id ||= id
+      end
+    end
+
+    it "does not reuse instance variable values" do
+      people = [Person.new(id: 123), Person.new(id: 456)]
+      serialized = MemoizingSerializer.as_json(people)
+      expect(serialized).to eq([
+        { id: "123", memoized_id: "123" },
+        { id: "456", memoized_id: "456" }
+      ])
+    end
+  end
+
   class PersonSerializer
     include RestPack::Serializer
     attributes :id, :name, :description, :href, :admin_info, :string_keys

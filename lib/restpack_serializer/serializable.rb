@@ -34,7 +34,7 @@ module RestPack
     def as_json(model, context = {})
       return if model.nil?
       if model.kind_of?(Array)
-        return model.map { |item| as_json(item, context) }
+        return model.map { |item| self.class.new.as_json(item, context) }
       end
 
       apply_whitelist_and_blacklist(context)
