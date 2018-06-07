@@ -30,5 +30,4 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'database_cleaner', '~> 1.5'
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'bump'
-  gem.add_development_dependency 'protected_attributes_continued', '~> 1.2'
 end
