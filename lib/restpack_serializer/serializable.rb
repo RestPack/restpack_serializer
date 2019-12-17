@@ -62,6 +62,10 @@ module RestPack
       data
     end
 
+    def to_json(model, context = {})
+      as_json(model, context).to_json
+    end
+
     def custom_attributes
       nil
     end
@@ -163,6 +167,10 @@ module RestPack
 
       def as_json(model, context = {})
         new.as_json(model, context)
+      end
+
+      def to_json(model, context = {})
+        new.as_json(model, context).to_json
       end
 
       def serialize(models, context = {})

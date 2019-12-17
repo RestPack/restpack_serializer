@@ -313,6 +313,20 @@ describe RestPack::Serializer do
     end
   end
 
+  describe "to_json" do
+    context "class method" do
+      it "delegates to as_json" do
+        expect(PersonSerializer.as_json(person).to_json).to eq(PersonSerializer.to_json(person))
+      end
+    end
+
+    context "instance method" do
+      it "delegates to as_json" do
+        expect(serializer.as_json(person).to_json).to eq(serializer.to_json(person))
+      end
+    end
+  end
+
   describe "#model_class" do
     it "extracts the Model name from the Serializer name" do
       expect(PersonSerializer.model_class).to eq(Person)
