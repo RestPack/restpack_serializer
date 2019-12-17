@@ -1,6 +1,5 @@
 require 'sqlite3'
 require 'active_record'
-require 'protected_attributes_continued'
 
 ActiveRecord::Base.establish_connection(
   :adapter => 'sqlite3',
@@ -66,8 +65,6 @@ end
 
 module MyApp
   class Artist < ActiveRecord::Base
-    attr_accessible :name, :website
-
     has_many :albums
     has_many :songs
     has_many :payments
@@ -76,7 +73,6 @@ module MyApp
   end
 
   class Album < ActiveRecord::Base
-    attr_accessible :title, :year, :artist
     scope :classic, -> { where("year < 1950") }
 
     belongs_to :artist
@@ -85,34 +81,27 @@ module MyApp
   end
 
   class AlbumReview < ActiveRecord::Base
-    attr_accessible :message
     belongs_to :album
   end
 
   class Song < ActiveRecord::Base
     default_scope -> { order(id: :asc) }
 
-    attr_accessible :title, :artist, :album
-
     belongs_to :artist
     belongs_to :album
   end
 
   class Payment < ActiveRecord::Base
-    attr_accessible :amount, :artist
-
     belongs_to :artist
     belongs_to :fan
   end
 
   class Fan < ActiveRecord::Base
-    attr_accessible :name
     has_many :payments
     has_many :artists, :through => :albums
   end
 
   class Stalker < ActiveRecord::Base
-    attr_accessible :name
     has_and_belongs_to_many :artists
   end
 end
