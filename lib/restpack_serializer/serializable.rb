@@ -144,9 +144,13 @@ module RestPack
       end
 
       def has_user_defined_method?(method_name)
-        user_defined_methods = self.user_defined_methods || []
-        return true if user_defined_methods.include?(method_name)
-        return self.superclass.try(:has_user_defined_method?, method_name)
+        if user_defined_methods && user_defined_methods.include?(method_name)
+          true
+        elsif superclass.respond_to?(:has_user_defined_method?)
+          superclass.has_user_defined_method?(method_name)
+        else
+          false
+        end
       end
 
       def memoized_has_user_defined_method?(method_name)
