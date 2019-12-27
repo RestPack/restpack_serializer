@@ -57,7 +57,7 @@ module RestPack
       end
 
       add_custom_attributes(data)
-      add_links(model, data) unless self.class.associations.empty?
+      add_links(model, data) if self.class.has_associations?
 
       data
     end

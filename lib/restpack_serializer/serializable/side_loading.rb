@@ -44,8 +44,12 @@ module RestPack::Serializer::SideLoading
       end
     end
 
+    def has_associations?
+      @can_includes
+    end
+
     def associations
-      return [] unless @can_includes
+      return [] unless has_associations?
       can_includes.map do |include|
         association = association_from_include(include)
         association if supported_association?(association.macro)
