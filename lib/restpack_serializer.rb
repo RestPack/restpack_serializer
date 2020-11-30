@@ -6,7 +6,7 @@ require_relative 'restpack_serializer/serializable'
 require_relative 'restpack_serializer/factory'
 require_relative 'restpack_serializer/result'
 
-Kaminari::Hooks.init
+Kaminari::Hooks.init if defined?(Kaminari::Hooks)
 
 module RestPack
   module Serializer
