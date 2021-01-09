@@ -5,6 +5,8 @@ require './spec/fixtures/serializers'
 require './spec/support/factory'
 require 'database_cleaner'
 require 'coveralls'
+
+Coveralls::Output.silent = true unless ENV["CI"]
 Coveralls.wear!
 FactoryGirl.find_definitions
 
