@@ -6,6 +6,8 @@ ActiveRecord::Base.establish_connection(
   :database => 'test.db'
 )
 
+ActiveRecord::Migration.verbose = false
+
 ActiveRecord::Schema.define(:version => 1) do
   create_table "artists", :force => true do |t|
     t.string   "name"
