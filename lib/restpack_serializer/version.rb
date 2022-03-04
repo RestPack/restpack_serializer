@@ -1,5 +1,5 @@
 module RestPack
   module Serializer
-    VERSION = '0.6.14'
+    VERSION = '0.6.13'
   end
 end
