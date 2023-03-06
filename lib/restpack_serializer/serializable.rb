@@ -45,12 +45,14 @@ module RestPack
         self.class.serializable_attributes.each do |key, attribute|
           method_name = attribute[:include_method_name]
           name = attribute[:name]
+
+          normalized_key = self.class.camelize? ? key.to_s.camelize(:lower).to_sym : key
           if self.class.memoized_has_user_defined_method?(method_name)
-            data[key] = self.send(name) if self.send(method_name)
+            data[normalized_key] = self.send(name) if self.send(method_name)
           else
             #the default implementation of `include_abc?`
             if @context[method_name].nil? || @context[method_name]
-              data[key] = self.send(name)
+              data[normalized_key] = self.send(name)
             end
           end
         end
@@ -74,7 +76,13 @@ module RestPack
 
     def add_custom_attributes(data)
       custom = custom_attributes
-      data.merge!(custom) if custom
+      return unless custom
+
+      if self.class.camelize?
+        custom = custom.transform_keys { |key| key.to_s.camelize(:lower).to_sym }
+      end
+
+      data.merge!(custom)
     end
 
     def apply_whitelist_and_blacklist(context)
@@ -134,6 +142,14 @@ module RestPack
 
     module ClassMethods
       attr_accessor :model_class, :href_prefix, :key, :user_defined_methods, :track_defined_methods
+
+      def camelize(camelize)
+        @camelize = camelize
+      end
+
+      def camelize?
+        @camelize
+      end
 
       def method_added(name)
         #we track used defined methods so that we can make quick decisions at runtime

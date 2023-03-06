@@ -222,6 +222,20 @@ describe RestPack::Serializer do
         )
       end
 
+      context "with camelize set to true on serializer" do
+        class CamelcaseSerializer < PersonSerializer
+          attributes :id, :name, :description, :href, :admin_info, :string_keys
+          camelize true
+          self.key = :people
+        end
+        let(:serializer) { CamelcaseSerializer }
+
+        it "converts the attribute names to lower camel case" do
+          hash = serializer.as_json(person, is_admin?: true, is_ben?: true)
+          expect(hash.keys).to eq([:id, :name, :description, :href, :adminInfo, :stringKeys, :customKey])
+        end
+      end
+
       it "excludes a blacklist of attributes if specified as an array" do
         expect(serializer.as_json(person, attribute_blacklist: [:name, :description])).to eq(
           id: '123',
