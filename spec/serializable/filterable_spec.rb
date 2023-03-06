@@ -8,7 +8,7 @@ describe RestPack::Serializer::Filterable do
     can_filter_by :a, :c
   end
 
-  it "captures the specified filters" do
-    expect(CustomSerializer.serializable_filters).to eq([:a, :c])
+  it 'captures the specified filters' do
+    expect(CustomSerializer.serializable_filters).to eq(%i[a c])
   end
 end

@@ -1,13 +1,13 @@
 require 'active_support/concern'
-require_relative "options"
-require_relative "serializable/attributes"
-require_relative "serializable/filterable"
-require_relative "serializable/paging"
-require_relative "serializable/resource"
-require_relative "serializable/single"
-require_relative "serializable/side_loading"
-require_relative "serializable/side_load_data_builder"
-require_relative "serializable/sortable"
+require_relative 'options'
+require_relative 'serializable/attributes'
+require_relative 'serializable/filterable'
+require_relative 'serializable/paging'
+require_relative 'serializable/resource'
+require_relative 'serializable/single'
+require_relative 'serializable/side_loading'
+require_relative 'serializable/side_load_data_builder'
+require_relative 'serializable/sortable'
 
 module RestPack
   module Serializer
@@ -16,7 +16,7 @@ module RestPack
     @@class_map ||= {}
 
     included do
-      identifier = self.to_s.underscore.chomp('_serializer')
+      identifier = to_s.underscore.chomp('_serializer')
       @@class_map[identifier] = self
       @@class_map[identifier.split('/').last] = self
     end
@@ -33,12 +33,11 @@ module RestPack
 
     def as_json(model, context = {})
       return if model.nil?
-      if model.kind_of?(Array)
-        return model.map { |item| self.class.new.as_json(item, context) }
-      end
+      return model.map { |item| self.class.new.as_json(item, context) } if model.is_a?(Array)
 
       apply_whitelist_and_blacklist(context)
-      @model, @context = model, context
+      @model = model
+      @context = context
 
       data = {}
       if self.class.serializable_attributes.present?
@@ -46,12 +45,10 @@ module RestPack
           method_name = attribute[:include_method_name]
           name = attribute[:name]
           if self.class.memoized_has_user_defined_method?(method_name)
-            data[key] = self.send(name) if self.send(method_name)
-          else
-            #the default implementation of `include_abc?`
-            if @context[method_name].nil? || @context[method_name]
-              data[key] = self.send(name)
-            end
+            data[key] = send(name) if send(method_name)
+          elsif @context[method_name].nil? || @context[method_name]
+            # the default implementation of `include_abc?`
+            data[key] = send(name)
           end
         end
       end
@@ -82,31 +79,27 @@ module RestPack
       whitelist = context[:attribute_whitelist]
 
       if blacklist.present? && whitelist.present?
-        raise ArgumentError.new "the context can't define both an `attribute_whitelist` and an `attribute_blacklist`"
+        raise ArgumentError, "the context can't define both an `attribute_whitelist` and an `attribute_blacklist`"
       end
 
       if blacklist.present?
         blacklist = csv_to_symbol_array(blacklist)
         self.class.serializable_attributes.each do |key, value|
-          if blacklist.include? key
-            context[value[:include_method_name]] = false
-          end
+          context[value[:include_method_name]] = false if blacklist.include? key
         end
       end
 
-      if whitelist.present?
-        whitelist = csv_to_symbol_array(whitelist)
-        self.class.serializable_attributes.each do |key, value|
-          unless whitelist.include? key
-            context[value[:include_method_name]] = false
-          end
-        end
+      return unless whitelist.present?
+
+      whitelist = csv_to_symbol_array(whitelist)
+      self.class.serializable_attributes.each do |key, value|
+        context[value[:include_method_name]] = false unless whitelist.include? key
       end
     end
 
     def csv_to_symbol_array(maybe_csv)
       if maybe_csv.is_a? String
-        maybe_csv.split(',').map {|a| a.strip.to_sym}
+        maybe_csv.split(',').map { |a| a.strip.to_sym }
       else
         maybe_csv
       end
@@ -115,19 +108,16 @@ module RestPack
     def add_links(model, data)
       self.class.associations.each do |association|
         data[:links] ||= {}
-        links_value = case
-        when association.macro == :belongs_to
-          model.send(association.foreign_key).try(:to_s)
-        when association.macro.to_s.match(/has_/)
-          if model.send(association.name).loaded?
-            model.send(association.name).collect { |associated| associated.id.to_s }
-          else
-            model.send(association.name).pluck(:id).map(&:to_s)
-          end
-        end
-        unless links_value.blank?
-          data[:links][association.name.to_sym] = links_value
-        end
+        links_value = if association.macro == :belongs_to
+                        model.send(association.foreign_key).try(:to_s)
+                      elsif association.macro.to_s.match(/has_/)
+                        if model.send(association.name).loaded?
+                          model.send(association.name).collect { |associated| associated.id.to_s }
+                        else
+                          model.send(association.name).pluck(:id).map(&:to_s)
+                        end
+                      end
+        data[:links][association.name.to_sym] = links_value unless links_value.blank?
       end
       data
     end
@@ -136,11 +126,11 @@ module RestPack
       attr_accessor :model_class, :href_prefix, :key, :user_defined_methods, :track_defined_methods
 
       def method_added(name)
-        #we track used defined methods so that we can make quick decisions at runtime
+        # we track used defined methods so that we can make quick decisions at runtime
         @user_defined_methods ||= []
-        if @track_defined_methods
-          @user_defined_methods << name
-        end
+        return unless @track_defined_methods
+
+        @user_defined_methods << name
       end
 
       def has_user_defined_method?(method_name)
@@ -156,13 +146,11 @@ module RestPack
       def memoized_has_user_defined_method?(method_name)
         @memoized_user_defined_methods ||= {}
 
-        if @memoized_user_defined_methods.has_key? method_name
-          return @memoized_user_defined_methods[method_name]
-        else
-          has_method = has_user_defined_method?(method_name)
-          @memoized_user_defined_methods[method_name] = has_method
-          return has_method
-        end
+        return @memoized_user_defined_methods[method_name] if @memoized_user_defined_methods.has_key? method_name
+
+        has_method = has_user_defined_method?(method_name)
+        @memoized_user_defined_methods[method_name] = has_method
+        has_method
       end
 
       def array_as_json(models, context = {})
@@ -178,15 +166,15 @@ module RestPack
       end
 
       def serialize(models, context = {})
-        models = [models] unless models.kind_of?(Array)
+        models = [models] unless models.is_a?(Array)
 
         {
-          self.key() => models.map {|model| self.as_json(model, context)}
+          key => models.map { |model| as_json(model, context) }
         }
       end
 
       def model_class
-        @model_class || self.name.chomp('Serializer').constantize
+        @model_class || name.chomp('Serializer').constantize
       end
 
       def href_prefix
@@ -194,15 +182,15 @@ module RestPack
       end
 
       def key
-        (@key || self.model_class.send(:table_name)).to_sym
+        (@key || model_class.send(:table_name)).to_sym
       end
 
       def singular_key
-        self.key.to_s.singularize.to_sym
+        key.to_s.singularize.to_sym
       end
 
       def plural_key
-        self.key
+        key
       end
     end
   end

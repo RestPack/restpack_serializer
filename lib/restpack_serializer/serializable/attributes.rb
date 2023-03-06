@@ -34,49 +34,48 @@ module RestPack::Serializer::Attributes
       self.track_defined_methods = true
     end
 
-    def attribute(name, options={})
+    def attribute(name, options = {})
       add_to_serializable(name, options)
       define_attribute_method name
       define_include_method name
     end
 
-    def optional_attribute(name, options={})
+    def optional_attribute(name, options = {})
       add_to_serializable(name, options)
       define_attribute_method name
       define_optional_include_method name
     end
 
     def define_attribute_method(name)
-      unless method_defined?(name)
-        self.track_defined_methods = false
-        define_method name do
-          value = self.default_href if name == :href
-          if @model.is_a?(Hash)
-            value = @model[name]
-            value = @model[name.to_s] if value.nil?
-          else
-            value ||= @model.send(name)
-          end
-          value = value.to_s if name == :id
-          value
+      return if method_defined?(name)
+
+      self.track_defined_methods = false
+      define_method name do
+        value = default_href if name == :href
+        if @model.is_a?(Hash)
+          value = @model[name]
+          value = @model[name.to_s] if value.nil?
+        else
+          value ||= @model.send(name)
         end
-        self.track_defined_methods = true
+        value = value.to_s if name == :id
+        value
       end
+      self.track_defined_methods = true
     end
 
     def define_optional_include_method(name)
       define_include_method(name, false)
     end
 
-    def define_include_method(name, include_by_default=true)
+    def define_include_method(name, include_by_default = true)
       method = "include_#{name}?".to_sym
 
-      unless method_defined?(method)
-        unless include_by_default
-          define_method method do
-            @context[method].present?
-          end
-        end
+      return if method_defined?(method)
+      return if include_by_default
+
+      define_method method do
+        @context[method].present?
       end
     end
 

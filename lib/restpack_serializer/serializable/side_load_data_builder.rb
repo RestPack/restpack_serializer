@@ -1,7 +1,6 @@
 module RestPack
   module Serializer
     class SideLoadDataBuilder
-
       def initialize(association, models, serializer)
         @association = association
         @models = models
@@ -12,7 +11,7 @@ module RestPack
         foreign_keys = @models.map { |model| model.send(@association.foreign_key) }.uniq.compact
         side_load = foreign_keys.any? ? @association.klass.find(foreign_keys) : []
         json_model_data = side_load.map { |model| @serializer.as_json(model) }
-        { @association.plural_name.to_sym => json_model_data, meta: { } }
+        { @association.plural_name.to_sym => json_model_data, meta: {} }
       end
 
       def side_load_has_many
@@ -45,6 +44,7 @@ module RestPack
 
       def has_association_relation
         return {} if @models.empty?
+
         serializer_class = @serializer.class
         options = RestPack::Serializer::Options.new(serializer_class)
         yield options

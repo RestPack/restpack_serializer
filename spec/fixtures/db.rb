@@ -2,64 +2,64 @@ require 'sqlite3'
 require 'active_record'
 
 ActiveRecord::Base.establish_connection(
-  :adapter => 'sqlite3',
-  :database => 'test.db'
+  adapter: 'sqlite3',
+  database: 'test.db'
 )
 
 ActiveRecord::Migration.verbose = false
 
-ActiveRecord::Schema.define(:version => 1) do
-  create_table "artists", :force => true do |t|
-    t.string   "name"
-    t.string   "website"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+ActiveRecord::Schema.define(version: 1) do
+  create_table 'artists', force: true do |t|
+    t.string   'name'
+    t.string   'website'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "albums", :force => true do |t|
-    t.string   "title"
-    t.integer  "year"
-    t.integer  "artist_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'albums', force: true do |t|
+    t.string   'title'
+    t.integer  'year'
+    t.integer  'artist_id'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "album_reviews", :force => true do |t|
-    t.string   "message"
-    t.integer  "album_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'album_reviews', force: true do |t|
+    t.string   'message'
+    t.integer  'album_id'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "songs", :force => true do |t|
-    t.string   "title"
-    t.integer  "album_id"
-    t.integer  "artist_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'songs', force: true do |t|
+    t.string   'title'
+    t.integer  'album_id'
+    t.integer  'artist_id'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "payments", :force => true do |t|
-    t.integer "amount"
-    t.integer  "artist_id"
-    t.integer  "fan_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'payments', force: true do |t|
+    t.integer 'amount'
+    t.integer  'artist_id'
+    t.integer  'fan_id'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "fans", :force => true do |t|
-    t.string "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'fans', force: true do |t|
+    t.string 'name'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "stalkers", :force => true do |t|
-    t.string "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table 'stalkers', force: true do |t|
+    t.string 'name'
+    t.datetime 'created_at'
+    t.datetime 'updated_at'
   end
 
-  create_table "artists_stalkers", force: true, id: false do |t|
+  create_table 'artists_stalkers', force: true, id: false do |t|
     t.integer :artist_id
     t.integer :stalker_id
   end
@@ -70,12 +70,12 @@ module MyApp
     has_many :albums
     has_many :songs
     has_many :payments
-    has_many :fans, :through => :payments
+    has_many :fans, through: :payments
     has_and_belongs_to_many :stalkers
   end
 
   class Album < ActiveRecord::Base
-    scope :classic, -> { where("year < 1950") }
+    scope :classic, -> { where('year < 1950') }
 
     belongs_to :artist
     has_many :songs
@@ -100,7 +100,7 @@ module MyApp
 
   class Fan < ActiveRecord::Base
     has_many :payments
-    has_many :artists, :through => :albums
+    has_many :artists, through: :albums
   end
 
   class Stalker < ActiveRecord::Base

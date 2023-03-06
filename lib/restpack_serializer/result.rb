@@ -30,22 +30,22 @@ module RestPack::Serializer
     def inject_has_many_links!
       @resources.keys.each do |key|
         @resources[key].each do |item|
-          if item[:links]
-            item[:links].each do |link_key, link_value|
-              unless link_value.is_a? Array
-                plural_linked_key = "#{link_key}s".to_sym
+          next unless item[:links]
 
-                if @resources[plural_linked_key]
-                  linked_resource = @resources[plural_linked_key].find { |i| i[:id] == link_value }
-                  if linked_resource
-                    linked_resource[:links] ||= {}
-                    linked_resource[:links][key] ||= []
-                    linked_resource[:links][key] << item[:id]
-                    linked_resource[:links][key].uniq!
-                  end
-                end
-              end
-            end
+          item[:links].each do |link_key, link_value|
+            next if link_value.is_a? Array
+
+            plural_linked_key = "#{link_key}s".to_sym
+
+            next unless @resources[plural_linked_key]
+
+            linked_resource = @resources[plural_linked_key].find { |i| i[:id] == link_value }
+            next unless linked_resource
+
+            linked_resource[:links] ||= {}
+            linked_resource[:links][key] ||= []
+            linked_resource[:links][key] << item[:id]
+            linked_resource[:links][key].uniq!
           end
         end
       end

@@ -7,8 +7,8 @@ class SimpleSerializer
 end
 
 simple_model = {
-  id: "123",
-  title: 'This is the title',
+  id: '123',
+  title: 'This is the title'
 }
 
 # warmup
@@ -18,9 +18,9 @@ report = MemoryProfiler.report do
   SimpleSerializer.as_json(simple_model)
 end
 
-puts "="*64
-puts "Simple Serializer:"
-puts "="*64
+puts '=' * 64
+puts 'Simple Serializer:'
+puts '=' * 64
 
 report.pretty_print(detailed_report: false)
 
@@ -32,7 +32,7 @@ end
 
 complex_model = {
   a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10,
-  k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20,
+  k: 11, l: 12, m: 13, n: 14, o: 15, p: 16, q: 17, r: 18, s: 19, t: 20
 }
 
 # warmup
@@ -42,8 +42,8 @@ report = MemoryProfiler.report do
   ComplexSerializer.as_json(complex_model)
 end
 
-puts "="*64
-puts "Complex Serializer:"
-puts "="*64
+puts '=' * 64
+puts 'Complex Serializer:'
+puts '=' * 64
 
 report.pretty_print(detailed_report: false)

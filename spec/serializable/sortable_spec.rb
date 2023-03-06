@@ -9,6 +9,6 @@ describe RestPack::Serializer::Sortable do
   end
 
   it 'captures the specified sorting attributes' do
-    expect(CustomSerializer.serializable_sorting_attributes).to eq([:a, :c])
+    expect(CustomSerializer.serializable_sorting_attributes).to eq(%i[a c])
   end
 end

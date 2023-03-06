@@ -24,7 +24,7 @@ describe RestPack::Serializer::Options do
 
   describe 'with include' do
     let(:params) { { 'include' => 'model1,model2' } }
-    it { expect(subject.include).to eq(%w(model1 model2)) }
+    it { expect(subject.include).to eq(%w[model1 model2]) }
   end
 
   context 'with filters' do
@@ -35,31 +35,31 @@ describe RestPack::Serializer::Options do
 
     describe 'with a primary key with a single value' do
       let(:params) { { 'id' => '142857' } }
-      it { expect(subject.filters).to eq(id: %w(142857)) }
+      it { expect(subject.filters).to eq(id: %w[142857]) }
       it { expect(subject.filters_as_url_params).to eq('id=142857') }
     end
 
     describe 'with a primary key with multiple values' do
       let(:params) { { 'ids' => '42,142857' } }
-      it { expect(subject.filters).to eq(id: %w(42 142857)) }
+      it { expect(subject.filters).to eq(id: %w[42 142857]) }
       it { expect(subject.filters_as_url_params).to eq('id=42,142857') }
     end
 
     describe 'with a foreign key with a single value' do
       let(:params) { { 'album_id' => '789' } }
-      it { expect(subject.filters).to eq(album_id: %w(789)) }
+      it { expect(subject.filters).to eq(album_id: %w[789]) }
       it { expect(subject.filters_as_url_params).to eq('album_id=789') }
     end
 
     describe 'with a foreign key with multiple values' do
       let(:params) { { 'album_id' => '789,678,567' } }
-      it { expect(subject.filters).to eq(album_id: %w(789 678 567)) }
+      it { expect(subject.filters).to eq(album_id: %w[789 678 567]) }
       it { expect(subject.filters_as_url_params).to eq('album_id=789,678,567') }
     end
 
     describe 'with multiple foreign keys' do
       let(:params) { { 'album_id' => '111,222', 'artist_id' => '888,999' } }
-      it { expect(subject.filters).to eq(album_id: %w(111 222), artist_id: %w(888 999)) }
+      it { expect(subject.filters).to eq(album_id: %w[111 222], artist_id: %w[888 999]) }
       it { expect(subject.filters_as_url_params).to eq('album_id=111,222&artist_id=888,999') }
     end
   end
@@ -97,7 +97,7 @@ describe RestPack::Serializer::Options do
     end
 
     describe 'with custom scope' do
-      let(:scope) { MyApp::Song.where("id >= 100") }
+      let(:scope) { MyApp::Song.where('id >= 100') }
       it { expect(subject.scope).to eq(scope) }
     end
   end

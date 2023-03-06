@@ -35,7 +35,7 @@ module RestPack::Serializer
     end
 
     def filters_as_url_params
-      @filters.sort.map { |k,v| map_filter_ids(k,v) }.join('&')
+      @filters.sort.map { |k, v| map_filter_ids(k, v) }.join('&')
     end
 
     def sorting_as_url_params
@@ -58,33 +58,34 @@ module RestPack::Serializer
     def sorting_from_params(params, serializer)
       sort_values = params[:sort] && params[:sort].split(',')
       return {} if sort_values.blank? || serializer.serializable_sorting_attributes.blank?
+
       sorting_parameters = {}
 
       sort_values.each do |sort_value|
         sort_order = sort_value[0] == '-' ? :desc : :asc
-        sort_value = sort_value.gsub(/\A\-/, '').downcase.to_sym
+        sort_value = sort_value.gsub(/\A-/, '').downcase.to_sym
         sorting_parameters[sort_value] = sort_order if serializer.serializable_sorting_attributes.include?(sort_value)
       end
       sorting_parameters
     end
 
-    def map_filter_ids(key,value)
+    def map_filter_ids(key, value)
       case value
       when Hash
-        value.map { |k,v| map_filter_ids(k,v) }
+        value.map { |k, v| map_filter_ids(k, v) }
       else
-         "#{key}=#{value.join(',')}"
+        "#{key}=#{value.join(',')}"
       end
     end
 
     def query_to_array(value)
       case value
-        when String
-          value.split(',')
-        when Hash
-          value.each { |k, v| value[k] = query_to_array(v) }
-        else
-          value
+      when String
+        value.split(',')
+      when Hash
+        value.each { |k, v| value[k] = query_to_array(v) }
+      else
+        value
       end
     end
   end

@@ -3,7 +3,7 @@ module RestPack::Serializer::SideLoading
 
   module ClassMethods
     def side_loads(models, options)
-      { meta: { } }.tap do |side_loads|
+      { meta: {} }.tap do |side_loads|
         return side_loads if models.empty? || options.include.nil?
 
         options.include.each do |include|
@@ -27,19 +27,18 @@ module RestPack::Serializer::SideLoading
       {}.tap do |links|
         associations.each do |association|
           if association.macro == :belongs_to
-            link_key = "#{self.key}.#{association.name}"
+            link_key = "#{key}.#{association.name}"
             href = "/#{association.plural_name}/{#{link_key}}"
           elsif association.macro.to_s.match(/has_/)
-            singular_key = self.key.to_s.singularize
-            link_key = "#{self.key}.#{association.plural_name}"
+            singular_key = key.to_s.singularize
+            link_key = "#{key}.#{association.plural_name}"
             href = "/#{association.plural_name}?#{singular_key}_id={#{key}.id}"
           end
 
           links.merge!(link_key => {
-            :href => href_prefix + href,
-            :type => association.plural_name.to_sym
-            }
-          )
+                         href: href_prefix + href,
+                         type: association.plural_name.to_sym
+                       })
         end
       end
     end
@@ -50,6 +49,7 @@ module RestPack::Serializer::SideLoading
 
     def associations
       return [] unless has_associations?
+
       can_includes.map do |include|
         association = association_from_include(include)
         association if supported_association?(association.macro)
@@ -58,9 +58,10 @@ module RestPack::Serializer::SideLoading
 
     private
 
-    def side_load(include, models, options)
+    def side_load(include, models, _options)
       association = association_from_include(include)
       return {} unless supported_association?(association.macro)
+
       serializer = RestPack::Serializer::Factory.create(association.class_name)
       builder = RestPack::Serializer::SideLoadDataBuilder.new(association,
                                                               models,
@@ -69,7 +70,7 @@ module RestPack::Serializer::SideLoading
     end
 
     def supported_association?(association_macro)
-      [:belongs_to, :has_many, :has_and_belongs_to_many].include?(association_macro)
+      %i[belongs_to has_many has_and_belongs_to_many].include?(association_macro)
     end
 
     def association_from_include(include)
@@ -80,7 +81,7 @@ module RestPack::Serializer::SideLoading
 
     def select_association_from_possibles(possible_relations)
       possible_relations.each do |relation|
-        if association = self.model_class.reflect_on_association(relation)
+        if association = model_class.reflect_on_association(relation)
           return association
         end
       end
@@ -88,14 +89,14 @@ module RestPack::Serializer::SideLoading
     end
 
     def can_include?(include)
-      !!self.can_includes.index do |can_include|
+      !!can_includes.index do |can_include|
         can_include == include || can_include.to_s == include
       end
     end
 
     def raise_invalid_include(include)
       raise RestPack::Serializer::InvalidInclude.new,
-        ":#{include} is not a valid include for #{self.model_class}"
+            ":#{include} is not a valid include for #{model_class}"
     end
   end
 end

@@ -11,11 +11,11 @@ module RestPack::Serializer::Paging
       page = page.reorder(options.sorting) if options.sorting.any?
 
       result = RestPack::Serializer::Result.new
-      result.resources[self.key] = serialize_page(page, options)
-      result.meta[self.key] = serialize_meta(page, options)
+      result.resources[key] = serialize_page(page, options)
+      result.meta[key] = serialize_meta(page, options)
 
       if options.include_links
-        result.links = self.links
+        result.links = links
         Array(RestPack::Serializer::Factory.create(*options.include)).each do |serializer|
           result.links.merge! serializer.class.links
         end
@@ -30,18 +30,18 @@ module RestPack::Serializer::Paging
     private
 
     def serialize_page(page, options)
-      page.map { |model| self.as_json(model, options.context) }
+      page.map { |model| as_json(model, options.context) }
     end
 
     def serialize_meta(page, options)
       meta = {
-          page: page.current_page,
-          page_size: page.limit_value,
-          count: page.total_count,
-          include: options.include,
-          page_count: page.total_pages,
-          previous_page: page.prev_page,
-          next_page: page.next_page
+        page: page.current_page,
+        page_size: page.limit_value,
+        count: page.total_count,
+        include: options.include,
+        page_count: page.total_pages,
+        previous_page: page.prev_page,
+        next_page: page.next_page
       }
 
       meta[:first_href] = page_href(1, options)
@@ -54,7 +54,7 @@ module RestPack::Serializer::Paging
     def page_href(page, options)
       return nil unless page
 
-      url = "#{self.href_prefix}/#{self.key}"
+      url = "#{href_prefix}/#{key}"
 
       params = []
       params << "page=#{page}" unless page == 1

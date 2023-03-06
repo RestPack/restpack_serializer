@@ -1,10 +1,8 @@
 class RestPack::Serializer::Factory
   def self.create(*identifiers)
-    serializers = identifiers.map { |identifier| self.classify(identifier) }
+    serializers = identifiers.map { |identifier| classify(identifier) }
     serializers.count == 1 ? serializers.first : serializers
   end
-
-  private
 
   def self.classify(identifier)
     normalised_identifier = identifier.to_s.underscore

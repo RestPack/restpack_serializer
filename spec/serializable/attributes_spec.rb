@@ -6,39 +6,39 @@ describe RestPack::Serializer::Attributes do
     attributes :a, :b, :c
     attributes :d, :e, :f?
     optional :sometimes, :maybe
-    attribute :old_attribute, :key => :new_key
-    transform [:gonzaga], lambda { |name, model| model.send(name).downcase }
+    attribute :old_attribute, key: :new_key
+    transform [:gonzaga], ->(name, model) { model.send(name).downcase }
   end
 
   subject(:attributes) { CustomSerializer.serializable_attributes }
 
-  it "correctly models specified attributes" do
+  it 'correctly models specified attributes' do
     expect(attributes.length).to be(10)
   end
 
-  it "correctly maps normal attributes" do
-    [:a, :b, :c, :d, :e, :f?].each do |attr|
+  it 'correctly maps normal attributes' do
+    %i[a b c d e f?].each do |attr|
       expect(attributes[attr]).to eq({
-        name: attr,
-        include_method_name: "include_#{attr}?".to_sym
-      })
+                                       name: attr,
+                                       include_method_name: "include_#{attr}?".to_sym
+                                     })
     end
   end
 
-  it "correctly maps attribute with :key options" do
+  it 'correctly maps attribute with :key options' do
     expect(attributes[:new_key]).to eq({
-      name: :old_attribute,
-      include_method_name: :include_new_key?
-    })
+                                         name: :old_attribute,
+                                         include_method_name: :include_new_key?
+                                       })
   end
 
-  describe "optional attributes" do
+  describe 'optional attributes' do
     let(:model) { OpenStruct.new(a: 'A', sometimes: 'SOMETIMES', gonzaga: 'GONZAGA') }
     let(:context) { {} }
     subject(:as_json) { CustomSerializer.as_json(model, context) }
 
     context 'with no includes context' do
-      it "excludes by default" do
+      it 'excludes by default' do
         expect(as_json[:sometimes]).to eq(nil)
       end
     end
@@ -46,7 +46,7 @@ describe RestPack::Serializer::Attributes do
     context 'with an includes context' do
       let(:context) { { include_sometimes?: true } }
 
-      it "allows then to be included" do
+      it 'allows then to be included' do
         expect(as_json[:sometimes]).to eq('SOMETIMES')
       end
     end
@@ -62,7 +62,7 @@ describe RestPack::Serializer::Attributes do
     end
   end
 
-  describe "model as a hash" do
+  describe 'model as a hash' do
     let(:model) { { a: 'A', 'b' => 'B', c: false, :f? => 2 } }
 
     subject(:as_json) { CustomSerializer.as_json(model, include_gonzaga?: false) }

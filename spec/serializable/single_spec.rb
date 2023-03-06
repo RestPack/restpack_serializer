@@ -9,25 +9,25 @@ describe RestPack::Serializer::Single do
   let(:resource) { MyApp::SongSerializer.single(params, scope, context) }
   let(:params) { { id: @song.id } }
   let(:scope) { nil }
-  let(:context) { { } }
+  let(:context) { {} }
 
-  it "returns a resource by id" do
+  it 'returns a resource by id' do
     expect(resource[:id]).to eq(@song.id.to_s)
     expect(resource[:title]).to eq(@song.title)
   end
 
-  context "with context" do
+  context 'with context' do
     let(:context) { { reverse_title?: true } }
 
-    it "returns reversed titles" do
+    it 'returns reversed titles' do
       expect(resource[:title]).to eq(@song.title.reverse)
     end
   end
 
-  context "invalid id" do
+  context 'invalid id' do
     let(:params) { { id: @song.id + 100 } }
 
-    it "returns nil" do
+    it 'returns nil' do
       expect(resource).to eq(nil)
     end
   end

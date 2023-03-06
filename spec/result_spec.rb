@@ -21,7 +21,7 @@ describe RestPack::Serializer::Result do
 
       context 'a simple list of resources' do
         before do
-          subject.resources[:albums] = [{ name: 'Album 1' }, { name: 'Album 2'}]
+          subject.resources[:albums] = [{ name: 'Album 1' }, { name: 'Album 2' }]
           subject.meta[:albums] = { count: 2 }
           subject.links['albums.songs'] = { href: 'songs.json', type: 'songs' }
         end
@@ -35,8 +35,8 @@ describe RestPack::Serializer::Result do
 
       context 'a list with side-loaded resources' do
         before do
-          subject.resources[:albums] = [{ id: '1', name: 'AMOK'}]
-          subject.resources[:songs] = [{ id: '91', name: 'Before Your Very Eyes...', links: { album: '1' }}]
+          subject.resources[:albums] = [{ id: '1', name: 'AMOK' }]
+          subject.resources[:songs] = [{ id: '91', name: 'Before Your Very Eyes...', links: { album: '1' } }]
           subject.meta[:albums] = { count: 1 }
           subject.meta[:songs] = { count: 1 }
           subject.links['albums.songs'] = { type: 'songs', href: '/api/v1/songs?album_id={albums.id}' }

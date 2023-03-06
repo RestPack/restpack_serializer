@@ -6,7 +6,7 @@ module RestPack::Serializer::Single
       options = RestPack::Serializer::Options.new(self, params, scope, context)
       model = options.scope_with_filters.first
 
-      return model ? self.as_json(model, context) : nil
+      model ? as_json(model, context) : nil
     end
   end
 end

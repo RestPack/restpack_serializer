@@ -14,8 +14,8 @@ module RestPack::Serializer::Filterable
     end
 
     def filterable_by
-      filters = [self.model_class.primary_key.to_sym]
-      filters += self.model_class.reflect_on_all_associations(:belongs_to).map(&:foreign_key).map(&:to_sym)
+      filters = [model_class.primary_key.to_sym]
+      filters += model_class.reflect_on_all_associations(:belongs_to).map(&:foreign_key).map(&:to_sym)
 
       filters += @serializable_filters if @serializable_filters
       filters.uniq
