@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require "active_support/core_ext/string"
 require_relative "options"
 require_relative "serializable/attributes"
 require_relative "serializable/filterable"

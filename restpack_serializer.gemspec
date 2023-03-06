@@ -24,7 +24,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'restpack_gem', '~> 0.0.9'
   gem.add_development_dependency 'rake', '~> 11.3'
   gem.add_development_dependency 'guard-rspec', '~> 4.7'
-  gem.add_development_dependency 'factory_girl', '~> 4.7'
+  gem.add_development_dependency 'factory_bot', '~> 4.7'
   gem.add_development_dependency 'sqlite3', '~> 1.3'
   gem.add_development_dependency 'database_cleaner', '~> 1.5'
   gem.add_development_dependency 'rspec'

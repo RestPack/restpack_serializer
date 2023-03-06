@@ -8,10 +8,10 @@ require 'coveralls'
 
 Coveralls::Output.silent = true unless ENV["CI"]
 Coveralls.wear!
-FactoryGirl.find_definitions
+FactoryBot.find_definitions
 
 RSpec.configure do |config|
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   config.raise_errors_for_deprecations!
 
   config.before(:suite) do
