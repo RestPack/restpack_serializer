@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec'
 require './lib/restpack_serializer'
 require './spec/fixtures/db'

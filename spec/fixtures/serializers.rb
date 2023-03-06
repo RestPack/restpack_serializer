@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MyApp
   class SongSerializer
     include RestPack::Serializer

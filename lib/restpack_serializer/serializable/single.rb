@@ -1,12 +1,18 @@
-module RestPack::Serializer::Single
-  extend ActiveSupport::Concern
+# frozen_string_literal: true
 
-  module ClassMethods
-    def single(params = {}, scope = nil, context = {})
-      options = RestPack::Serializer::Options.new(self, params, scope, context)
-      model = options.scope_with_filters.first
+module RestPack
+  module Serializer
+    module Single
+      extend ActiveSupport::Concern
 
-      model ? as_json(model, context) : nil
+      module ClassMethods
+        def single(params = {}, scope = nil, context = {})
+          options = RestPack::Serializer::Options.new(self, params, scope, context)
+          model = options.scope_with_filters.first
+
+          model ? as_json(model, context) : nil
+        end
+      end
     end
   end
 end

@@ -1,13 +1,19 @@
-module RestPack::Serializer::Sortable
-  extend ActiveSupport::Concern
+# frozen_string_literal: true
 
-  module ClassMethods
-    attr_reader :serializable_sorting_attributes
+module RestPack
+  module Serializer
+    module Sortable
+      extend ActiveSupport::Concern
 
-    def can_sort_by(*attributes)
-      @serializable_sorting_attributes = []
-      attributes.each do |attribute|
-        @serializable_sorting_attributes << attribute.to_sym
+      module ClassMethods
+        attr_reader :serializable_sorting_attributes
+
+        def can_sort_by(*attributes)
+          @serializable_sorting_attributes = []
+          attributes.each do |attribute|
+            @serializable_sorting_attributes << attribute.to_sym
+          end
+        end
       end
     end
   end

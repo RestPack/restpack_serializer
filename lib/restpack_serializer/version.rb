@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RestPack
   module Serializer
     VERSION = '0.6.14'

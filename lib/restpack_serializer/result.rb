@@ -1,51 +1,55 @@
-module RestPack::Serializer
-  class Result
-    attr_accessor :resources, :meta, :links
+# frozen_string_literal: true
 
-    def initialize
-      @resources = {}
-      @meta = {}
-      @links = {}
-    end
+module RestPack
+  module Serializer
+    class Result
+      attr_accessor :resources, :meta, :links
 
-    def serialize
-      result = {}
-
-      unless @resources.empty?
-        inject_has_many_links!
-        result[@resources.keys.first] = @resources.values.first
-
-        linked = @resources.except(@resources.keys.first)
-        result[:linked] = linked unless linked.empty?
+      def initialize
+        @resources = {}
+        @meta = {}
+        @links = {}
       end
 
-      result[:links] = @links unless @links.empty?
-      result[:meta] = @meta unless @meta.empty?
+      def serialize
+        result = {}
 
-      result
-    end
+        unless @resources.empty?
+          inject_has_many_links!
+          result[@resources.keys.first] = @resources.values.first
 
-    private
+          linked = @resources.except(@resources.keys.first)
+          result[:linked] = linked unless linked.empty?
+        end
 
-    def inject_has_many_links!
-      @resources.keys.each do |key|
-        @resources[key].each do |item|
-          next unless item[:links]
+        result[:links] = @links unless @links.empty?
+        result[:meta] = @meta unless @meta.empty?
 
-          item[:links].each do |link_key, link_value|
-            next if link_value.is_a? Array
+        result
+      end
 
-            plural_linked_key = "#{link_key}s".to_sym
+      private
 
-            next unless @resources[plural_linked_key]
+      def inject_has_many_links!
+        @resources.each_key do |key|
+          @resources[key].each do |item|
+            next unless item[:links]
 
-            linked_resource = @resources[plural_linked_key].find { |i| i[:id] == link_value }
-            next unless linked_resource
+            item[:links].each do |link_key, link_value|
+              next if link_value.is_a? Array
 
-            linked_resource[:links] ||= {}
-            linked_resource[:links][key] ||= []
-            linked_resource[:links][key] << item[:id]
-            linked_resource[:links][key].uniq!
+              plural_linked_key = "#{link_key}s".to_sym
+
+              next unless @resources[plural_linked_key]
+
+              linked_resource = @resources[plural_linked_key].find { |i| i[:id] == link_value }
+              next unless linked_resource
+
+              linked_resource[:links] ||= {}
+              linked_resource[:links][key] ||= []
+              linked_resource[:links][key] << item[:id]
+              linked_resource[:links][key].uniq!
+            end
           end
         end
       end

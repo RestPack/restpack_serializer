@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'kaminari'
 
 require_relative 'restpack_serializer/version'

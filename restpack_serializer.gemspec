@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+require 'English'
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'restpack_serializer/version'
@@ -11,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.summary       = 'Model serialization, paging, side-loading and filtering'
   gem.homepage      = 'https://github.com/RestPack'
 
-  gem.files         = `git ls-files`.split($/)
+  gem.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   gem.executables   = gem.files.grep(%r{^bin/}).map { |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ['lib']

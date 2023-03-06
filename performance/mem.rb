@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'memory_profiler'
 require_relative '../lib/restpack_serializer'
 

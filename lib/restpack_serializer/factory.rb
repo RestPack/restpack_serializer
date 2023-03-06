@@ -1,16 +1,22 @@
-class RestPack::Serializer::Factory
-  def self.create(*identifiers)
-    serializers = identifiers.map { |identifier| classify(identifier) }
-    serializers.count == 1 ? serializers.first : serializers
-  end
+# frozen_string_literal: true
 
-  def self.classify(identifier)
-    normalised_identifier = identifier.to_s.underscore
-    [normalised_identifier, normalised_identifier.singularize].each do |format|
-      klass = RestPack::Serializer.class_map[format]
-      return klass.new if klass
+module RestPack
+  module Serializer
+    class Factory
+      def self.create(*identifiers)
+        serializers = identifiers.map { |identifier| classify(identifier) }
+        serializers.count == 1 ? serializers.first : serializers
+      end
+
+      def self.classify(identifier)
+        normalised_identifier = identifier.to_s.underscore
+        [normalised_identifier, normalised_identifier.singularize].each do |format|
+          klass = RestPack::Serializer.class_map[format]
+          return klass.new if klass
+        end
+
+        raise "Invalid RestPack::Serializer : #{identifier}"
+      end
     end
-
-    raise "Invalid RestPack::Serializer : #{identifier}"
   end
 end

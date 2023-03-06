@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'restpack_gem'
 RestPack::Gem::Tasks.load_tasks
 

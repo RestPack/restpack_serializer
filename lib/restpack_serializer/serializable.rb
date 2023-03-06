@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/concern'
 require_relative 'options'
 require_relative 'serializable/attributes'
@@ -29,7 +31,7 @@ module RestPack
     include RestPack::Serializer::SideLoading
     include RestPack::Serializer::Sortable
 
-    class InvalidInclude < Exception; end
+    class InvalidInclude < StandardError; end
 
     def as_json(model, context = {})
       return if model.nil?
@@ -134,7 +136,7 @@ module RestPack
       end
 
       def has_user_defined_method?(method_name)
-        if user_defined_methods && user_defined_methods.include?(method_name)
+        if user_defined_methods&.include?(method_name)
           true
         elsif superclass.respond_to?(:has_user_defined_method?)
           superclass.has_user_defined_method?(method_name)
@@ -146,7 +148,7 @@ module RestPack
       def memoized_has_user_defined_method?(method_name)
         @memoized_user_defined_methods ||= {}
 
-        return @memoized_user_defined_methods[method_name] if @memoized_user_defined_methods.has_key? method_name
+        return @memoized_user_defined_methods[method_name] if @memoized_user_defined_methods.key? method_name
 
         has_method = has_user_defined_method?(method_name)
         @memoized_user_defined_methods[method_name] = has_method
