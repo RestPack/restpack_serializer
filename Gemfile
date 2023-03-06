@@ -8,3 +8,4 @@ gem 'coveralls', require: false
 gem 'memory_profiler', require: false
 
 gem 'sqlite3', '~> 1.3.0' if RUBY_VERSION < '2.2'
+gem 'rubocop', group: 'development'
