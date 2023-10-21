@@ -64,7 +64,8 @@ module RestPack::Serializer::SideLoading
       serializer = RestPack::Serializer::Factory.create(association.class_name)
       builder = RestPack::Serializer::SideLoadDataBuilder.new(association,
                                                               models,
-                                                              serializer)
+                                                              serializer,
+                                                              options)
       builder.send("side_load_#{association.macro}")
     end
 
