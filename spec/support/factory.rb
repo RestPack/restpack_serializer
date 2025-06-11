@@ -1,6 +1,6 @@
-require 'factory_girl'
+require 'factory_bot'
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :artist, class: MyApp::Artist do
     sequence(:name) { |n| "Artist ##{n}" }
     sequence(:website) { |n| "http://website#{n}.com/" }

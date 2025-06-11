@@ -3,7 +3,7 @@ require 'spec_helper'
 describe RestPack::Serializer::SideLoading do
   context "invalid :include" do
     before(:each) do
-      FactoryGirl.create(:song)
+      FactoryBot.create(:song)
     end
 
     context "an include to an inexistent model" do
@@ -19,7 +19,7 @@ describe RestPack::Serializer::SideLoading do
 
     context "an include to a model which has not been whitelisted with 'can_include'" do
       it "raises an exception" do
-        payment = FactoryGirl.create(:payment)
+        payment = FactoryBot.create(:payment)
         exception = RestPack::Serializer::InvalidInclude
         message = ":payments is not a valid include for MyApp::Artist"
 

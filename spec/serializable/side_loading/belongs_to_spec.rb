@@ -5,8 +5,8 @@ describe RestPack::Serializer::SideLoading do
     describe ".belongs_to" do
 
       before(:each) do
-        FactoryGirl.create(:artist_with_albums, album_count: 2)
-        FactoryGirl.create(:artist_with_albums, album_count: 1)
+        FactoryBot.create(:artist_with_albums, album_count: 2)
+        FactoryBot.create(:artist_with_albums, album_count: 1)
       end
       let(:side_loads) { MyApp::SongSerializer.side_loads(models, options) }
 
@@ -68,7 +68,7 @@ describe RestPack::Serializer::SideLoading do
       end
 
       context 'without an associated model' do
-        let!(:b_side) { FactoryGirl.create(:song, album: nil) }
+        let!(:b_side) { FactoryBot.create(:song, album: nil) }
         let(:models) { [b_side] }
 
         context 'when including :albums' do
