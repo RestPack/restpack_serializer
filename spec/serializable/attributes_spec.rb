@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'ostruct'
 
 describe RestPack::Serializer::Attributes do
   class CustomSerializer
