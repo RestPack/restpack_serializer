@@ -10,4 +10,6 @@ if RUBY_VERSION < "2.2"
 elsif RUBY_VERSION < "2.5"
   gem "sqlite3", "~> 1.4.0"
   gem "term-ansicolor", "< 1.10.3"
+elsif RUBY_VERSION >= "3.4"
+  gem "observer"
 end
