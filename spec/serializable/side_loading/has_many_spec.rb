@@ -7,8 +7,8 @@ describe RestPack::Serializer::SideLoading do
     describe ".has_many" do
 
       before(:each) do
-        @artist1 = FactoryGirl.create(:artist_with_albums, album_count: 2)
-        @artist2 = FactoryGirl.create(:artist_with_albums, album_count: 1)
+        @artist1 = FactoryBot.create(:artist_with_albums, album_count: 2)
+        @artist2 = FactoryBot.create(:artist_with_albums, album_count: 1)
       end
 
       context "with a single model" do
@@ -43,8 +43,8 @@ describe RestPack::Serializer::SideLoading do
     describe '.has_many through' do
       context 'when including :fans' do
         let(:options) { RestPack::Serializer::Options.new(MyApp::ArtistSerializer, "include" => "fans") }
-        let(:artist_1) { FactoryGirl.create :artist_with_fans }
-        let(:artist_2) { FactoryGirl.create :artist_with_fans }
+        let(:artist_1) { FactoryBot.create :artist_with_fans }
+        let(:artist_2) { FactoryBot.create :artist_with_fans }
 
         context "with a single model" do
           let(:models) { [artist_1] }

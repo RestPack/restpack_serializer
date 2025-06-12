@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe RestPack::Serializer::Paging do
   before(:each) do
-    @album1 = FactoryGirl.create(:album_with_songs, song_count: 11)
-    @album2 = FactoryGirl.create(:album_with_songs, song_count: 7)
+    @album1 = FactoryBot.create(:album_with_songs, song_count: 11)
+    @album2 = FactoryBot.create(:album_with_songs, song_count: 7)
   end
 
   context "#page" do
@@ -229,8 +229,8 @@ describe RestPack::Serializer::Paging do
 
     context "with custom scope" do
       before do
-        FactoryGirl.create(:album, year: 1930)
-        FactoryGirl.create(:album, year: 1948)
+        FactoryBot.create(:album, year: 1930)
+        FactoryBot.create(:album, year: 1948)
       end
       let(:page) { MyApp::AlbumSerializer.page(params, scope) }
       let(:scope) { MyApp::Album.classic }

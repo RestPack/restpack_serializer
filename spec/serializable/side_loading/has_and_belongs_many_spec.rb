@@ -7,8 +7,8 @@ describe RestPack::Serializer::SideLoading do
     describe ".has_and_belongs_to_many" do
 
       before(:each) do
-        @artist1 = FactoryGirl.create(:artist_with_stalkers, stalker_count: 2)
-        @artist2 = FactoryGirl.create(:artist_with_stalkers, stalker_count: 3)
+        @artist1 = FactoryBot.create(:artist_with_stalkers, stalker_count: 2)
+        @artist2 = FactoryBot.create(:artist_with_stalkers, stalker_count: 3)
       end
 
       context "with a single model" do
