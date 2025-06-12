@@ -1,6 +1,6 @@
 require 'rspec'
-require './lib/restpack_serializer'
 require 'logger'
+require './lib/restpack_serializer'
 require './spec/fixtures/db'
 require './spec/fixtures/serializers'
 require './spec/support/factory'
