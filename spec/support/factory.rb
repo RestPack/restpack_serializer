@@ -6,7 +6,7 @@ FactoryBot.define do
     sequence(:website) { |n| "http://website#{n}.com/" }
 
     factory :artist_with_albums do
-      transient { album_count 3 }
+      transient { album_count { 3 } }
 
       after(:create) do |artist, evaluator|
         create_list(:album_with_songs, evaluator.album_count, artist: artist)
@@ -14,7 +14,7 @@ FactoryBot.define do
     end
 
     factory :artist_with_fans do
-      transient { fans_count 3 }
+      transient { fans_count { 3 } }
 
       after(:create) do |artist, evaluator|
         create_list(:payment, evaluator.fans_count, artist: artist)
@@ -22,7 +22,7 @@ FactoryBot.define do
     end
 
     factory :artist_with_stalkers do
-      transient { stalker_count 2 }
+      transient { stalker_count { 2 } }
 
       after(:create) do |artist, evaluator|
         create_list(:stalker, evaluator.stalker_count, artists: [artist])
@@ -36,7 +36,7 @@ FactoryBot.define do
     artist
 
     factory :album_with_songs do
-      transient { song_count 10 }
+      transient { song_count { 10 } }
 
       after(:create) do |album, evaluator|
         create_list(:song, evaluator.song_count, album: album, artist: album.artist)
@@ -51,7 +51,7 @@ FactoryBot.define do
   end
 
   factory :payment, class: MyApp::Payment do
-    amount 999
+    amount { 999 }
     artist
     fan
   end
