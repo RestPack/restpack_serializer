@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe RestPack::Serializer::Single do
   before(:each) do
-    @album = FactoryGirl.create(:album_with_songs, song_count: 11)
+    @album = FactoryBot.create(:album_with_songs, song_count: 11)
     @song = @album.songs.first
   end
 

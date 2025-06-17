@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe RestPack::Serializer::Resource do
   before(:each) do
-    @album = FactoryGirl.create(:album_with_songs, song_count: 11)
+    @album = FactoryBot.create(:album_with_songs, song_count: 11)
     @song = @album.songs.first
   end
 
@@ -50,7 +50,7 @@ describe RestPack::Serializer::Resource do
   end
 
   describe "song with no artist" do
-    let(:song) { FactoryGirl.create(:song, artist: nil) }
+    let(:song) { FactoryBot.create(:song, artist: nil) }
     let(:resource) { MyApp::SongSerializer.resource(id: song.id.to_s) }
 
     it "should not have an artist link" do
