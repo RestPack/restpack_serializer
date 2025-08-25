@@ -9,7 +9,7 @@ class RestPack::Serializer::Factory
   def self.classify(identifier)
     normalised_identifier = identifier.to_s.underscore
     [normalised_identifier, normalised_identifier.singularize].each do |format|
-      klass = RestPack::Serializer.class_map[format]
+      klass = RestPack::Serializer.class_for_identifier(format)
       return klass.new if klass
     end
 
