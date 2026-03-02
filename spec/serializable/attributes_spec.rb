@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'ostruct'
 
 describe RestPack::Serializer::Attributes do
   class CustomSerializer
@@ -8,7 +7,7 @@ describe RestPack::Serializer::Attributes do
     attributes :d, :e, :f?
     optional :sometimes, :maybe
     attribute :old_attribute, :key => :new_key
-    transform [:gonzaga], lambda { |name, model| model.send(name).downcase }
+    transform [:gonzaga], lambda { |name, model| model[name].downcase }
   end
 
   subject(:attributes) { CustomSerializer.serializable_attributes }
@@ -34,7 +33,7 @@ describe RestPack::Serializer::Attributes do
   end
 
   describe "optional attributes" do
-    let(:model) { OpenStruct.new(a: 'A', sometimes: 'SOMETIMES', gonzaga: 'GONZAGA') }
+    let(:model) { { a: 'A', sometimes: 'SOMETIMES', gonzaga: 'GONZAGA' } }
     let(:context) { {} }
     subject(:as_json) { CustomSerializer.as_json(model, context) }
 
@@ -54,7 +53,7 @@ describe RestPack::Serializer::Attributes do
   end
 
   describe '#transform_attributes' do
-    let(:model) { OpenStruct.new(gonzaga: 'IS A SCHOOL') }
+    let(:model) { { gonzaga: 'IS A SCHOOL' } }
 
     subject(:as_json) { CustomSerializer.as_json(model) }
 
