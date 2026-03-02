@@ -18,7 +18,7 @@ module RestPack
       def side_load_has_many
         has_association_relation do |options|
           if join_table = @association.options[:through]
-            options.scope = options.scope.joins(join_table).distinct
+            options.scope = options.scope.joins(join_table).group "#{options.scope.table_name}.id"
             association_fk = @association.through_reflection.foreign_key.to_sym
             options.filters = { join_table => { association_fk => model_ids } }
           else
