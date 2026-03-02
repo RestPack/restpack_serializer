@@ -9,8 +9,16 @@ module RestPack::Serializer
 
       @page = params[:page] ? params[:page].to_i : 1
       @page_size = params[:page_size] ? params[:page_size].to_i : RestPack::Serializer.config.page_size
-      @include = params[:include] ? params[:include].split(',') : []
-      @filters = filters_from_params(params, serializer)
+      @include = params[:include] ? params[:include].split(',').map(&:to_sym) : []
+
+      if serializer.respond_to? :filters_from_params
+        @filters = serializer.filters_from_params(params, serializer)
+      end
+
+      unless @filters
+        @filters = filters_from_params(params, serializer)
+      end
+
       @sorting = sorting_from_params(params, serializer)
       @serializer = serializer
       @model_class = serializer.model_class
@@ -20,14 +28,23 @@ module RestPack::Serializer
     end
 
     def scope_with_filters
-      scope_filter = {}
-
-      @filters.keys.each do |filter|
-        value = query_to_array(@filters[filter])
-        scope_filter[filter] = value
+      result = nil
+      if @serializer.respond_to? :scope_with_filters
+        result = @serializer.scope_with_filters(self)
       end
 
-      @scope.where(scope_filter)
+      if result
+        return result
+      else
+        scope_filter = {}
+
+        @filters.keys.each do |filter|
+          value = query_to_array(@filters[filter])
+          scope_filter[filter] = value
+        end
+
+        @scope.where(scope_filter)
+      end
     end
 
     def default_page_size?
@@ -70,10 +87,11 @@ module RestPack::Serializer
 
     def map_filter_ids(key,value)
       case value
-      when Hash
-        value.map { |k,v| map_filter_ids(k,v) }
-      else
-         "#{key}=#{value.join(',')}"
+        when Hash
+          value.map { |k,v| map_filter_ids(k,v) }
+        when Range
+        else
+          "#{key}=#{value.join(',')}"
       end
     end
 

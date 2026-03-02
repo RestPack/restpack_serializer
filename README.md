@@ -369,7 +369,47 @@ class Account
     include RestPack::Serializer
     attributes :id, :application_id, :created_by, :name, :href
 
-    can_filter_by :application_id
+    can_filter_by :application_id, :min_age, :max_age
+
+    def self.filters_from_params(params, serializer)
+        filters = {
+            :approved => ['t']
+        }
+
+        if (params[:min_age] || params[:max_age])
+          if (!params[:min_age])
+            params[:min_age] = 18
+          end
+
+          if (!params[:max_age])
+            params[:max_age] = 99
+          end
+
+          min_dob = DateTime.now.advance(:years => -params[:max_age].to_i)
+          max_dob = DateTime.now.advance(:years => -params[:min_age].to_i)
+
+          filters[:date_of_birth] = min_dob..max_dob
+        end
+
+        return filters
+    end
+
+    def self.scope_with_filters(options)
+        if (options.filters[:participant_id])
+          participant_id = options.filters[:participant_id]
+          options.filters.delete(:participant_id)
+
+          filter = {game_participations: {
+              participant_id: participant_id
+          }}
+          .merge(options.filters)
+          options.scope = options.scope.joins(:game_participations).where(filter)
+          return options.scope
+        end
+
+        # Let Default Options take care of it
+        return nil
+    end
 end
 ```
 
